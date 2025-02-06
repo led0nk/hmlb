@@ -4,7 +4,6 @@ metadata:
   name: otel-lgtm
   namespace: monitoring
 spec:
-  type: LoadBalancer
   selector:
     app: otel-lgtm
   ports:
