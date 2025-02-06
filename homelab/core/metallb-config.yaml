@@ -37,6 +37,8 @@ spec:
     loadBalancerClass: metallb
     controller:
       enabled: true
+    webhook:
+      enabled: true
 ---
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
