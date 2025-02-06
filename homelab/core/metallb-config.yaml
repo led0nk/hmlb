@@ -1,9 +1,7 @@
----
 apiVersion: v1
 kind: Namespace
 metadata:
   name: metallb-system
-
 ---
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
@@ -12,7 +10,7 @@ metadata:
   namespace: metallb-system
 spec:
   addresses:
-    - 192.168.178.201-192.168.178.203
+    - 192.168.178.201-192.168.178.202
 ---
 apiVersion: metallb.io/v1beta1
 kind: L2Advertisement
