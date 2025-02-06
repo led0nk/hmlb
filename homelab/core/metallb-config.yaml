@@ -35,10 +35,7 @@ spec:
     createNamespace: true
   values:
     loadBalancerClass: metallb
-    controller:
-      enabled: true
-    webhook:
-      enabled: true
+    installCRDs: true
 ---
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
