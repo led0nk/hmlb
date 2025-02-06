@@ -5,13 +5,21 @@ metadata:
   name: pihole-ingress
   namespace: pihole
   annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: web
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
+  ingressClassName: nginx
   rules:
     - host: pihole.homelab
       http:
         paths:
           - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: pihole-service
+                port:
+                  number: 80
+          - path: /admin
             pathType: Prefix
             backend:
               service:
