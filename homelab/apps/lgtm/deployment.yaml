@@ -18,13 +18,13 @@ spec:
     spec:
       containers:
       - name: otel-lgtm
-        image: grafana/otel-lgtm:latest  # ✅ Official LGTM image
+        image: grafana/otel-lgtm:latest
         ports:
-          - containerPort: 3000   # Grafana UI
-          - containerPort: 3100   # Loki
-          - containerPort: 4317   # OTel gRPC
-          - containerPort: 4318   # OTel HTTP
-          - containerPort: 14268  # Tempo
+          - containerPort: 3000
+          - containerPort: 3100
+          - containerPort: 4317
+          - containerPort: 4318
+          - containerPort: 14268
         volumeMounts:
           - name: config-volume
             mountPath: /etc/lgtm-config.yaml
