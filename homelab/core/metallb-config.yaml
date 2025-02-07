@@ -35,6 +35,8 @@ spec:
     createNamespace: true
   values:
     loadBalancerClass: metallb
+    controller:
+      enabled: true
 ---
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
