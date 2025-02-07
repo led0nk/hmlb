@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: otel-lgtm-config
-  namespace: monitoring
+  namespace: observability
 data:
   lgtm-config.yaml: |
     server:
