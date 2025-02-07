@@ -7,7 +7,6 @@ spec:
     app: pihole
   type: LoadBalancer
   loadBalancerIP: 192.168.178.202
-  loadBalancerClass: metallb
   ports:
     - name: dns
       protocol: UDP
