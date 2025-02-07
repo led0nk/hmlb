@@ -35,7 +35,8 @@ spec:
     createNamespace: true
   values:
     loadBalancerClass: metallb
-    installCRDs: true
+    crds:
+      enabled: true
 ---
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
@@ -55,3 +56,4 @@ metadata:
 spec:
   ipAddressPools:
     - default
+---
