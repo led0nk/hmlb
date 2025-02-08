@@ -1,7 +1,12 @@
+---
 apiVersion: v1
 kind: Namespace
 metadata:
   name: ollama
+  labels:
+    pod-security.kubernetes.io/audit: privileged
+    pod-security.kubernetes.io/enforce: privileged
+    pod-security.kubernetes.io/warn: privileged
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -28,14 +33,6 @@ spec:
     requests:
       storage: 5Gi
   storageClassName: local-path
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: open-webui-config
-  namespace: ollama
-data:
-  OLLAMA_BASE_URL: "http://ollama:11434"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -78,8 +75,8 @@ spec:
             - containerPort: 11434
           resources:
             requests:
-              cpu: "1"
-              memory: "2Gi"
+              cpu: "2"
+              memory: "4Gi"
             limits:
               cpu: "4"
               memory: "6Gi"
@@ -178,25 +175,6 @@ spec:
       port: 3000
       targetPort: 8080
   type: ClusterIP
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: ollama-ingress
-  namespace: ollama
-spec:
-  ingressClassName: nginx
-  rules:
-    - host: ollama.homelab
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: ollama-service
-                port:
-                  number: 11434
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
