@@ -20,6 +20,8 @@ spec:
       labels:
         app: otel-lgtm
     spec:
+      nodeSelector:
+        role: worker
       containers:
         - name: otel-lgtm
           image: grafana/otel-lgtm:latest
