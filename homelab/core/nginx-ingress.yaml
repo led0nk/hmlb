@@ -1,3 +1,4 @@
+---
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -40,5 +41,5 @@ spec:
         loadBalancerClass: metallb
       metrics:
         serviceMonitor:
-          enabled: true
+          enabled: false
         enabled: true
