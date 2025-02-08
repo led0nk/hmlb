@@ -42,13 +42,6 @@ spec:
                     operator: In
                     values:
                       - worker
-      initContainers:
-        - name: model-loader
-          image: ollama/ollama:latest
-          command: ["ollama", "pull", "llama3.2:3b"]
-          volumeMounts:
-            - mountPath: /root/.ollama
-              name: ollama-storage
       containers:
         - name: ollama
           image: ollama/ollama:latest
