@@ -133,9 +133,9 @@ spec:
             - name: WEBUI_SECRET_KEY
               value: "secret"
             - name: ENABLE_SIGNUP
-              value: false
+              value: "0"
             - name: ENABLE_LOGIN_FORM
-              value: false
+              value: "0"
           volumeMounts:
             - name: webui-storage
               mountPath: /app/backend/data
