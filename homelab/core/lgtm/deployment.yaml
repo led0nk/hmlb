@@ -23,12 +23,20 @@ spec:
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
+            - weight: 100
+              preference:
+                matchExpressions:
                   - key: role
                     operator: In
                     values:
                       - worker
+            - weight: 50
+              preference:
+                matchExpressions:
+                  - key: role
+                    operator: In
+                    values:
+                      - master
       containers:
         - name: otel-lgtm
           image: grafana/otel-lgtm:latest
