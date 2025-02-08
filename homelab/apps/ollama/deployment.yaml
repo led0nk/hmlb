@@ -135,6 +135,10 @@ spec:
               value: "http://ollama-service.ollama.svc.cluster.local:11434"
             - name: WEBUI_SECRET_KEY
               value: "secret"
+            - name: ENABLE_SIGNUP
+              value: false
+            - name: ENABLE_LOGIN_FORM
+              value: false
           volumeMounts:
             - name: webui-storage
               mountPath: /app/backend/data
