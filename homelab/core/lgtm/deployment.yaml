@@ -20,8 +20,15 @@ spec:
       labels:
         app: otel-lgtm
     spec:
-      nodeSelector:
-        role: worker
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: role
+                    operator: In
+                    values:
+                      - worker
       containers:
         - name: otel-lgtm
           image: grafana/otel-lgtm:latest
@@ -31,11 +38,3 @@ spec:
             - containerPort: 4317
             - containerPort: 4318
             - containerPort: 14268
-          #    volumeMounts:
-          #      - name: config-volume
-          #        mountPath: /etc/lgtm-config.yaml
-          #        subPath: lgtm-config.yaml
-          #  volumes:
-          #    - name: config-volume
-          #      configMap:
-          #        name: otel-lgtm-config

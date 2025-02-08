@@ -33,8 +33,15 @@ spec:
       labels:
         app: ollama
     spec:
-      nodeSelector:
-        role: worker
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: role
+                    operator: In
+                    values:
+                      - worker
       initContainers:
         - name: model-loader
           image: ollama/ollama:latest
@@ -124,8 +131,15 @@ spec:
       labels:
         app: open-webui
     spec:
-      nodeSelector:
-        role: worker
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: role
+                    operator: In
+                    values:
+                      - worker
       containers:
         - name: open-webui
           image: ghcr.io/open-webui/open-webui:main
