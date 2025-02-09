@@ -26,3 +26,5 @@ spec:
   interval: 1m
   install:
     createNamespace: true
+  values:
+    oauth: {}
