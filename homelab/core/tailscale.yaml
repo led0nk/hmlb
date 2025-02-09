@@ -23,16 +23,10 @@ spec:
         name: tailscale
         namespace: tailscale
       version: "*"
-    interval: 1m
-    values:
-      - name: oauth
-        valueFrom:
-          secretKeyRef:
-            name: tailscale-secret
-            key: oauth
-    valuesFrom:
-      - kind: Secret
-        name: tailscale-secret
-        valuesKey: oauth
+  interval: 1m
+  valuesFrom:
+    - kind: Secret
+      name: tailscale-secret
+      valuesKey: oauth
   install:
     createNamespace: true
