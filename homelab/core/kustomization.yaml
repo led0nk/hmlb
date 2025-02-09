@@ -7,3 +7,4 @@ resources:
   - nginx-ingress.yaml
   - lgtm
   - tailscale.yaml
+  - tailscale-secret.yaml

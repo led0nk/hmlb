@@ -29,3 +29,5 @@ spec:
         namespace: tailscale
       version: "*"
   interval: 1m
+  values:
+    oauth:
