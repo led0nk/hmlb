@@ -204,6 +204,6 @@ spec:
   ingressClassName: tailscale
   defaultBackend:
     service:
-      name: open-webui
+      name: open-webui-service
       port:
         number: 3000
