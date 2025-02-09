@@ -6,3 +6,4 @@ resources:
   - cert-manager.yaml
   - nginx-ingress.yaml
   - lgtm
+  - tailscale.yaml
