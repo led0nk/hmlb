@@ -31,10 +31,10 @@ spec:
       clientId:
         valueFrom:
           secretKeyRef:
-            name: tailscale-oauth
+            name: operator-oauth
             key: clientId
       clientSecret:
         valueFrom:
           secretKeyRef:
-            name: tailscale-oauth
+            name: operator-oauth
             key: clientSecret
