@@ -29,6 +29,3 @@ spec:
         namespace: tailscale
       version: "*"
   interval: 1m
-  values:
-    oauthSecretVolume:
-      secretName: operator-oauth
