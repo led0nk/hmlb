@@ -30,4 +30,5 @@ spec:
       version: "*"
   interval: 1m
   values:
-    oauth: {}
+    oauthSecretVolume:
+      secretName: operator-oauth
