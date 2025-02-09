@@ -27,4 +27,4 @@ spec:
   install:
     createNamespace: true
   values:
-    oauth:
+    oauthSecretVolume: null
