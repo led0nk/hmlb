@@ -26,7 +26,15 @@ spec:
   interval: 1m
   install:
     createNamespace: true
-  valuesFrom:
-    - kind: Secret
-      name: tailscale-oauth
-      valuesKey: oauth
+  values:
+    oauth:
+      clientId:
+        valueFrom:
+          secretKeyRef:
+            name: tailscale-oauth
+            key: clientId
+      clientSecret:
+        valueFrom:
+          secretKeyRef:
+            name: tailscale-oauth
+            key: clientSecret
