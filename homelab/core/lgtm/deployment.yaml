@@ -40,12 +40,19 @@ spec:
       containers:
         - name: otel-lgtm
           image: grafana/otel-lgtm:latest
+          env:
+            - name: LGTM_APP_CONFIG_FILE
+              value: /etc/lgtm/lgtm-config.yaml
           ports:
             - containerPort: 3000
             - containerPort: 3100
             - containerPort: 4317
             - containerPort: 4318
             - containerPort: 14268
+      volumes:
+        - name: lgtm-config
+          configMap:
+            name: otel-lgtm-config
 ---
 apiVersion: v1
 kind: Service
@@ -114,3 +121,26 @@ data:
       reporting_enabled: false
     common:
       path_prefix: /var/lgtm
+    mimir:
+      blocks_storage:
+        backend: filesystem
+        filesystem:
+          dir: /var/lgtm/mimir/tsdb
+    opentelemetry_collector:
+      pipelines:
+        metrics:
+          receivers:
+            - prometheus:
+                config:
+                  scrape_configs:
+                    - job_name: 'kube-state-metrics'
+                      scrape_interval: 15s
+                      static_configs:
+                        - targets: ['kube-state-metrics.observability.svc.cluster.local:8080']
+          exporters:
+            - mimir:
+                endpoint: 'http://127.0.0.1:9009/api/v1/push'
+          service:
+            pipelines:
+              - receivers: [prometheus]
+                exporters: [mimir]
