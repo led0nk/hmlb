@@ -150,7 +150,7 @@ data:
         protocols:
           grpc:
           http:
-      prometheus:
+      prometheus/collector:
         config:
           scrape_configs:
             - job_name: "kube-state-metrics"
@@ -166,7 +166,7 @@ data:
     service:
       pipelines:
         metrics:
-          receivers: [otlp, prometheus]
+          receivers: [otlp, "prometheus/collector"]
           processors: [batch]
           exporters: [mimir, logging]
         traces:
