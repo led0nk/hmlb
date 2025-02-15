@@ -58,6 +58,8 @@ spec:
         scrapers:
           cpu:
             metrics:
+              system.cpu.utilization:
+                enabled: true
               system.cpu.logical.count:
                 enabled: true
           memory:
@@ -70,6 +72,12 @@ spec:
           filesystem: {}
           network: {}
           processes: {}
+          process:
+            metrics:
+              process.cpu.utilization:
+                enabled: true
+              process.memory.utilization:
+                enabled: true
 
     processors:
       batch: {}
