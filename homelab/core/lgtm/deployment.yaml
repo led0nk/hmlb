@@ -49,6 +49,10 @@ spec:
             - containerPort: 4317
             - containerPort: 4318
             - containerPort: 14268
+          volumeMounts:
+            - name: lgtm-config
+              mountPath: /etc/lgtm
+              readOnly: true
       volumes:
         - name: lgtm-config
           configMap:
