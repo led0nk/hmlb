@@ -57,13 +57,15 @@ spec:
         collection_interval: 30s
         scrapers:
           cpu:
-            system.cpu.logical.count:
-              enabled: true
+            metrics:
+              system.cpu.logical.count:
+                enabled: true
           memory:
-            system.memory.utilization:
-              enabled: true
-            system.memory.limit:
-              enabled: true
+            metrics:
+              system.memory.utilization:
+                enabled: true
+              system.memory.limit:
+                enabled: true
           disk: {}
           filesystem: {}
           network: {}
