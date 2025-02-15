@@ -80,6 +80,10 @@ spec:
                 enabled: true
 
     processors:
+      resourcedetection/system:
+        detectors: ["system"]
+        system:
+          hostname_sources: ["os"]
       batch: {}
 
     exporters:
@@ -92,7 +96,7 @@ spec:
       pipelines:
         metrics:
           receivers: [hostmetrics]
-          processors: [batch]
+          processors: [resourcedetection/system, batch]
           exporters: [otlp]
 ---
 ##################### 
