@@ -51,6 +51,15 @@ metadata:
   namespace: observability
 spec:
   mode: daemonset
+  volumeMounts:
+    - mountPath: /hostfs
+      name: hostfs
+      readOnly: true
+  volumes:
+    - name: hostfs
+      hostPath:
+        path: /
+        type: Directory
   env:
     - name: K8S_NODE_NAME
       valueFrom:
@@ -59,6 +68,9 @@ spec:
   config: 
     receivers:
       hostmetrics:
+        root_path: /hostfs
+        resource_to_telemetry_conversion:
+          enabled: true
         collection_interval: 30s
         scrapers:
           cpu:
