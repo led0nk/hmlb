@@ -43,6 +43,8 @@ spec:
           env:
             - name: LGTM_APP_CONFIG_FILE
               value: /etc/lgtm/lgtm-config.yaml
+            - name: COLLECTOR_CONFIG_FILE
+              value: /etc/otel-collector/embedded-collector.yaml
           ports:
             - containerPort: 3000
             - containerPort: 3100
@@ -53,10 +55,18 @@ spec:
             - name: lgtm-config
               mountPath: /etc/lgtm
               readOnly: true
+
+            - name: collector-config-volume
+              mountPath: /etc/otel-collector
+              readOnly: true
       volumes:
         - name: lgtm-config
           configMap:
             name: otel-lgtm-config
+
+        - name: collector-config-volume
+          configMap:
+            name: otel-lgtm-collector-config
 ---
 apiVersion: v1
 kind: Service
@@ -125,26 +135,39 @@ data:
       reporting_enabled: false
     common:
       path_prefix: /var/lgtm
-    mimir:
-      blocks_storage:
-        backend: filesystem
-        filesystem:
-          dir: /var/lgtm/mimir/tsdb
-    opentelemetry_collector:
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: otel-lgtm-collector-config
+  namespace: observability
+data:
+  embedded-collector.yaml: |
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+          http:
+      prometheus:
+        config:
+          scrape_configs:
+            - job_name: "kube-state-metrics"
+              static_configs:
+                - targets:
+                    - kube-state-metrics.observability.svc.cluster.local:8080
+    processors:
+      batch:
+    exporters:
+      mimir:
+        endpoint: "http://127.0.0.1:9009/api/v1/push"
+      logging:
+    service:
       pipelines:
         metrics:
-          receivers:
-            - prometheus:
-                config:
-                  scrape_configs:
-                    - job_name: 'kube-state-metrics'
-                      scrape_interval: 15s
-                      static_configs:
-                        - targets: ['kube-state-metrics.observability.svc.cluster.local:8080']
-          exporters:
-            - mimir:
-                endpoint: 'http://127.0.0.1:9009/api/v1/push'
-          service:
-            pipelines:
-              - receivers: [prometheus]
-                exporters: [mimir]
+          receivers: [otlp, prometheus]
+          processors: [batch]
+          exporters: [mimir, logging]
+        traces:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [logging]
