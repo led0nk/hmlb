@@ -46,7 +46,7 @@ spec:
             - name: LGTM_APP_CONFIG_FILE
               value: /etc/lgtm/lgtm-config.yaml
             - name: COLLECTOR_CONFIG_FILE
-              value: /etc/otel-collector/embedded-collector.yaml
+              value: /etc/otel-collector/otelcol-config.yaml
           ports:
             - containerPort: 3000
             - containerPort: 3100
