@@ -56,8 +56,14 @@ spec:
       hostmetrics:
         collection_interval: 30s
         scrapers:
-          cpu: {}
-          memory: {}
+          cpu:
+            system.cpu.logical.count:
+              enabled: true
+          memory:
+            system.memory.utilization:
+              enabled: true
+            system.memory.limit:
+              enabled: true
           disk: {}
           filesystem: {}
           network: {}
@@ -70,7 +76,7 @@ spec:
       otlp:
         endpoint: otel-lgtm.observability.svc.cluster.local:4317
         tls:
-          insecure: true   # If no TLS is set up
+          insecure: true
 
     service:
       pipelines:
