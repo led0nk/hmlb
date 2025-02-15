@@ -35,9 +35,9 @@ spec:
   install:
     createNamespace: true
   values:
-    # manager:
-    #   collectorImage:
-    #     repository: otel/opentelemetry-collector-k8s
+    manager:
+      collectorImage:
+        repository: otel/opentelemetry-collector-k8s
     admissionWebhooks:
       certManager:
         enabled: true
