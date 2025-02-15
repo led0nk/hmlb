@@ -8,3 +8,4 @@ resources:
   - lgtm
   - tailscale.yaml
   - tailscale-secret.yaml
+  - kube-state-metrics.yaml
