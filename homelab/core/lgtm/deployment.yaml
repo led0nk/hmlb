@@ -50,6 +50,7 @@ metadata:
   name: otel-host-agent
   namespace: observability
 spec:
+  serviceAccount: otel-hostfs-daemonset
   mode: daemonset
   volumeMounts:
     - mountPath: /hostfs
@@ -121,6 +122,37 @@ spec:
           receivers: [hostmetrics]
           processors: [resourcedetection/system, resource, batch]
           exporters: [otlp]
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: otel-hostfs-daemonset
+  namespace: observability
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: otel-kubelet
+rules:
+  - apiGroups: ['']
+    resources: ['nodes/stats']
+    verbs: ['get', 'watch', 'list']
+  - apiGroups: [""]
+    resources: ["nodes/proxy"]
+    verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: otel-kubelet-binding
+subjects:
+  - kind: ServiceAccount
+    name: otel-hostfs-daemonset
+    namespace: observability
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: otel-kubelet
 ---
 ##################### 
 # OTEL-LGTM-STACK
