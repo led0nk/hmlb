@@ -41,6 +41,8 @@ spec:
         - name: otel-lgtm
           image: grafana/otel-lgtm:latest
           env:
+            - name: ENABLE_LOGS_OTELCOL
+              value: "1"
             - name: LGTM_APP_CONFIG_FILE
               value: /etc/lgtm/lgtm-config.yaml
             - name: COLLECTOR_CONFIG_FILE
