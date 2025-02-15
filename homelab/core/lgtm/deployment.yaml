@@ -44,41 +44,41 @@ spec:
       autoGenerateCert:
         enabled: true
 ---
-apiVersion: opentelemetry.io/v1beta1
-kind: OpenTelemetryCollector
-metadata:
-  name: otel-host-agent
-  namespace: observability
-spec:
-  mode: daemonset
-  config: 
-    receivers:
-      hostmetrics:
-        collection_interval: 30s
-        scrapers:
-          cpu: {}
-          memory: {}
-          disk: {}
-          filesystem: {}
-          network: {}
-          processes: {}
-
-    processors:
-      batch: {}
-
-    exporters:
-      otlp:
-        endpoint: otel-lgtm.observability.svc.cluster.local:4317
-        tls:
-          insecure: true   # If no TLS is set up
-
-    service:
-      pipelines:
-        metrics:
-          receivers: [hostmetrics]
-          processors: [batch]
-          exporters: [otlp]
----
+# apiVersion: opentelemetry.io/v1beta1
+# kind: OpenTelemetryCollector
+# metadata:
+#   name: otel-host-agent
+#   namespace: observability
+# spec:
+#   mode: daemonset
+#   config: 
+#     receivers:
+#       hostmetrics:
+#         collection_interval: 30s
+#         scrapers:
+#           cpu: {}
+#           memory: {}
+#           disk: {}
+#           filesystem: {}
+#           network: {}
+#           processes: {}
+# 
+#     processors:
+#       batch: {}
+# 
+#     exporters:
+#       otlp:
+#         endpoint: otel-lgtm.observability.svc.cluster.local:4317
+#         tls:
+#           insecure: true   # If no TLS is set up
+# 
+#     service:
+#       pipelines:
+#         metrics:
+#           receivers: [hostmetrics]
+#           processors: [batch]
+#           exporters: [otlp]
+# ---
 ##################### 
 # OTEL-LGTM-STACK
 #####################
