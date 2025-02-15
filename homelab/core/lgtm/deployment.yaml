@@ -92,6 +92,7 @@ spec:
           processes: {}
           process:
             mute_process_user_error: true
+            # mute_process_exe_error: true
             metrics:
               process.cpu.utilization:
                 enabled: true
@@ -108,6 +109,11 @@ spec:
           - action: upsert
             key: host.name
             value: "${env:K8S_NODE_NAME}"
+      transform:
+        metric_statements:
+          - context: datapoint
+            statements:
+              - set(attributes["host.name"], resource.attributes["host.name"])
       batch: {}
 
     exporters:
@@ -120,7 +126,7 @@ spec:
       pipelines:
         metrics:
           receivers: [hostmetrics]
-          processors: [resourcedetection/system, resource, batch]
+          processors: [resourcedetection/system, resource, transform, batch]
           exporters: [otlp]
 ---
 apiVersion: v1
