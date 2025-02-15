@@ -1,8 +1,87 @@
+---
 apiVersion: v1
 kind: Namespace
 metadata:
   name: observability
+  labels:
+    pod-security.kubernetes.io/audit: privileged
+    pod-security.kubernetes.io/enforce: privileged
+    pod-security.kubernetes.io/warn: privileged
 ---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: open-telemetry
+  namespace: observability
+spec:
+  url: https://open-telemetry.github.io/opentelemetry-helm-charts
+  interval: 1h
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: opentelemetry-operator
+  namespace: observability
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: opentelemetry-operator
+      sourceRef:
+        kind: HelmRepository
+        name: open-telemetry
+        namespace: observability
+      version: "0.79.0"
+  install:
+    createNamespace: true
+  values:
+    # manager:
+    #   collectorImage:
+    #     repository: otel/opentelemetry-collector-k8s
+    admissionWebhooks:
+      certManager:
+        enabled: true
+      autoGenerateCert:
+        enabled: true
+---
+apiVersion: opentelemetry.io/v1beta1
+kind: OpenTelemetryCollector
+metadata:
+  name: otel-host-agent
+  namespace: observability
+spec:
+  mode: daemonset
+  config: 
+    receivers:
+      hostmetrics:
+        collection_interval: 30s
+        scrapers:
+          cpu: {}
+          memory: {}
+          disk: {}
+          filesystem: {}
+          network: {}
+          processes: {}
+
+    processors:
+      batch: {}
+
+    exporters:
+      otlp:
+        endpoint: otel-lgtm.observability.svc.cluster.local:4317
+        tls:
+          insecure: true   # If no TLS is set up
+
+    service:
+      pipelines:
+        metrics:
+          receivers: [hostmetrics]
+          processors: [batch]
+          exporters: [otlp]
+---
+##################### 
+# OTEL-LGTM-STACK
+#####################
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -45,8 +124,8 @@ spec:
               value: "true"
             - name: LGTM_APP_CONFIG_FILE
               value: /etc/lgtm/lgtm-config.yaml
-            - name: COLLECTOR_CONFIG_FILE
-              value: /etc/otel-collector/otelcol-config.yaml
+         #   - name: COLLECTOR_CONFIG_FILE
+         #     value: /etc/otel-collector/otelcol-config.yaml
           ports:
             - containerPort: 3000
             - containerPort: 3100
@@ -137,39 +216,3 @@ data:
       reporting_enabled: false
     common:
       path_prefix: /var/lgtm
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: otel-lgtm-collector-config
-  namespace: observability
-data:
-  embedded-collector.yaml: |
-    receivers:
-      otlp:
-        protocols:
-          grpc:
-          http:
-      prometheus/collector:
-        config:
-          scrape_configs:
-            - job_name: "kube-state-metrics"
-              static_configs:
-                - targets:
-                    - kube-state-metrics.observability.svc.cluster.local:8080
-    processors:
-      batch:
-    exporters:
-      mimir:
-        endpoint: "http://127.0.0.1:9009/api/v1/push"
-      logging:
-    service:
-      pipelines:
-        metrics:
-          receivers: [otlp, "prometheus/collector"]
-          processors: [batch]
-          exporters: [mimir, logging]
-        traces:
-          receivers: [otlp]
-          processors: [batch]
-          exporters: [logging]
