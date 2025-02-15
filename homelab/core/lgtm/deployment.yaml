@@ -51,6 +51,11 @@ metadata:
   namespace: observability
 spec:
   mode: daemonset
+  env:
+    - name: K8S_NODE_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: spec.nodeName
   config: 
     receivers:
       hostmetrics:
@@ -85,6 +90,11 @@ spec:
         detectors: ["system"]
         system:
           hostname_sources: ["os"]
+      resource:
+        attributes:
+          - action: upsert
+            key: host.name
+            value: "${env:K8S_NODE_NAME}"
       batch: {}
 
     exporters:
@@ -97,7 +107,7 @@ spec:
       pipelines:
         metrics:
           receivers: [hostmetrics]
-          processors: [resourcedetection/system, batch]
+          processors: [resourcedetection/system, resource, batch]
           exporters: [otlp]
 ---
 ##################### 
