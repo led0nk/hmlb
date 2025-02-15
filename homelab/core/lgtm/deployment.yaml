@@ -54,8 +54,6 @@ spec:
   config: 
     receivers:
       hostmetrics:
-        resource_to_telemetry_conversion:
-          enabled: true
         collection_interval: 30s
         scrapers:
           cpu:
@@ -75,6 +73,7 @@ spec:
           network: {}
           processes: {}
           process:
+            mute_process_user_error: true
             metrics:
               process.cpu.utilization:
                 enabled: true
