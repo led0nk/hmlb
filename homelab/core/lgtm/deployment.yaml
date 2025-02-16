@@ -195,6 +195,19 @@ roleRef:
 ##################### 
 # OTEL-LGTM-STACK
 #####################
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: lgtm-observability
+  namespace: observability
+spec:
+  storageClassName: local-path
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -237,8 +250,6 @@ spec:
               value: "true"
             - name: LGTM_APP_CONFIG_FILE
               value: /etc/lgtm/lgtm-config.yaml
-         #   - name: COLLECTOR_CONFIG_FILE
-         #     value: /etc/otel-collector/otelcol-config.yaml
           ports:
             - containerPort: 3000
             - containerPort: 3100
@@ -258,9 +269,10 @@ spec:
           configMap:
             name: otel-lgtm-config
 
-        - name: collector-config-volume
-          configMap:
-            name: otel-lgtm-collector-config
+        - name: lgtm-storage
+          persistentVolumeClaim:
+            claimName: lgtm-observability
+
 ---
 apiVersion: v1
 kind: Service
