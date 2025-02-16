@@ -108,6 +108,18 @@ spec:
             enabled: true
           k8s.pod.uptime:
             enabled: true
+          k8s.pod.cpu.node.utilization:
+            enabled: true
+          k8s.pod.cpu_limit_utilization:
+            enabled: true
+          k8s.pod.cpu_request_utilization:
+            enabled: true
+          k8s.pod.memory.node.utilization:
+            enabled: true
+          k8s.pod.memory_limit_utilization:
+            enabled: true
+          k8s.pod.memory_request_utilization:
+            enabled: true
 
     processors:
       resourcedetection/system:
