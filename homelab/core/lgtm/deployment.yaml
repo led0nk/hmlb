@@ -261,9 +261,6 @@ spec:
               mountPath: /etc/lgtm
               readOnly: true
 
-            - name: collector-config-volume
-              mountPath: /etc/otel-collector
-              readOnly: true
       volumes:
         - name: lgtm-config
           configMap:
