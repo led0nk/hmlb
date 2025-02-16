@@ -261,6 +261,10 @@ spec:
               mountPath: /etc/lgtm
               readOnly: true
 
+            - name: dashboard-files
+              mountPath: /otel-lgtm/grafana-homelab-opentelemetry.json
+              subPath: grafana-homelab-opentelemetry.json
+
       volumes:
         - name: lgtm-config
           configMap:
@@ -269,6 +273,10 @@ spec:
         - name: lgtm-storage
           persistentVolumeClaim:
             claimName: lgtm-observability
+
+        - name: dashboard-files
+          configMap:
+            name: grafana-dashboards
 
 ---
 apiVersion: v1
