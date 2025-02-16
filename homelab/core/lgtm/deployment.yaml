@@ -98,6 +98,11 @@ spec:
                 enabled: true
               process.memory.utilization:
                 enabled: true
+      kubeletstats:
+        collection_interval: 30s
+        auth_type: "serviceAccount"
+        endpoint: "https://${env:K8S_NODE_NAME}:10250"
+        insecure_skip_verify: true
 
     processors:
       resourcedetection/system:
@@ -132,7 +137,7 @@ spec:
     service:
       pipelines:
         metrics:
-          receivers: [hostmetrics]
+          receivers: [hostmetrics, kubeletstats]
           processors: [resourcedetection/system, resource, transform, batch]
           exporters: [otlp]
 ---
