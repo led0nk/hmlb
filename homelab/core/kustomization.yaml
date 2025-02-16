@@ -6,6 +6,5 @@ resources:
   - cert-manager.yaml
   - nginx-ingress.yaml
   - lgtm
-  - grafana-dashboards.yaml
   - tailscale.yaml
   - tailscale-secret.yaml
