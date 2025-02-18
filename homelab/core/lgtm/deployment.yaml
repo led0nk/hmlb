@@ -98,6 +98,9 @@ spec:
                 enabled: true
               process.memory.utilization:
                 enabled: true
+              process.disk.io:
+                enabled: false
+
       kubeletstats:
         collection_interval: 30s
         auth_type: "serviceAccount"
