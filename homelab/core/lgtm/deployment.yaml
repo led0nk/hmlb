@@ -123,6 +123,10 @@ spec:
             enabled: true
           k8s.pod.memory_request_utilization:
             enabled: true
+          k8s.volume.available:
+            enabled: true
+          k8s.volume.capacity:
+            enabled: true
 
     processors:
       resourcedetection/system:
