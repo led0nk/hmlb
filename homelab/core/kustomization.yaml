@@ -8,3 +8,4 @@ resources:
   - lgtm
   - tailscale.yaml
   - tailscale-secret.yaml
+  - flux.yaml
