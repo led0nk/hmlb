@@ -5,4 +5,4 @@ kind: Kustomization
 resources:
   - gitrepository.yaml
   - flux-kustomization.yaml
-  - fluxrelease.yaml
+  - https://github.com/fluxcd/flux2/releases/download/v2.4.0/install.yaml
