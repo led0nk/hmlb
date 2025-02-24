@@ -184,7 +184,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: openui.homelab
+    - host: ollama.homelab
       http:
         paths:
           - path: /
