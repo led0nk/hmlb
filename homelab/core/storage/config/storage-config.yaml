@@ -6,7 +6,10 @@ metadata:
   namespace: openebs
 spec:
   node: jupiter
-  disks: ["/dev/sda"]
+  disks:
+    [
+      "/dev/disk/by-id/usb-USB_SanDisk_3.2Gen1_0401a6564b757b28b01b20f148f60e8b77484ddd9dcaf3787488dd2a2d0fb65152e000000000000000000000ce9029f9ff0f0818915581072d309a1c-0:0",
+    ]
   topology:
     labelled:
       type: usb
