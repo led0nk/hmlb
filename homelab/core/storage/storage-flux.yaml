@@ -29,7 +29,7 @@ metadata:
   namespace: openebs
 spec:
   dependsOn:
-    - name: observability-release
+    - name: openebs-release
   interval: 5m
   path: "./homelab/core/storage/config"
   prune: true
