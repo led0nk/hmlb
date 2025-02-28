@@ -6,7 +6,7 @@ metadata:
   namespace: openebs
 spec:
   node: jupiter
-  disks: ["/dev/sdb"]
+  disks: ["/dev/sda"]
   topology:
     labelled:
       type: usb
