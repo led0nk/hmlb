@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - metallb
   - observability
+  - storage
   - cert-manager.yaml
   - nginx-ingress.yaml
   - tailscale.yaml

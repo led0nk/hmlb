@@ -1,0 +1,27 @@
+---
+apiVersion: "openebs.io/v1beta2"
+kind: DiskPool
+metadata:
+  name: storage-usb
+  namespace: openebs
+spec:
+  node: jupiter
+  disks: ["/dev/sdb"]
+  topology:
+    labelled:
+      type: usb
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: openebs-usb
+parameters:
+  protocol: nvmf
+  repl: "1"
+  thin: "true"
+  fsType: ext4
+  poolAffinityTopologyLabel: |
+    type: usb
+allowVolumeExpansion: true
+provisioner: io.openebs.csi-mayastor
+reclaimPolicy: Delete

@@ -19,7 +19,7 @@ spec:
   resources:
     requests:
       storage: 10Gi
-  storageClassName: local-path
+  storageClassName: openebs-usb
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -32,7 +32,7 @@ spec:
   resources:
     requests:
       storage: 5Gi
-  storageClassName: local-path
+  storageClassName: openebs-usb
 ---
 apiVersion: apps/v1
 kind: Deployment

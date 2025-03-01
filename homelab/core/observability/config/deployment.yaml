@@ -291,12 +291,12 @@ metadata:
   name: lgtm-observability
   namespace: observability
 spec:
-  storageClassName: local-path
+  storageClassName: openebs-usb
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 50Gi
+      storage: 30Gi
 ---
 apiVersion: apps/v1
 kind: Deployment
