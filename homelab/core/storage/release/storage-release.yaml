@@ -55,6 +55,8 @@ spec:
             enabled: false
       etcd:
         replicaCount: 3
+        nodeSelector:
+          kubernetes.io/arch: "amd64"
       eventing:
         enabled: false
       io_engine:
