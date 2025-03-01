@@ -473,3 +473,21 @@ spec:
   podMetricsEndpoints:
     - targetPort: 8080
       path: /metrics
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: openebs-podmonitor
+  namespace: observability
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: mayastor-io-engine
+  namespaceSelector:
+    matchNames:
+      - openebs
+  podMetricsEndpoints:
+    - targetPort: 9502
+      path: /metrics
