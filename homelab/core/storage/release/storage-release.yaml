@@ -54,9 +54,7 @@ spec:
           initContainers:
             enabled: false
       etcd:
-        replicaCount: 3
-        nodeSelector:
-          kubernetes.io/arch: "amd64"
+        replicaCount: 1
       eventing:
         enabled: false
       io_engine:
