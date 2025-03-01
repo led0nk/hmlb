@@ -43,6 +43,11 @@ spec:
           image: homeassistant/home-assistant:stable
           ports:
             - containerPort: 8123
+          env:
+            - name: TRUSTED_PROXIES
+              value: "10.42.0.0/16"
+            - name: USE_X_FORWARDED_FOR
+              value: "true"
           resources:
             requests:
               cpu: "250m"
