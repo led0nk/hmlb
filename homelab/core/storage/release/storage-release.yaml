@@ -37,6 +37,9 @@ spec:
         name: openebs
       version: 4.2.0
   values:
+    base:
+      metrics:
+        enabled: true
     engines:
       local:
         lvm:
