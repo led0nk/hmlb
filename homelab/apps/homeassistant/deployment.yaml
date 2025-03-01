@@ -1,0 +1,105 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: homeassistant
+  labels:
+    pod-security.kubernetes.io/audit: privileged
+    pod-security.kubernetes.io/enforce: privileged
+    pod-security.kubernetes.io/warn: privileged
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: homeassistant-pvc
+  namespace: homeassistant
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: local-path
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homeassistant
+  namespace: homeassistant
+  labels:
+    app: homeassistant
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: homeassistant
+  template:
+    metadata:
+      labels:
+        app: homeassistant
+    spec:
+      containers:
+        - name: homeassistant
+          image: homeassistant/home-assistant:stable
+          ports:
+            - containerPort: 8123
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "1"
+              memory: "1.5Gi"
+          volumeMounts:
+            - name: homeassistant-storage
+              mountPath: /config
+      volumes:
+        - name: homeassistant-storage
+          persistentVolumeClaim:
+            claimName: homeassistant-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: homeassistant-service
+  namespace: homeassistant
+spec:
+  selector:
+    app: homeassistant
+  ports:
+    - protocol: TCP
+      port: 8123
+      targetPort: 8123
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: homeassistant-ingress
+  namespace: homeassistant
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: homeassistant.homelab
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: homeassistant-service
+                port:
+                  number: 8123
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: homeassistant-tailscale
+  namespace: homeassistant
+spec:
+  ingressClassName: tailscale
+  defaultBackend:
+    service:
+      name: homeassistant-service
+      port:
+        number: 8123
