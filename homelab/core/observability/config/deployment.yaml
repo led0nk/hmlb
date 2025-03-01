@@ -484,7 +484,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: mayastor-io-engine
+      app: io-engine
   namespaceSelector:
     matchNames:
       - openebs
