@@ -4,4 +4,5 @@ kind: Kustomization
 resources:
   - apps/ollama
   - apps/redirect
+  - apps/homeassistant
   - core
