@@ -5,7 +5,7 @@ metadata:
   name: jellyfin-pvc-data
   namespace: jellyfin
 spec:
-  storageClassName: storage-usb
+  storageClassName: openebs-usb
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem
@@ -19,7 +19,7 @@ metadata:
   name: jellyfin-pvc-config
   namespace: jellyfin
 spec:
-  storageClassName: storage-usb
+  storageClassName: openebs-usb
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem
@@ -33,7 +33,7 @@ metadata:
   name: filebrowser-db
   namespace: jellyfin
 spec:
-  storageClassName: storage-usb
+  storageClassName: openebs-usb
   accessModes:
     - ReadWriteOnce
   resources:
@@ -46,7 +46,7 @@ metadata:
   name: filebrowser-config
   namespace: jellyfin
 spec:
-  storageClassName: storage-usb
+  storageClassName: openebs-usb
   accessModes:
     - ReadWriteOnce
   resources:
@@ -59,7 +59,7 @@ metadata:
   name: inter-downloads-and-history
   namespace: jellyfin
 spec:
-  storageClassName: storage-usb
+  storageClassName: openebs-usb
   accessModes:
     - ReadWriteOnce
   resources:
@@ -73,7 +73,7 @@ metadata:
   name: jellyseerr-config
   namespace: jellyfin
 spec:
-  storageClassName: storage-usb
+  storageClassName: openebs-usb
   accessModes:
     - ReadWriteOnce
   resources:
