@@ -471,5 +471,5 @@ spec:
     matchNames:
       - flux-system
   podMetricsEndpoints:
-    - containerPort: 8080
+    - targetPort: 8080
       path: /metrics
