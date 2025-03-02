@@ -466,12 +466,10 @@ metadata:
 spec:
   selector:
     matchLabels:
-      # This label is present on each Flux controller in flux-system.
-      # Check your actual labels with `kubectl get pods -n flux-system --show-labels`
-      app.kubernetes.io/part-of: flux
+      app: kustomize-controller
   namespaceSelector:
     matchNames:
       - flux-system
   podMetricsEndpoints:
-    - port: http
+    - port: 8080
       path: /metrics
