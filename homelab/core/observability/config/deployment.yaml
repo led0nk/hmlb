@@ -447,7 +447,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: flux
+      app.kubernetes.io/part-of: flux
   namespaceSelector:
     matchNames:
       - flux-system
@@ -471,5 +471,5 @@ spec:
     matchNames:
       - flux-system
   podMetricsEndpoints:
-    - port: 8080
+    - containerPort: 8080
       path: /metrics
