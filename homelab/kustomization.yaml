@@ -5,4 +5,5 @@ resources:
   - apps/ollama
   - apps/redirect
   - apps/homeassistant
+  - apps/jellyfin
   - core
