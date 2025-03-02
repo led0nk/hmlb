@@ -372,15 +372,15 @@ spec:
           persistentVolumeClaim:
             claimName: inter-downloads-and-history
       containers:
-        - image: frebib/nzbget-exporter
-          name: nzbget-exporter
-          ports:
-            - name: http
-              containerPort: 9452
-              protocol: TCP
-          env:
-            - name: NZBGET_HOST
-              value: "http://nzbget:6789"
+        # - image: frebib/nzbget-exporter
+        #   name: nzbget-exporter
+        #   ports:
+        #     - name: http
+        #       containerPort: 9452
+        #       protocol: TCP
+        #   env:
+        #     - name: NZBGET_HOST
+        #       value: "http://nzbget:6789"
         - image: nzbgetcom/nzbget:v24.6
           name: nzbget
           command:
