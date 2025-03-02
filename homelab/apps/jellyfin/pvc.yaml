@@ -5,13 +5,13 @@ metadata:
   name: jellyfin-pvc-data
   namespace: jellyfin
 spec:
-  storageClassName: local-path
+  storageClassName: storage-usb
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem
   resources:
     requests:
-      storage: 200Gi
+      storage: 600Gi
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -19,7 +19,7 @@ metadata:
   name: jellyfin-pvc-config
   namespace: jellyfin
 spec:
-  storageClassName: local-path
+  storageClassName: storage-usb
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem
@@ -33,7 +33,7 @@ metadata:
   name: filebrowser-db
   namespace: jellyfin
 spec:
-  storageClassName: local-path
+  storageClassName: storage-usb
   accessModes:
     - ReadWriteOnce
   resources:
@@ -46,7 +46,7 @@ metadata:
   name: filebrowser-config
   namespace: jellyfin
 spec:
-  storageClassName: local-path
+  storageClassName: storage-usb
   accessModes:
     - ReadWriteOnce
   resources:
@@ -59,13 +59,13 @@ metadata:
   name: inter-downloads-and-history
   namespace: jellyfin
 spec:
+  storageClassName: storage-usb
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 250Gi
   volumeMode: Filesystem
-  storageClassName: local-path
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -73,10 +73,10 @@ metadata:
   name: jellyseerr-config
   namespace: jellyfin
 spec:
+  storageClassName: storage-usb
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
   volumeMode: Filesystem
-  storageClassName: local-path

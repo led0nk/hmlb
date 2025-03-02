@@ -359,6 +359,13 @@ spec:
       labels:
         app: nzbget
     spec:
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app: jellyfin
+              topologyKey: kubernetes.io/hostname
       volumes:
         - name: nfs-jellyfin-data
           persistentVolumeClaim:
@@ -511,6 +518,25 @@ spec:
       interval: 30s
       path: /metrics
       scrapeTimeout: 10s
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nzbget
+  namespace: jellyfin
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: nzbget.homelab
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: nzbget
+                port:
+                  number: 6789
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
