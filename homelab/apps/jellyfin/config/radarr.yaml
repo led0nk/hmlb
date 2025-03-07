@@ -13,6 +13,13 @@ spec:
       labels:
         app: radarr
     spec:
+      affinity: # NOTE: follow nzbget due to lack of RWX
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app: nzbget
+              topologyKey: kubernetes.io/hostname
       containers:
         - name: radarr
           image: lscr.io/linuxserver/radarr:latest
@@ -26,10 +33,15 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
+            - name: nfs-jellyfin-data
+              mountPath: /data/downloads
       volumes:
         - name: config
           persistentVolumeClaim:
             claimName: radarr-config
+        - name: nfs-jellyfin-data
+          persistentVolumeClaim:
+            claimName: jellyfin-pvc-data
 ---
 apiVersion: v1
 kind: Service
