@@ -7,3 +7,4 @@ resources:
   - jellyfin.yaml
   - jellyseer.yaml
   - pvc.yaml
+  - radarr.yaml
