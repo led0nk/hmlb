@@ -30,6 +30,20 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  name: radarr-config
+  namespace: jellyfin
+spec:
+  storageClassName: openebs-usb
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
   name: filebrowser-db
   namespace: jellyfin
 spec:
