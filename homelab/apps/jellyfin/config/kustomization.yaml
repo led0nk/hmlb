@@ -8,3 +8,4 @@ resources:
   - jellyseer.yaml
   - pvc.yaml
   - radarr.yaml
+  - sonarr.yaml
