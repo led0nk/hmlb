@@ -1,3 +1,4 @@
+### test
 .PHONY:
 flux:
 	@kubectl apply -k homelab/flux
