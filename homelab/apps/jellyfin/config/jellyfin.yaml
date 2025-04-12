@@ -27,8 +27,7 @@ spec:
                   - key: "kubernetes.io/hostname"
                     operator: "NotIn"
                     values:
-                      - "k3s"
-                      - "portunus"
+                      - "storage1"
       volumes:
         - name: nfs-jellyfin-config
           persistentVolumeClaim:

@@ -51,23 +51,6 @@ spec:
       labels:
         app: ollama
     spec:
-      affinity:
-        nodeAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              preference:
-                matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - worker
-            - weight: 50
-              preference:
-                matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - master
       containers:
         - name: ollama
           image: ollama/ollama:latest
@@ -105,23 +88,6 @@ spec:
       labels:
         app: open-webui
     spec:
-      affinity:
-        nodeAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              preference:
-                matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - worker
-            - weight: 50
-              preference:
-                matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - master
       containers:
         - name: open-webui
           image: ghcr.io/open-webui/open-webui:v0.6.2
