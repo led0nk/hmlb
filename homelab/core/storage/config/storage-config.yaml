@@ -9,7 +9,7 @@ spec:
   disks: ["/dev/disk/by-id/nvme-WD_Blue_SN5000_1TB_250722800205"]
   topology:
     labelled:
-      type: usb
+      type: m2
 ---
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
