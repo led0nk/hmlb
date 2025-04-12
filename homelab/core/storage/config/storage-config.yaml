@@ -2,11 +2,11 @@
 apiVersion: "openebs.io/v1beta2"
 kind: DiskPool
 metadata:
-  name: storage-usb
+  name: storage-m2
   namespace: openebs
 spec:
   node: jupiter
-  disks: ["/dev/disk/by-id/usb-TOSHIBA_External_USB_3.0_20170322003196F-0:0"]
+  disks: ["/dev/disk/by-id/nvme-WD_Blue_SN5000_1TB_250722800205"]
   topology:
     labelled:
       type: usb
@@ -14,14 +14,14 @@ spec:
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: openebs-usb
+  name: openebs-m2
 parameters:
   protocol: nvmf
   repl: "1"
   thin: "true"
-  fsType: ext4
+  fsType: xfs
   poolAffinityTopologyLabel: |
-    type: usb
+    type: m2
 allowVolumeExpansion: true
 provisioner: io.openebs.csi-mayastor
 reclaimPolicy: Delete

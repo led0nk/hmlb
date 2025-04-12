@@ -1,0 +1,86 @@
+---
+clusterName: homelab
+talosVersion: v1.9.5
+endpoint: https://192.168.178.210:6443
+allowSchedulingOnMasters: true
+additionalApiServerCertSans:
+  - homelab
+cniConfig:
+  name: none
+patches:
+  - |-
+    - op: add
+      path: /machine/sysctls
+      value:
+        net.ipv4.ip_unprivileged_port_start: "0"
+  - |-
+    cluster:
+      proxy:
+        disabled: true
+  - |-
+    machine:
+      systemDiskEncryption:
+        state:
+          provider: luks2
+          keys:
+            - tpm: {}
+              slot: 0
+        ephemeral:
+          provider: luks2
+          keys:
+            - static:
+                passphrase: ${diskEncryption}
+              slot: 0
+  - |-
+    - op: add
+      path: /machine/kubelet/extraMounts
+      value:
+        - destination: /var/local
+          type: bind
+          source: /var/local
+          options:
+            - bind
+            - rshared
+            - rw
+controlPlane:
+  talosImageURL: factory.talos.dev/installer-secureboot/e229284abd3c5ce9711acd20daf4ff70eb2455f9bc285c0390a1501196c5046d
+  extensionServices:
+    - name: tailscale
+      environment:
+        - TS_AUTHKEY=${tsAuth}
+
+worker:
+  talosImageURL: factory.talos.dev/installer-secureboot/e229284abd3c5ce9711acd20daf4ff70eb2455f9bc285c0390a1501196c5046d
+  extensionServices:
+    - name: tailscale
+      environment:
+        - TS_AUTHKEY=${tsAuth}
+
+nodes:
+  - hostname: master1
+    ipAddress: 192.168.178.210
+    installDisk: /dev/nvme0n1
+    controlPlane: true
+  - hostname: worker1
+    ipAddress: 192.168.178.214
+    installDisk: /dev/nvme0n1
+    controlPlane: false
+  - hostname: storage1
+    ipAddress: 192.168.178.215
+    installDisk: /dev/nvme0n1
+    controlPlane: false
+    patches:
+      - |-
+        - op: add
+          path: /machine/sysctls
+          value:
+            vm.nr_hugepages: "1024"
+    nodeLabels:
+      openebs.io/engine: mayastor
+      role: "storage-node"
+      node-role.kubernetes.io/worker: ""
+    taints:
+      #      role: storage-node:NoSchedule
+      - key: "role"
+        value: "storage-node"
+        effect: "NoSchedule"

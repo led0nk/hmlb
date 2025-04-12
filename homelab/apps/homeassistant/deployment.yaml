@@ -19,7 +19,7 @@ spec:
   resources:
     requests:
       storage: 2Gi
-  storageClassName: openebs-usb
+  storageClassName: openebs-m2
 ---
 apiVersion: apps/v1
 kind: Deployment
