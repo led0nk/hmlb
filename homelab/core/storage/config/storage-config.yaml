@@ -5,7 +5,7 @@ metadata:
   name: storage-m2
   namespace: openebs
 spec:
-  node: jupiter
+  node: storage1
   disks: ["/dev/disk/by-id/nvme-WD_Blue_SN5000_1TB_250722800205"]
   topology:
     labelled:
