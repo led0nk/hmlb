@@ -30,6 +30,10 @@ spec:
   install:
     createNamespace: true
   values:
+    controller:
+      admissionWebhooks:
+        certManager:
+          enabled: true
     installCRDs: true
     extraArgs:
       - --v=2
