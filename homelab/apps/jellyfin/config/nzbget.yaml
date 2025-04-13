@@ -130,11 +130,11 @@ data:
     # Category 1
     Category1.Name=Movies
     Category1.Aliases=
-    Category1.DestDir=/data/movies
+    Category1.DestDir=/data/downloads/movies
 
     # Category 2
     Category2.Name=Series
-    Category2.DestDir=/data/series
+    Category2.DestDir=/data/downloads/series
     Category3.Name=Music
     Category4.Name=Software
 
