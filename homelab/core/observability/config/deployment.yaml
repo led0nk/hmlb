@@ -291,7 +291,7 @@ metadata:
   name: lgtm-observability
   namespace: observability
 spec:
-  storageClassName: openebs-m2
+  storageClassName: openebs-fast
   accessModes:
     - ReadWriteOnce
   resources:

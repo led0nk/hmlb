@@ -5,13 +5,13 @@ metadata:
   name: jellyfin-pvc-data
   namespace: jellyfin
 spec:
-  storageClassName: openebs-m2
+  storageClassName: openebs-fast
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem
   resources:
     requests:
-      storage: 800Gi
+      storage: 700Gi
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -19,7 +19,7 @@ metadata:
   name: jellyfin-pvc-config
   namespace: jellyfin
 spec:
-  storageClassName: openebs-m2
+  storageClassName: openebs-fast
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem
@@ -33,7 +33,7 @@ metadata:
   name: radarr-config
   namespace: jellyfin
 spec:
-  storageClassName: openebs-m2
+  storageClassName: openebs-fast
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem
@@ -47,7 +47,7 @@ metadata:
   name: sonarr-config
   namespace: jellyfin
 spec:
-  storageClassName: openebs-m2
+  storageClassName: openebs-fast
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem
@@ -61,7 +61,7 @@ metadata:
   name: filebrowser-db
   namespace: jellyfin
 spec:
-  storageClassName: openebs-m2
+  storageClassName: openebs-fast
   accessModes:
     - ReadWriteOnce
   resources:
@@ -74,7 +74,7 @@ metadata:
   name: filebrowser-config
   namespace: jellyfin
 spec:
-  storageClassName: openebs-m2
+  storageClassName: openebs-fast
   accessModes:
     - ReadWriteOnce
   resources:
@@ -87,7 +87,7 @@ metadata:
   name: inter-downloads-and-history
   namespace: jellyfin
 spec:
-  storageClassName: openebs-m2
+  storageClassName: openebs-fast
   accessModes:
     - ReadWriteOnce
   resources:
@@ -101,7 +101,7 @@ metadata:
   name: jellyseerr-config
   namespace: jellyfin
 spec:
-  storageClassName: openebs-m2
+  storageClassName: openebs-fast
   accessModes:
     - ReadWriteOnce
   resources:

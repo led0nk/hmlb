@@ -19,7 +19,7 @@ spec:
   resources:
     requests:
       storage: 10Gi
-  storageClassName: openebs-m2
+  storageClassName: openebs-fast
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -32,7 +32,7 @@ spec:
   resources:
     requests:
       storage: 5Gi
-  storageClassName: openebs-m2
+  storageClassName: openebs-fast
 ---
 apiVersion: apps/v1
 kind: Deployment
