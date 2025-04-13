@@ -9,8 +9,8 @@ data:
     MainDir=/config
     DestDir=/data/downloads
     InterDir=/config/persistence/inter
-    NzbDir=$${MainDir}/persistence/nzb
-    QueueDir=$${MainDir}/persistence/queue
+    NzbDir=/config/persistence/nzb
+    QueueDir=/config/persistence/queue
     TempDir=/tmp
 
     # Should be group writeable
@@ -130,11 +130,11 @@ data:
     # Category 1
     Category1.Name=Movies
     Category1.Aliases=
-    Category1.DestDir=$${DestDir}/movies
+    Category1.DestDir=/data/movies
 
     # Category 2
     Category2.Name=Series
-    Category2.DestDir=$${DestDir}/series
+    Category2.DestDir=/data/series
     Category3.Name=Music
     Category4.Name=Software
 
