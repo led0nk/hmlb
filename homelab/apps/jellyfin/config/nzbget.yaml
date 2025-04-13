@@ -9,8 +9,8 @@ data:
     MainDir=/config
     DestDir=/data/downloads
     InterDir=/config/persistence/inter
-    NzbDir=/config/persistence/nzb
-    QueueDir=/config/persistence/queue
+    NzbDir=$${MainDir}/persistence/nzb
+    QueueDir=$${MainDir}/persistence/queue
     TempDir=/tmp
 
     # Should be group writeable
@@ -124,13 +124,17 @@ data:
 
     # Category name is passed to post-processing script and can be used by it
     # to perform category specific processing.
-    Category1.Name=Movies
 
     # List of aliases.
     # Example: TV - HD, TV - SD, TV*
+    # Category 1
+    Category1.Name=Movies
     Category1.Aliases=
+    Category1.DestDir=$${DestDir}/movies
 
+    # Category 2
     Category2.Name=Series
+    Category2.DestDir=$${DestDir}/series
     Category3.Name=Music
     Category4.Name=Software
 
@@ -146,7 +150,7 @@ data:
     ContinuePartial=yes
 
     # Memory limit for article cache (megabytes).
-    ArticleCache=300
+    ArticleCache=500
 
     # Write decoded articles directly into destination output file (yes, no).
     #
@@ -463,7 +467,8 @@ spec:
               subPath: nzbget.conf
               readOnly: true
             - name: nfs-jellyfin-data
-              mountPath: /data/downloads
+              mountPath: /data
+              #  mountPath: /data/downloads
               readOnly: false
           resources: {}
       dnsPolicy: ClusterFirst
