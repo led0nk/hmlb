@@ -43,3 +43,5 @@ spec:
         serviceMonitor:
           enabled: false
         enabled: true
+      config:
+        proxy-body-size: "0"
