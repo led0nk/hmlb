@@ -368,6 +368,12 @@ data:
     UnpackIgnoreExt=.cbr
 
     Extensions=ExtendedUnrar
+
+    # Extensions
+    # ExtendedUnrar
+    ExtendedUnrar.UnrarCmd=/app/nzbget/unrar e -idp -ai -o-
+    ExtendedUnrar.WaitTime=0
+    ExtendedUnrar.DeleteLeftover=yes
 ---
 apiVersion: apps/v1
 kind: Deployment
