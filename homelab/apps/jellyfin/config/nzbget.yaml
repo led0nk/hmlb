@@ -19,7 +19,7 @@ data:
     # Directory with web-interface files.
     WebDir=/app/nzbget/webui
     # Directory with post-processing and other scripts.
-    ScriptDir=$${MainDir}/scripts
+    ScriptDir=/config/scripts
     LogFile=/dev/stdout
 
     ConfigTemplate=/app/nzbget/share/nzbget/nzbget.conf
@@ -367,7 +367,7 @@ data:
     # Files to ignore during unpack.
     UnpackIgnoreExt=.cbr
 
-    Extensions=ExtendedUnrar.py
+    Extensions=ExtendedUnrar
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -403,10 +403,6 @@ spec:
         - name: nzbget-config
           configMap:
             name: nzbget-config
-        - name: nzbget-scripts
-          configMap:
-            name: nzbget-scripts
-            defaultMode: 0755
         - name: tmp
           emptyDir: {}
         - name: inter-downloads-and-history
@@ -506,9 +502,6 @@ spec:
             - name: nzbget-config
               mountPath: /etc/nzbget.conf
               subPath: nzbget.conf
-              readOnly: true
-            - name: nzbget-scripts
-              mountPath: /config/scripts
               readOnly: true
             - name: nfs-jellyfin-data
               mountPath: /data
