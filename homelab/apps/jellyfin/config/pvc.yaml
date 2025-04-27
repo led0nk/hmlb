@@ -44,6 +44,20 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  name: nzbget-scripts
+  namespace: jellyfin
+spec:
+  storageClassName: openebs-fast
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
   name: sonarr-config
   namespace: jellyfin
 spec:

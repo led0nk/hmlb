@@ -389,6 +389,8 @@ spec:
       labels:
         app: nzbget
     spec:
+      securityContext:
+        fsGroup: 1000
       affinity:
         podAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -400,6 +402,9 @@ spec:
         - name: nfs-jellyfin-data
           persistentVolumeClaim:
             claimName: jellyfin-pvc-data
+        - name: scripts
+          persistentVolumeClaim:
+            claimName: nzbget-scripts
         - name: nzbget-config
           configMap:
             name: nzbget-config
@@ -408,6 +413,26 @@ spec:
         - name: inter-downloads-and-history
           persistentVolumeClaim:
             claimName: inter-downloads-and-history
+      initContainers:
+        - name: extendedunrar
+          image: curlimages/curl:latest
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+          command:
+            - sh
+            - -c
+            - >
+              set -ex;
+              mkdir -p /config/scripts &&
+              cd /config/scripts &&
+              curl -L -o ext.zip \
+                https://github.com/nzbgetcom/Extension-ExtendedUnrar/releases/download/v2.2/extendedunrar-2.2-dist.zip &&
+              unzip -o ext.zip &&
+              rm ext.zip
+          volumeMounts:
+            - name: scripts
+              mountPath: /config/scripts
       containers:
         # - image: frebib/nzbget-exporter
         #   name: nzbget-exporter
@@ -499,6 +524,8 @@ spec:
               subPath: queue
             - name: tmp
               mountPath: /tmp
+            - name: scripts
+              mountPath: /config/scripts
             - name: nzbget-config
               mountPath: /etc/nzbget.conf
               subPath: nzbget.conf
