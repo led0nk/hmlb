@@ -359,8 +359,8 @@ data:
 
     UnpackCleanupDisk=yes
 
-    UnrarCmd=unrar
-    SevenZipCmd=7z
+    UnrarCmd=/app/nzbget/unrar
+    SevenZipCmd=/app/nzbget/7za
 
     ExtCleanupDisk=.par2, .sfv
 
