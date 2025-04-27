@@ -4,7 +4,6 @@ kind: Kustomization
 resources:
   - credentials.yaml
   - nzbget.yaml
-  - nzbget-scripts.yaml
   - jellyfin.yaml
   - jellyseer.yaml
   - pvc.yaml
