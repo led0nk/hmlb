@@ -88,7 +88,7 @@ data:
     #Server3.Username=
     #Server3.Password=
 
-    Server3.Port=119
+    Server3.Port=563
     Server3.IpVersion=auto
     Server3.Connections=10
 
