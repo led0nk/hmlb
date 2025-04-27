@@ -419,14 +419,17 @@ spec:
           command:
             - sh
             - -c
-            - >
-              set -ex;
-              mkdir -p /config/scripts &&
-              cd /config/scripts &&
-              curl -L -o ext.zip \
-                https://github.com/nzbgetcom/Extension-ExtendedUnrar/releases/download/v2.2/extendedunrar-2.2-dist.zip &&
-              unzip -o ext.zip &&
-              rm ext.zip
+            - |
+              set -e
+              if [ ! -d /config/scripts/ExtendedUnrar ]; then
+                mkdir -p /config/scripts
+                curl -L -o /tmp/ext.zip \
+                  https://github.com/nzbgetcom/Extension-ExtendedUnrar/releases/download/v2.2/extendedunrar-2.2-dist.zip
+                unzip -oq /tmp/ext.zip -d /config/scripts
+                rm /tmp/ext.zip
+              else
+                echo "do nothing"
+              fi
           volumeMounts:
             - name: scripts
               mountPath: /config/scripts
