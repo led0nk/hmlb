@@ -416,9 +416,6 @@ spec:
       initContainers:
         - name: extendedunrar
           image: curlimages/curl:latest
-          securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
           command:
             - sh
             - -c
