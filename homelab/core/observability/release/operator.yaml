@@ -22,7 +22,7 @@ spec:
         kind: HelmRepository
         name: open-telemetry
         namespace: observability
-      version: "0.87.0" # upgrade to 0.82.0
+      version: "0.86.4" # upgrade to 0.82.0
   install:
     createNamespace: true
   values:
