@@ -16,6 +16,20 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  name: jellyfin-media-data
+  namespace: jellyfin
+spec:
+  storageClassName: openebs-hdd
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 14Ti
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
   name: jellyfin-pvc-config
   namespace: jellyfin
 spec:
