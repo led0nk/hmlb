@@ -19,13 +19,13 @@ metadata:
   name: jellyfin-media-data
   namespace: jellyfin
 spec:
-  storageClassName: openebs-hdd
+  storageClassName: openebs-media
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem
   resources:
     requests:
-      storage: 11Ti
+      storage: 14Ti
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
