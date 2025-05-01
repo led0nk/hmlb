@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -45,7 +46,7 @@ spec:
             claimName: radarr-config
         - name: nfs-jellyfin-data
           persistentVolumeClaim:
-            claimName: jellyfin-pvc-data
+            claimName: jellyfin-media-data
 ---
 apiVersion: v1
 kind: Service

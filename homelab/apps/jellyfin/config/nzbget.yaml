@@ -407,7 +407,7 @@ spec:
       volumes:
         - name: nfs-jellyfin-data
           persistentVolumeClaim:
-            claimName: jellyfin-pvc-data
+            claimName: jellyfin-media-data
         - name: scripts
           persistentVolumeClaim:
             claimName: nzbget-scripts

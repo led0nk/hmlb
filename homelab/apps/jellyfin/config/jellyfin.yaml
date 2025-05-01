@@ -8,7 +8,7 @@ metadata:
   namespace: jellyfin
 spec:
   progressDeadlineSeconds: 600
-  replicas: 0
+  replicas: 1
   strategy:
     type: Recreate
   selector:
@@ -34,7 +34,7 @@ spec:
             claimName: jellyfin-pvc-config
         - name: nfs-jellyfin-data
           persistentVolumeClaim:
-            claimName: jellyfin-pvc-data
+            claimName: jellyfin-media-data
         - name: cache
           emptyDir:
             medium: Memory
