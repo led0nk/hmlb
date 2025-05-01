@@ -25,7 +25,7 @@ spec:
   volumeMode: Filesystem
   resources:
     requests:
-      storage: 14Ti
+      storage: 16Ti
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
