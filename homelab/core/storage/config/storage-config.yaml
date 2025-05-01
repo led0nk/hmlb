@@ -14,14 +14,14 @@ spec:
 apiVersion: "openebs.io/v1beta2"
 kind: DiskPool
 metadata:
-  name: storage-hdd
+  name: storage-media
   namespace: openebs
 spec:
   node: storage1
   disks: ["/dev/disk/by-id/ata-ST16000NM001G-2KK103_ZL2BMGZK"]
   topology:
     labelled:
-      type: hdd
+      type: media
 ---
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
@@ -41,14 +41,14 @@ reclaimPolicy: Delete
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: openebs-hdd
+  name: openebs-media
 parameters:
   protocol: nvmf
   repl: "1"
   thin: "true"
   fsType: xfs
   poolAffinityTopologyLabel: |
-    type: hdd
+    type: media
 allowVolumeExpansion: true
 provisioner: io.openebs.csi-mayastor
 reclaimPolicy: Delete
