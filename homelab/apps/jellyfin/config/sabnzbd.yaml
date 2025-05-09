@@ -43,7 +43,7 @@ spec:
             claimName: sabnzbd-config
       initContainers:
         - name: copy-config
-          image: alpine:3.20
+          image: alpine:3.21
           envFrom:
             - secretRef:
                 name: nzbget-server-credentials
