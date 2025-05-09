@@ -23,7 +23,7 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             - labelSelector:
                 matchLabels:
-                  app: nzbget
+                  app: sabnzbd
               topologyKey: kubernetes.io/hostname
       containers:
         - name: sonarr

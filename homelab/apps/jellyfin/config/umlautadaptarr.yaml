@@ -1,0 +1,72 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: umlautadaptarr
+  namespace: jellyfin
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: umlautadaptarr
+  template:
+    metadata:
+      labels:
+        app: umlautadaptarr
+    spec:
+      securityContext:
+        fsGroup: 1000 # NOTE: set fsGroup for permission to /data/downloads
+      affinity: # NOTE: follow nzbget due to lack of RWX
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app: sabnzbd
+              topologyKey: kubernetes.io/hostname
+      containers:
+        - name: umlautadaptarr
+          image: pcjones/umlautadaptarr:latest
+          envFrom:
+            - secretRef:
+                name: arr-api-keys
+          env:
+            - name: TZ
+              value: Europe/Berlin
+            - name: SONARR__ENABLED
+              value: "true"
+            - name: RADARR__ENABLED
+              value: "true"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: umlautadaptarr
+  namespace: jellyfin
+spec:
+  selector:
+    app: umlautadaptarr
+  ports:
+    - protocol: TCP
+      port: 5006
+      targetPort: 5006
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: umlautadaptarr
+  namespace: jellyfin
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: umlautadaptarr.homelab
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: umlautadaptarr
+                port:
+                  number: 5006

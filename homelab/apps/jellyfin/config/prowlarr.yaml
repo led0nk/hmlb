@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: radarr
+  name: prowlarr
   namespace: jellyfin
 spec:
   replicas: 1
@@ -10,11 +10,11 @@ spec:
     type: Recreate
   selector:
     matchLabels:
-      app: radarr
+      app: prowlarr
   template:
     metadata:
       labels:
-        app: radarr
+        app: prowlarr
     spec:
       securityContext:
         fsGroup: 1000 # NOTE: set fsGroup for permission to /data/downloads
@@ -23,11 +23,11 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             - labelSelector:
                 matchLabels:
-                  app: sabnzbd
+                  app: nzbget
               topologyKey: kubernetes.io/hostname
       containers:
-        - name: radarr
-          image: lscr.io/linuxserver/radarr:latest
+        - name: prowlarr
+          image: lscr.io/linuxserver/prowlarr:latest
           env:
             - name: TZ
               value: Etc/UTC
@@ -36,62 +36,57 @@ spec:
             - name: PGID
               value: "1000"
           volumeMounts:
-            - name: config
+            - name: prowlarr-config
               mountPath: /config
-            - name: nfs-jellyfin-data
-              mountPath: /data
       volumes:
-        - name: config
+        - name: prowlarr-config
           persistentVolumeClaim:
-            claimName: radarr-config
-        - name: nfs-jellyfin-data
-          persistentVolumeClaim:
-            claimName: jellyfin-media-data
+            claimName: prowlarr-config
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: radarr
+  name: prowlarr
   namespace: jellyfin
 spec:
   selector:
-    app: radarr
+    app: prowlarr
   ports:
     - protocol: TCP
-      port: 7878
-      targetPort: 7878
+      port: 9696
+      targetPort: 9696
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: radarr
+  name: prowlarr
   namespace: jellyfin
 spec:
   ingressClassName: nginx
   rules:
-    - host: radarr.homelab
+    - host: prowlarr.homelab
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: radarr
+                name: prowlarr
                 port:
-                  number: 7878
+                  number: 9696
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: radarr-tailscale
+  name: prowlarr-tailscale
   namespace: jellyfin
 spec:
   defaultBackend:
     service:
-      name: radarr
+      name: prowlarr
       port:
-        number: 7878
+        number: 9696
   ingressClassName: tailscale
   tls:
     - hosts:
-        - radarr
+        - prowlarr
