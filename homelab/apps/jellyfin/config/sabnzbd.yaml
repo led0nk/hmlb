@@ -1,0 +1,164 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: sabnzbd
+  name: sabnzbd
+  namespace: jellyfin
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: sabnzbd
+  template:
+    metadata:
+      labels:
+        app: sabnzbd
+    spec:
+      securityContext:
+        fsGroup: 1000
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app: jellyfin
+              topologyKey: kubernetes.io/hostname
+      volumes:
+        - name: inter-downloads-and-history
+          persistentVolumeClaim:
+            claimName: inter-downloads-and-history
+        - name: nfs-jellyfin-data
+          persistentVolumeClaim:
+            claimName: jellyfin-media-data
+        - name: sabnzbd-config-file
+          configMap:
+            name: sabnzbd-config
+        - name: sabnzbd-config
+          persistentVolumeClaim:
+            claimName: sabnzbd-config
+      initContainers:
+        - name: copy-config
+          image: alpine:3.20
+          envFrom:
+            - secretRef:
+                name: nzbget-server-credentials
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -eu
+              apk add --no-cache gettext
+              envsubst < /defaults/sabnzbd.ini > /config/sabnzbd.ini
+              chown 1000:1000 /config/sabnzbd.ini
+              echo "copied initial sabnzbd.ini to PVC"
+          volumeMounts:
+            - name: sabnzbd-config
+              mountPath: /config
+            - name: sabnzbd-config-file
+              mountPath: /defaults
+      containers:
+        - image: linuxserver/sabnzbd:4.5.1-ls215
+          name: sabnzbd
+          args:
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: Europe/Berlin
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: [ALL]
+              add: ["CHOWN", "SETUID", "SETGID"]
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 3
+            periodSeconds: 10
+            timeoutSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 3
+            periodSeconds: 10
+            timeoutSeconds: 10
+            failureThreshold: 3
+          volumeMounts:
+            - name: sabnzbd-config
+              mountPath: /config
+            # - name: sabnzbd-config-file
+            #   mountPath: /config/sabnzbd.ini
+            #   subPath: sabnzbd.ini
+            #   readOnly: true
+            - mountPath: /config/persistence/inter
+              name: inter-downloads-and-history
+              subPath: inter
+            - name: nfs-jellyfin-data
+              mountPath: /data
+              readOnly: false
+          resources: {}
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sabnzbd
+  namespace: jellyfin
+spec:
+  selector:
+    app: sabnzbd
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: http
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sabnzbd
+  namespace: jellyfin
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: sabnzbd.homelab
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: sabnzbd
+                port:
+                  number: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sabnzbd-tailscale
+  namespace: jellyfin
+spec:
+  defaultBackend:
+    service:
+      name: sabnzbd
+      port:
+        number: 8080
+  ingressClassName: tailscale
+  tls:
+    - hosts:
+        - sabnzbd

@@ -65,6 +65,10 @@ nodes:
     ipAddress: 192.168.178.214
     installDisk: /dev/nvme0n1
     controlPlane: false
+  - hostname: worker2
+    ipAddress: 192.168.178.216
+    installDisk: /dev/nvme0n1
+    controlPlane: false
   - hostname: storage1
     ipAddress: 192.168.178.215
     installDisk: /dev/nvme0n1

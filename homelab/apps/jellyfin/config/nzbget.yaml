@@ -384,7 +384,7 @@ metadata:
   namespace: jellyfin
 spec:
   progressDeadlineSeconds: 600
-  replicas: 1
+  replicas: 0
   strategy:
     type: Recreate
   selector:
