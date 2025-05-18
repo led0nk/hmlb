@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - gpu
   - metallb
+  - gateway
   - observability
   - storage
   - cilium-values.yaml
