@@ -168,7 +168,7 @@ metadata:
 spec:
   parentRefs:
     - name: services
-      namespace: jellyfin
+      namespace: infra
       sectionName: main
   hostnames: ["jellyfin.kndlive.com"]
   rules:
