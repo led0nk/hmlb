@@ -292,12 +292,12 @@ metadata:
   name: lgtm-observability
   namespace: observability
 spec:
-  storageClassName: openebs-fast
+  storageClassName: openebs-crucial
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 30Gi
+      storage: 50Gi
 ---
 apiVersion: apps/v1
 kind: Deployment

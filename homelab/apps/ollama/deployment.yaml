@@ -18,8 +18,8 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 10Gi
-  storageClassName: openebs-fast
+      storage: 100Gi
+  storageClassName: openebs-crucial
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -32,7 +32,7 @@ spec:
   resources:
     requests:
       storage: 5Gi
-  storageClassName: openebs-fast
+  storageClassName: openebs-crucial
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -95,20 +95,20 @@ spec:
             - containerPort: 8080
           env:
             - name: OLLAMA_BASE_URL
-              value: "http://ollama-service.ollama.svc.cluster.local:11434"
+              value: "http://ollama:11434"
             - name: WEBUI_SECRET_KEY
               value: "secret"
-            - name: ENABLE_SIGNUP
-              value: "0"
-            - name: ENABLE_LOGIN_FORM
-              value: "0"
+          #    - name: ENABLE_SIGNUP
+          #      value: "0"
+          #    - name: ENABLE_LOGIN_FORM
+          #      value: "0"
           volumeMounts:
             - name: webui-storage
               mountPath: /app/backend/data
           resources:
             limits:
               cpu: "1"
-              memory: "1Gi"
+              memory: "3Gi"
       volumes:
         - name: webui-storage
           persistentVolumeClaim:
@@ -117,7 +117,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ollama-service
+  name: ollama
   namespace: ollama
 spec:
   selector:
@@ -131,7 +131,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: open-webui-service
+  name: open-webui
   namespace: ollama
 spec:
   selector:
@@ -157,7 +157,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: open-webui-service
+                name: open-webui
                 port:
                   number: 3000
 ---
@@ -170,6 +170,6 @@ spec:
   ingressClassName: tailscale
   defaultBackend:
     service:
-      name: open-webui-service
+      name: open-webui
       port:
         number: 3000

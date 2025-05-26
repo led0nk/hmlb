@@ -23,6 +23,18 @@ spec:
     labelled:
       type: media
 ---
+apiVersion: "openebs.io/v1beta2"
+kind: DiskPool
+metadata:
+  name: storage-crucial
+  namespace: openebs
+spec:
+  node: storage1
+  disks: ["/dev/disk/by-id/ata-CT2000MX500SSD1_2422E8B6C6B7"]
+  topology:
+    labelled:
+      type: crucial
+---
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
@@ -49,6 +61,21 @@ parameters:
   fsType: xfs
   poolAffinityTopologyLabel: |
     type: media
+allowVolumeExpansion: true
+provisioner: io.openebs.csi-mayastor
+reclaimPolicy: Delete
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: openebs-crucial
+parameters:
+  protocol: nvmf
+  repl: "1"
+  thin: "true"
+  fsType: xfs
+  poolAffinityTopologyLabel: |
+    type: crucial
 allowVolumeExpansion: true
 provisioner: io.openebs.csi-mayastor
 reclaimPolicy: Delete

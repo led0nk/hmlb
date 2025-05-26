@@ -19,7 +19,7 @@ spec:
   resources:
     requests:
       storage: 2Gi
-  storageClassName: openebs-fast
+  storageClassName: openebs-crucial
 ---
 apiVersion: apps/v1
 kind: Deployment
