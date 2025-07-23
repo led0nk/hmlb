@@ -22,6 +22,6 @@ spec:
         kind: HelmRepository
         name: prometheus-community
         namespace: flux-system
-      version: "21.0.0"
+      version: "22.0.1"
   install:
     createNamespace: true
