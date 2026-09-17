@@ -36,7 +36,7 @@ spec:
     k8sServicePort: 7445
     kubeProxyReplacement: true
     operator:
-      replicas: 1
+      replicas: 2
     routingMode: tunnel
     securityContext:
       capabilities:
