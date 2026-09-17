@@ -35,7 +35,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: openebs
-      version: 4.3.0
+      version: 4.2.0
   values:
     base:
       metrics:
@@ -57,7 +57,7 @@ spec:
           initContainers:
             enabled: false
       etcd:
-        replicaCount: 1
+        replicaCount: 3
         nodeSelector:
           kubernetes.io/arch: "amd64"
       eventing:
