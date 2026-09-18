@@ -24,10 +24,12 @@ spec:
   upgrade:
     crds: CreateReplace
   interval: 10m0s
+  timeout: 15m
   targetNamespace: external-dns
   chart:
     spec:
       chart: external-dns
+      version: "1.22.0"
       sourceRef:
         kind: HelmRepository
         name: external-dns
