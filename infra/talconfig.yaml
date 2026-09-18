@@ -1,6 +1,7 @@
 ---
 clusterName: homelab
 talosVersion: v1.9.5
+kubernetesVersion: v1.32.3
 endpoint: https://192.168.178.210:6443
 allowSchedulingOnMasters: true
 additionalApiServerCertSans:
@@ -8,11 +9,9 @@ additionalApiServerCertSans:
 cniConfig:
   name: none
 patches:
-  # NOTE: when generating config 1 of the patches needs to be applied manually
   - |-
-    - op: add
-      path: /machine/sysctls
-      value:
+    machine:
+      sysctls:
         net.ipv4.ip_unprivileged_port_start: "0"
   - |-
     cluster:
@@ -33,16 +32,16 @@ patches:
                 passphrase: ${diskEncryption}
               slot: 0
   - |-
-    - op: add
-      path: /machine/kubelet/extraMounts
-      value:
-        - destination: /var/local
-          type: bind
-          source: /var/local
-          options:
-            - bind
-            - rshared
-            - rw
+    machine:
+      kubelet:
+        extraMounts:
+          - destination: /var/local
+            type: bind
+            source: /var/local
+            options:
+              - bind
+              - rshared
+              - rw
 controlPlane:
   talosImageURL: factory.talos.dev/installer-secureboot/e229284abd3c5ce9711acd20daf4ff70eb2455f9bc285c0390a1501196c5046d
   extensionServices:
@@ -63,10 +62,6 @@ nodes:
     installDisk: /dev/nvme0n1
     controlPlane: true
   - hostname: worker1
-    ipAddress: 192.168.178.214
-    installDisk: /dev/nvme0n1
-    controlPlane: false
-  - hostname: worker2
     ipAddress: 192.168.178.216
     installDisk: /dev/nvme0n1
     controlPlane: false
@@ -76,9 +71,8 @@ nodes:
     controlPlane: false
     patches:
       - |-
-        - op: add
-          path: /machine/sysctls
-          value:
+        machine:
+          sysctls:
             vm.nr_hugepages: "1024"
     nodeLabels:
       openebs.io/engine: mayastor
