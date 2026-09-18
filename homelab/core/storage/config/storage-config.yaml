@@ -1,5 +1,5 @@
 ---
-apiVersion: "openebs.io/v1beta2"
+apiVersion: "openebs.io/v1beta3"
 kind: DiskPool
 metadata:
   name: storage-fast
@@ -11,7 +11,7 @@ spec:
     labelled:
       type: fast
 ---
-apiVersion: "openebs.io/v1beta2"
+apiVersion: "openebs.io/v1beta3"
 kind: DiskPool
 metadata:
   name: storage-media
@@ -23,7 +23,7 @@ spec:
     labelled:
       type: media
 ---
-apiVersion: "openebs.io/v1beta2"
+apiVersion: "openebs.io/v1beta3"
 kind: DiskPool
 metadata:
   name: storage-crucial
