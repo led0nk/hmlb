@@ -27,7 +27,7 @@ spec:
         kind: HelmRepository
         name: tailscale
         namespace: tailscale
-      version: "1.90.9"
+      version: "1.102.4"
   interval: 1m
   values:
     oauth: {}
