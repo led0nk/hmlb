@@ -29,7 +29,9 @@ spec:
     manager:
       collectorImage:
         repository: otel/opentelemetry-collector-k8s
-      featureGates: -operator.networkpolicy,-operand.networkpolicy
+      featureGatesMap:
+        operator.networkpolicy: false
+        operand.networkpolicy: false
     admissionWebhooks:
       certManager:
         enabled: true
