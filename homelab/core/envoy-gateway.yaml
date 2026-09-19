@@ -36,10 +36,10 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: envoy-gateway
-      version: 1.4.2
+      version: 1.4.0
   values:
     deployment:
-      replicas: 4 # NOTE: match node count to avoid invalid dns entries.
+      replicas: 3 # NOTE: match node count to avoid invalid dns entries.
       pod:
         labels:
           test: "true"
