@@ -9,6 +9,7 @@ resources:
   - storage
   - cilium-values.yaml
   - cert-manager.yaml
+  - k8up.yaml
   - envoy-gateway.yaml
   - nginx-ingress.yaml
   - tailscale.yaml
