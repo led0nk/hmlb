@@ -18,7 +18,7 @@ spec:
   chart:
     spec:
       chart: cilium
-      version: "1.18.0"
+      version: "1.19.8"
       sourceRef:
         kind: HelmRepository
         name: cilium
@@ -37,6 +37,8 @@ spec:
     kubeProxyReplacement: true
     operator:
       replicas: 2
+    policyCIDRMatchMode:
+      - nodes
     routingMode: tunnel
     securityContext:
       capabilities:
