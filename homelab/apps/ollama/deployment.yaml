@@ -42,7 +42,7 @@ metadata:
   labels:
     app: ollama
 spec:
-  replicas: 1
+  replicas: 0  # NOTE: parked, nothing uses it. PVCs stay
   selector:
     matchLabels:
       app: ollama
@@ -79,7 +79,7 @@ metadata:
   labels:
     app: open-webui
 spec:
-  replicas: 1
+  replicas: 0  # NOTE: parked, nothing uses it. PVCs stay
   selector:
     matchLabels:
       app: open-webui
