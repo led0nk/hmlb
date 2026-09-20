@@ -46,7 +46,9 @@ spec:
             - name: DOMAIN
               value: "https://vault.kndlive.de"
             - name: SIGNUPS_ALLOWED
-              value: "true"
+              value: "false"
+            - name: INVITATIONS_ALLOWED
+              value: "false"
             - name: ROCKET_PORT
               value: "8080"
             - name: ADMIN_TOKEN
