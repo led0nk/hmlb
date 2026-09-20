@@ -13,3 +13,5 @@ resources:
   - sonarr.yaml
   - prowlarr.yaml
   - umlautadaptarr.yaml
+  - backup-secret.yaml
+  - backup.yaml
