@@ -1,0 +1,53 @@
+---
+apiVersion: k8up.io/v1
+kind: PreBackupPod
+metadata:
+  name: sqlite-dump
+  namespace: vaultwarden
+spec:
+  backupCommand: /bin/sh -c "sqlite3 /data/db.sqlite3 .dump"
+  fileExtension: .sql
+  pod:
+    spec:
+      affinity: # NOTE: RWO volume, has to share vaultwarden's node
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app: vaultwarden
+              topologyKey: kubernetes.io/hostname
+      containers:
+        - name: sqlite
+          image: keinos/sqlite3:3.51.0
+          command:
+            - sleep
+            - infinity
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: vaultwarden-data
+---
+apiVersion: k8up.io/v1
+kind: Schedule
+metadata:
+  name: vaultwarden
+  namespace: vaultwarden
+spec:
+  backup:
+    schedule: "30 3 * * *" # NOTE: after the jellyfin run
+    failedJobsHistoryLimit: 2
+    successfulJobsHistoryLimit: 3
+    labelSelectors:
+      - matchLabels:
+          k8up.io/backup: "true"
+  check:
+    schedule: "30 5 1 * *"
+  prune:
+    schedule: "30 4 * * 0"
+    retention:
+      keepDaily: 7
+      keepWeekly: 4
+      keepMonthly: 3

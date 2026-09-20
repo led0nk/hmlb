@@ -34,3 +34,25 @@ spec:
     crds: CreateReplace
   upgrade:
     crds: CreateReplace
+  values:
+    k8up:
+      envVars:
+        - name: BACKUP_GLOBALS3ENDPOINT
+          value: https://7e3a30e1db0d93b8ad84824b2ce25298.r2.cloudflarestorage.com
+        - name: BACKUP_GLOBALS3BUCKET
+          value: hmlb-backup
+        - name: BACKUP_GLOBALACCESSKEYID
+          valueFrom:
+            secretKeyRef:
+              name: backup-credentials
+              key: ACCESS_KEY_ID
+        - name: BACKUP_GLOBALSECRETACCESSKEY
+          valueFrom:
+            secretKeyRef:
+              name: backup-credentials
+              key: SECRET_ACCESS_KEY
+        - name: BACKUP_GLOBALREPOPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: backup-credentials
+              key: RESTIC_PASSWORD

@@ -10,6 +10,7 @@ resources:
   - cilium-values.yaml
   - cert-manager.yaml
   - k8up.yaml
+  - k8up-secret.yaml
   - envoy-gateway.yaml
   - nginx-ingress.yaml
   - tailscale.yaml
