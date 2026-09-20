@@ -32,6 +32,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: radarr-config
   namespace: jellyfin
+  labels:
+    k8up.io/backup: "true"
 spec:
   storageClassName: openebs-fast
   accessModes:
@@ -46,6 +48,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: sonarr-config
   namespace: jellyfin
+  labels:
+    k8up.io/backup: "true"
 spec:
   storageClassName: openebs-fast
   accessModes:
@@ -100,6 +104,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: jellyseerr-config
   namespace: jellyfin
+  labels:
+    k8up.io/backup: "true"
 spec:
   storageClassName: openebs-fast
   accessModes:
@@ -128,6 +134,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: prowlarr-config
   namespace: jellyfin
+  labels:
+    k8up.io/backup: "true"
 spec:
   storageClassName: openebs-fast
   accessModes:

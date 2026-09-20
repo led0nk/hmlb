@@ -1,0 +1,61 @@
+---
+apiVersion: k8up.io/v1
+kind: PodConfig
+metadata:
+  name: backup-pod-config
+  namespace: jellyfin
+spec:
+  template:
+    spec:
+      affinity: # NOTE: follow sabnzbd, the volumes are RWO and the pods are chained to it
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app: sabnzbd
+              topologyKey: kubernetes.io/hostname
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsUser: 1000
+      containers:
+        - name: k8up
+          securityContext:
+            allowPrivilegeEscalation: false
+---
+apiVersion: k8up.io/v1
+kind: Schedule
+metadata:
+  name: jellyfin
+  namespace: jellyfin
+spec:
+  backend:
+    repoPasswordSecretRef:
+      name: backup-credentials
+      key: RESTIC_PASSWORD
+    s3:
+      endpoint: https://7e3a30e1db0d93b8ad84824b2ce25298.r2.cloudflarestorage.com
+      bucket: hmlb-backup
+      accessKeyIDSecretRef:
+        name: backup-credentials
+        key: ACCESS_KEY_ID
+      secretAccessKeySecretRef:
+        name: backup-credentials
+        key: SECRET_ACCESS_KEY
+  backup:
+    schedule: "0 3 * * *"
+    failedJobsHistoryLimit: 2
+    successfulJobsHistoryLimit: 3
+    labelSelectors:
+      - matchLabels:
+          k8up.io/backup: "true"
+    podConfigRef:
+      name: backup-pod-config
+  check:
+    schedule: "0 5 1 * *" # NOTE: metadata only, --read-data would burn R2 class B operations
+  prune:
+    schedule: "0 4 * * 0"
+    retention:
+      keepDaily: 7
+      keepWeekly: 4
+      keepMonthly: 3
