@@ -16,7 +16,7 @@ spec:
       envoyService:
         type: NodePort
       useListenerPortAsContainerPort: true
-      envoyDeployment:
+      envoyDaemonSet:
         container:
           securityContext:
             privileged: true
