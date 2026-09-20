@@ -88,3 +88,17 @@ spec:
         mode: Terminate
         certificateRefs:
           - name: services-tls-gateway
+    - name: kndlive-de
+      hostname: "*.kndlive.de"
+      protocol: HTTPS
+      port: 443
+      allowedRoutes:
+        namespaces:
+          from: Selector
+          selector:
+            matchLabels:
+              gateway.infra.services/allow-routes: "true"
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: services-tls-gateway-de

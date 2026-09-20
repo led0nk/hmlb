@@ -29,19 +29,6 @@ metadata:
   name: jellyfin
   namespace: jellyfin
 spec:
-  backend:
-    repoPasswordSecretRef:
-      name: backup-credentials
-      key: RESTIC_PASSWORD
-    s3:
-      endpoint: https://7e3a30e1db0d93b8ad84824b2ce25298.r2.cloudflarestorage.com
-      bucket: hmlb-backup
-      accessKeyIDSecretRef:
-        name: backup-credentials
-        key: ACCESS_KEY_ID
-      secretAccessKeySecretRef:
-        name: backup-credentials
-        key: SECRET_ACCESS_KEY
   backup:
     schedule: "0 3 * * *"
     failedJobsHistoryLimit: 2
