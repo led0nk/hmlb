@@ -20,6 +20,7 @@ spec:
         container:
           securityContext:
             privileged: true
+            allowPrivilegeEscalation: true
         patch:
           value:
             spec:
