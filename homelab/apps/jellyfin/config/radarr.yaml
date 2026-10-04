@@ -106,7 +106,7 @@ spec:
     - name: services
       namespace: infra
       sectionName: main
-  hostnames: ["radarr.kndlive.com"]
+  hostnames: ["radarr.kndlive.de"]
   rules:
     - backendRefs:
         - group: ""

@@ -96,7 +96,7 @@ metadata:
   namespace: redirect
 spec:
   hostnames:
-    - unifi.kndlive.com
+    - unifi.kndlive.de
   parentRefs:
     - group: gateway.networking.k8s.io
       kind: Gateway
