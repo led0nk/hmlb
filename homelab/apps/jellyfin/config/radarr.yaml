@@ -95,3 +95,21 @@ spec:
   tls:
     - hosts:
         - radarr
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: radarr
+  namespace: jellyfin
+spec:
+  parentRefs:
+    - name: services
+      namespace: infra
+      sectionName: main
+  hostnames: ["radarr.kndlive.com"]
+  rules:
+    - backendRefs:
+        - group: ""
+          kind: Service
+          name: radarr
+          port: 7878
