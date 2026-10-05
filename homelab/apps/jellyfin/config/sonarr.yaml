@@ -105,7 +105,7 @@ spec:
   parentRefs:
     - name: services
       namespace: infra
-      sectionName: main
+      sectionName: kndlive-de
   hostnames: ["sonarr.kndlive.de"]
   rules:
     - backendRefs:

@@ -100,7 +100,7 @@ spec:
   parentRefs:
     - name: services
       namespace: infra
-      sectionName: main
+      sectionName: kndlive-de
   hostnames: ["prowlarr.kndlive.de"]
   rules:
     - backendRefs:
