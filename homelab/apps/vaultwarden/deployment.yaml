@@ -41,7 +41,7 @@ spec:
     spec:
       containers:
         - name: vaultwarden
-          image: vaultwarden/server:1.37.3-alpine
+          image: vaultwarden/server:1.37.4-alpine
           env:
             - name: DOMAIN
               value: "https://vault.kndlive.de"
