@@ -4,6 +4,7 @@ kind: Namespace
 metadata:
   name: ollama
   labels:
+    gateway.infra.services/allow-routes: "true"
     pod-security.kubernetes.io/audit: privileged
     pod-security.kubernetes.io/enforce: privileged
     pod-security.kubernetes.io/warn: privileged
@@ -37,49 +38,12 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ollama
-  namespace: ollama
-  labels:
-    app: ollama
-spec:
-  replicas: 0  # NOTE: parked, nothing uses it. PVCs stay
-  selector:
-    matchLabels:
-      app: ollama
-  template:
-    metadata:
-      labels:
-        app: ollama
-    spec:
-      containers:
-        - name: ollama
-          image: ollama/ollama:latest
-          ports:
-            - containerPort: 11434
-          resources:
-            requests:
-              cpu: "2"
-              memory: "4Gi"
-            limits:
-              cpu: "4"
-              memory: "6Gi"
-          volumeMounts:
-            - name: ollama-storage
-              mountPath: /root/.ollama
-      volumes:
-        - name: ollama-storage
-          persistentVolumeClaim:
-            claimName: ollama-pvc
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
   name: open-webui
   namespace: ollama
   labels:
     app: open-webui
 spec:
-  replicas: 0  # NOTE: parked, nothing uses it. PVCs stay
+  replicas: 1
   selector:
     matchLabels:
       app: open-webui
@@ -95,13 +59,21 @@ spec:
             - containerPort: 8080
           env:
             - name: OLLAMA_BASE_URL
-              value: "http://ollama:11434"
+              value: "https://ollama.com"
+            - name: OLLAMA_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: open-webui
+                  key: OLLAMA_API_KEY
             - name: WEBUI_SECRET_KEY
-              value: "secret"
+              valueFrom:
+                secretKeyRef:
+                  name: open-webui
+                  key: WEBUI_SECRET_KEY
           #    - name: ENABLE_SIGNUP
           #      value: "0"
           #    - name: ENABLE_LOGIN_FORM
-          #      value: "0"
+          #      value: "1"
           volumeMounts:
             - name: webui-storage
               mountPath: /app/backend/data
@@ -113,20 +85,6 @@ spec:
         - name: webui-storage
           persistentVolumeClaim:
             claimName: open-webui-pvc
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: ollama
-  namespace: ollama
-spec:
-  selector:
-    app: ollama
-  ports:
-    - protocol: TCP
-      port: 11434
-      targetPort: 11434
-  type: ClusterIP
 ---
 apiVersion: v1
 kind: Service
@@ -173,3 +131,21 @@ spec:
       name: open-webui
       port:
         number: 3000
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: open-webui
+  namespace: ollama
+spec:
+  parentRefs:
+    - name: services
+      namespace: infra
+      sectionName: kndlive-de
+  hostnames: ["llm.kndlive.de"]
+  rules:
+    - backendRefs:
+        - group: ""
+          kind: Service
+          name: open-webui
+          port: 3000
