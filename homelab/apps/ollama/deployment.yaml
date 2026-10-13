@@ -60,20 +60,22 @@ spec:
           env:
             - name: OLLAMA_BASE_URL
               value: "https://ollama.com"
-            - name: OLLAMA_API_KEY
+            - name: OLLAMA_API_CONFIGS
               valueFrom:
                 secretKeyRef:
                   name: open-webui
-                  key: OLLAMA_API_KEY
+                  key: OLLAMA_API_CONFIGS
             - name: WEBUI_SECRET_KEY
               valueFrom:
                 secretKeyRef:
                   name: open-webui
                   key: WEBUI_SECRET_KEY
-          #    - name: ENABLE_SIGNUP
-          #      value: "0"
-          #    - name: ENABLE_LOGIN_FORM
-          #      value: "1"
+            - name: ENABLE_SIGNUP
+              value: "0"
+            - name: ENABLE_LOGIN_FORM
+              value: "1"
+            - name: DEFAULT_MODELS
+              value: "glm-5.3-flash"
           volumeMounts:
             - name: webui-storage
               mountPath: /app/backend/data
