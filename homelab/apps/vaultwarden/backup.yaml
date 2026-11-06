@@ -4,6 +4,8 @@ kind: PreBackupPod
 metadata:
   name: sqlite-dump
   namespace: vaultwarden
+  labels:
+    k8up.io/backup: "true"
 spec:
   backupCommand: /bin/sh -c "sqlite3 /data/db.sqlite3 .dump"
   fileExtension: .sql
