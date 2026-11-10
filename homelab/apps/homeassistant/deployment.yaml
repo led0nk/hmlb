@@ -129,3 +129,5 @@ spec:
           kind: Service
           name: homeassistant-service
           port: 8123
+      timeouts:
+        request: 300s
