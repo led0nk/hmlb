@@ -35,12 +35,14 @@ spec:
       initContainers:
         - name: config-init
           image: busybox:1.37
-          command: ["sh", "-c", "cp /config/config.yaml /hermes-home/config.yaml"]
+          command: ["sh", "-c", "cp /config/config.yaml /hermes-home/config.yaml && printf 'OLLAMA_API_KEY=%s\\n' \"$(cat /secret-env/OLLAMA_API_KEY)\" > /hermes-home/.env && chmod 600 /hermes-home/.env"]
           volumeMounts:
             - name: config
               mountPath: /config
             - name: home
               mountPath: /hermes-home
+            - name: secret-env
+              mountPath: /secret-env
         - name: agent-src
           image: alpine/git:v2.49.1
           env:
@@ -80,9 +82,6 @@ spec:
               mountPath: /home/hermeswebui/.hermes
             - name: workspace
               mountPath: /workspace
-            - name: secret-env
-              mountPath: /mnt/secret-env
-              readOnly: true
           resources:
             requests:
               cpu: 200m
