@@ -32,6 +32,15 @@ spec:
       automountServiceAccountToken: false
       securityContext:
         fsGroup: 1000
+      initContainers:
+        - name: config-init
+          image: busybox:1.37
+          command: ["sh", "-c", "cp /config/config.yaml /hermes-home/config.yaml"]
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: home
+              mountPath: /hermes-home
       containers:
         - name: hermes-webui
           image: ghcr.io/nesquena/hermes-webui:0.52.667
@@ -58,9 +67,6 @@ spec:
           volumeMounts:
             - name: home
               mountPath: /home/hermeswebui/.hermes
-            - name: config
-              mountPath: /home/hermeswebui/.hermes/config.yaml
-              subPath: config.yaml
             - name: workspace
               mountPath: /workspace
           resources:
