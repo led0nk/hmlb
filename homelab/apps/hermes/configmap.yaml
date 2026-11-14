@@ -11,11 +11,6 @@ data:
       provider: "ollama-cloud"
     approvals:
       mode: manual
-    secrets:
-      command:
-        enabled: true
-        command: "printf 'OLLAMA_API_KEY=%s\\n' \"$(cat /mnt/secret-env/OLLAMA_API_KEY)\""
-        helper_timeout_seconds: 3
     memory:
       memory_enabled: false
       user_profile_enabled: false
