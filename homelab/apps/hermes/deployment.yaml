@@ -32,11 +32,17 @@ spec:
       automountServiceAccountToken: false
       securityContext:
         runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
         fsGroup: 1000
       containers:
         - name: hermes-webui
           image: ghcr.io/nesquena/hermes-webui:0.52.667
           env:
+            - name: WANTED_UID
+              value: "1000"
+            - name: WANTED_GID
+              value: "1000"
             - name: HERMES_WEBUI_STATE_DIR
               value: "/home/hermeswebui/.hermes/webui"
             - name: HERMES_WEBUI_PASSWORD
