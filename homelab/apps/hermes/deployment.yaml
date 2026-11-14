@@ -41,6 +41,15 @@ spec:
               mountPath: /config
             - name: home
               mountPath: /hermes-home
+        - name: agent-src
+          image: alpine/git:v2.49.1
+          env:
+            - name: AGENT_TAG
+              value: "v0.23.1"
+          command: ["sh", "-c", "test -d /hermes-home/hermes-agent/.git || git clone --depth 1 --branch $AGENT_TAG https://github.com/NousResearch/hermes-agent /hermes-home/hermes-agent"]
+          volumeMounts:
+            - name: home
+              mountPath: /hermes-home
       containers:
         - name: hermes-webui
           image: ghcr.io/nesquena/hermes-webui:0.52.667
@@ -61,6 +70,8 @@ spec:
                 secretKeyRef:
                   name: hermes
                   key: OLLAMA_API_KEY
+            - name: HERMES_WEBUI_AUTO_INSTALL
+              value: "1"
           ports:
             - name: http
               containerPort: 8787
@@ -79,13 +90,13 @@ spec:
             httpGet:
               path: /
               port: http
-            initialDelaySeconds: 20
+            initialDelaySeconds: 300
             periodSeconds: 30
           readinessProbe:
             httpGet:
               path: /
               port: http
-            initialDelaySeconds: 5
+            initialDelaySeconds: 30
             periodSeconds: 10
       volumes:
         - name: home
