@@ -80,6 +80,9 @@ spec:
               mountPath: /home/hermeswebui/.hermes
             - name: workspace
               mountPath: /workspace
+            - name: secret-env
+              mountPath: /mnt/secret-env
+              readOnly: true
           resources:
             requests:
               cpu: 200m
@@ -107,3 +110,6 @@ spec:
             name: hermes-config
         - name: workspace
           emptyDir: {}
+        - name: secret-env
+          secret:
+            secretName: hermes
