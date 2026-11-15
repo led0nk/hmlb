@@ -35,7 +35,7 @@ spec:
       initContainers:
         - name: config-init
           image: busybox:1.37
-          command: ["sh", "-c", "cp /config/config.yaml /hermes-home/config.yaml && printf 'OLLAMA_API_KEY=%s\\n' \"$(cat /secret-env/OLLAMA_API_KEY)\" > /hermes-home/.env && chmod 600 /hermes-home/.env"]
+          command: ["sh", "-c", "cp /config/config.yaml /hermes-home/config.yaml && cp /secret-env/.env /hermes-home/.env && chmod 600 /hermes-home/.env"]
           volumeMounts:
             - name: config
               mountPath: /config
