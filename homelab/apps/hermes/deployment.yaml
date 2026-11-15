@@ -67,11 +67,6 @@ spec:
                 secretKeyRef:
                   name: hermes
                   key: HERMES_WEBUI_PASSWORD
-            - name: OLLAMA_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: hermes
-                  key: OLLAMA_API_KEY
             - name: HERMES_WEBUI_AUTO_INSTALL
               value: "1"
           ports:
