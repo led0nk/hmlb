@@ -4,14 +4,21 @@ TOOLS_BIN_DIR := $(SRC_ROOT)/.tools
 ### tool versions: single source of truth for local and CI
 KUBECONFORM_VERSION := v0.6.7
 FLATE_VERSION := v0.7.3
+TALOSCTL_VERSION := v1.9.5
+TALHELPER_VERSION := v3.1.17
 KUBECONFORM_URL := github.com/yannh/kubeconform/cmd/kubeconform@$(KUBECONFORM_VERSION)
 FLATE_URL := https://github.com/home-operations/flate/releases/download/$(FLATE_VERSION)/flate_$(FLATE_VERSION:v%=%)_linux_amd64.tar.gz
 FLATE_SHA256 := 05d3c79447647e95329aa45c7035e7ebac3a120942972e78819deadc3bf0afeb
 FLATE_KUBE_VERSION := 1.32.3
+TALOSCTL_URL := https://github.com/siderolabs/talos/releases/download/$(TALOSCTL_VERSION)/talosctl-linux-amd64
+TALOSCTL_SHA256 := 085b089dfd2c28dbe9489ff218abd1f6ea4ad8520c34b162d079ba5b45ccda62
+TALHELPER_URL := github.com/budimanjojo/talhelper/v3@$(TALHELPER_VERSION)
 
 ### tool references
 KUBECONFORM := $(TOOLS_BIN_DIR)/kubeconform
 FLATE := $(TOOLS_BIN_DIR)/flate
+TALOSCTL := $(TOOLS_BIN_DIR)/talosctl
+TALHELPER := $(TOOLS_BIN_DIR)/talhelper
 
 ### bootstrap: one-off wiring on a fresh cluster (THESE TOUCH THE CLUSTER)
 .PHONY: flux
@@ -36,8 +43,18 @@ $(FLATE): $(TOOLS_BIN_DIR)
 	mv $(TOOLS_BIN_DIR)/flate-dl/flate $(FLATE) && \
 	rm -rf $(TOOLS_BIN_DIR)/flate-dl
 
+$(TALOSCTL): $(TOOLS_BIN_DIR)
+	@mkdir -p $(TOOLS_BIN_DIR)/talosctl-dl && \
+	curl -sSfL -o $(TOOLS_BIN_DIR)/talosctl-dl/talosctl $(TALOSCTL_URL) && \
+	echo "$(TALOSCTL_SHA256)  $(TOOLS_BIN_DIR)/talosctl-dl/talosctl" | sha256sum -c - && \
+	mv $(TOOLS_BIN_DIR)/talosctl-dl/talosctl $(TALOSCTL) && \
+	rmdir $(TOOLS_BIN_DIR)/talosctl-dl
+
+$(TALHELPER): $(TOOLS_BIN_DIR)
+	@GOBIN=$(TOOLS_BIN_DIR) go install $(TALHELPER_URL)
+
 .PHONY: install-tools
-install-tools: $(KUBECONFORM) $(FLATE)
+install-tools: $(KUBECONFORM) $(FLATE) $(TALHELPER) $(TALOSCTL)
 
 ### print-%: print any make variable, e.g. make print-FLATE_KUBE_VERSION
 print-%:

@@ -340,6 +340,10 @@ spec:
               mountPath: /otel-lgtm/grafana-dashboard-jvm-metrics.json
               subPath: grafana-homelab-opentelemetry.json
 
+            # otel-lgtm v0.33.x writes ALL state to /data; binaries live in /otel-lgtm
+            - name: lgtm-storage
+              mountPath: /data
+
       volumes:
         - name: lgtm-config
           configMap:
@@ -488,8 +492,8 @@ spec:
   parentRefs:
     - name: services
       namespace: infra
-      sectionName: main
-  hostnames: ["observability.kndlive.de"]
+      sectionName: kndlive-de
+  hostnames: ["grafana.kndlive.de"]
   rules:
     - backendRefs:
         - group: ""
