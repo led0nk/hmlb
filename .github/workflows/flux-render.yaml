@@ -15,8 +15,6 @@ jobs:
       FLATE_CACHE_DIR: ${{ github.workspace }}/.flate-cache
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - uses: actions/setup-go@v5
         with:
@@ -32,10 +30,9 @@ jobs:
       - name: Install tools (versions pinned in Makefile)
         run: make install-tools
 
-      - name: Render status + rendered diff, post PR comment
+      - name: Render status, post PR comment
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           GH_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
-        run: bash scripts/ci/flux-render.sh "$BASE_SHA"
+        run: bash scripts/ci/flux-render.sh
