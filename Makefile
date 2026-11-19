@@ -13,12 +13,18 @@ FLATE_KUBE_VERSION := 1.32.3
 TALOSCTL_URL := https://github.com/siderolabs/talos/releases/download/$(TALOSCTL_VERSION)/talosctl-linux-amd64
 TALOSCTL_SHA256 := 085b089dfd2c28dbe9489ff218abd1f6ea4ad8520c34b162d079ba5b45ccda62
 TALHELPER_URL := github.com/budimanjojo/talhelper/v3@$(TALHELPER_VERSION)
+YAMLLINT_VERSION := 1.38.0
+TRIVY_VERSION := v0.76.2
+TRIVY_URL := https://github.com/aquasecurity/trivy/releases/download/$(TRIVY_VERSION)/trivy_$(TRIVY_VERSION:v%=%)_Linux-64bit.tar.gz
+TRIVY_SHA256 := bc0fc726e017b8927a62b2d3531d7a84ee01769daf5c99ed866dced54089fdbf
 
 ### tool references
 KUBECONFORM := $(TOOLS_BIN_DIR)/kubeconform
 FLATE := $(TOOLS_BIN_DIR)/flate
 TALOSCTL := $(TOOLS_BIN_DIR)/talosctl
 TALHELPER := $(TOOLS_BIN_DIR)/talhelper
+YAMLLINT := $(TOOLS_BIN_DIR)/yaml-lint-venv/bin/yamllint
+TRIVY := $(TOOLS_BIN_DIR)/trivy
 
 ### bootstrap: one-off wiring on a fresh cluster (THESE TOUCH THE CLUSTER)
 .PHONY: flux
@@ -53,8 +59,20 @@ $(TALOSCTL): $(TOOLS_BIN_DIR)
 $(TALHELPER): $(TOOLS_BIN_DIR)
 	@GOBIN=$(TOOLS_BIN_DIR) go install $(TALHELPER_URL)
 
+$(YAMLLINT): $(TOOLS_BIN_DIR)
+	@python3 -m venv $(TOOLS_BIN_DIR)/yaml-lint-venv && \
+	$(TOOLS_BIN_DIR)/yaml-lint-venv/bin/pip install -q yamllint==$(YAMLLINT_VERSION)
+
+$(TRIVY): $(TOOLS_BIN_DIR)
+	@mkdir -p $(TOOLS_BIN_DIR)/trivy-dl && \
+	curl -sSfL -o $(TOOLS_BIN_DIR)/trivy-dl/trivy.tar.gz $(TRIVY_URL) && \
+	echo "$(TRIVY_SHA256)  $(TOOLS_BIN_DIR)/trivy-dl/trivy.tar.gz" | sha256sum -c - && \
+	tar -xzf $(TOOLS_BIN_DIR)/trivy-dl/trivy.tar.gz -C $(TOOLS_BIN_DIR)/trivy-dl trivy && \
+	mv $(TOOLS_BIN_DIR)/trivy-dl/trivy $(TRIVY) && \
+	rm -rf $(TOOLS_BIN_DIR)/trivy-dl
+
 .PHONY: install-tools
-install-tools: $(KUBECONFORM) $(FLATE) $(TALHELPER) $(TALOSCTL)
+install-tools: $(KUBECONFORM) $(FLATE) $(TALHELPER) $(TALOSCTL) $(YAMLLINT) $(TRIVY)
 
 ### print-%: print any make variable, e.g. make print-FLATE_KUBE_VERSION
 print-%:
@@ -71,6 +89,29 @@ SECRET_NAME_RE := secret|credential|password|apikey|api-key|token|keys
 smoke: $(KUBECONFORM)
 	@kubectl kustomize homelab | $(KUBECONFORM) -strict -skip=Secret -ignore-missing-schemas -summary
 	@$(MAKE) smoke-secrets
+
+.PHONY: lint
+lint: $(YAMLLINT)
+	@$(YAMLLINT) -s .
+
+### scan-images: trivy-detect bumped image refs vs TRIVY_BASE and scan each one
+### locally (the CI matrix fan-out scans one image per job instead)
+.PHONY: scan-images trivy-image
+scan-images: $(TRIVY)
+	@imgs=$$(bash scripts/ci/detect-bumped-images.sh); \
+	[ -z "$$imgs" ] && { echo "no container image bumps"; exit 0; }; \
+	echo "scanning bumped container images:"; \
+	echo "$$imgs"; \
+	rc=0; \
+	for img in $$imgs; do \
+		echo "== trivy $$img"; \
+		$(TRIVY) image --scanners vuln --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 "$$img" || rc=1; \
+	done; \
+	exit $$rc
+
+trivy-image: $(TRIVY)
+	@test -n "$(IMG)" || { echo "IMG=<image-ref> required"; exit 1; }
+	@$(TRIVY) image --scanners vuln --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 "$(IMG)"
 
 smoke-secrets:
 	@err=0; \

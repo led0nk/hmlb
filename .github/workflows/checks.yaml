@@ -1,0 +1,63 @@
+name: checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  yaml-lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: YAML lint (duplicate keys)
+        run: make lint
+
+  detect-images:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      matrix: ${{ steps.detect.outputs.matrix }}
+      none: ${{ steps.detect.outputs.none }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Detect bumped container images
+        id: detect
+        env:
+          TRIVY_BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          imgs=$(bash scripts/ci/detect-bumped-images.sh)
+          if [ -z "$imgs" ]; then
+            echo "none=true" >> "$GITHUB_OUTPUT"
+            echo 'matrix={"include":[]}' >> "$GITHUB_OUTPUT"
+          else
+            echo "none=false" >> "$GITHUB_OUTPUT"
+            echo "matrix=$(echo "$imgs" | jq -R . | jq -s -c '{include: [.[] | {image: .value}]}')" >> "$GITHUB_OUTPUT"
+          fi
+
+  scan:
+    needs: detect-images
+    if: needs.detect-images.result == 'success' && needs.detect-images.outputs.none != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      matrix: ${{ fromJSON(needs.detect-images.outputs.matrix) }}
+      fail-fast: false
+      max-parallel: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Trivy scan ${{ matrix.image }}
+        run: make trivy-image IMG="${{ matrix.image }}"
+
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+      - name: Render + schema + secret tripwire
+        run: make smoke
