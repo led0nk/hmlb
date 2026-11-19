@@ -94,9 +94,24 @@ smoke: $(KUBECONFORM)
 lint: $(YAMLLINT)
 	@$(YAMLLINT) -s .
 
-.PHONY: scan-images
+### scan-images: trivy-detect bumped image refs vs TRIVY_BASE and scan each one
+### locally (the CI matrix fan-out scans one image per job instead)
+.PHONY: scan-images trivy-image
 scan-images: $(TRIVY)
-	@bash scripts/ci/scan-images.sh
+	@imgs=$$(bash scripts/ci/detect-bumped-images.sh); \
+	[ -z "$$imgs" ] && { echo "no container image bumps"; exit 0; }; \
+	echo "scanning bumped container images:"; \
+	echo "$$imgs"; \
+	rc=0; \
+	for img in $$imgs; do \
+		echo "== trivy $$img"; \
+		$(TRIVY) image --scanners vuln --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 "$$img" || rc=1; \
+	done; \
+	exit $$rc
+
+trivy-image: $(TRIVY)
+	@test -n "$(IMG)" || { echo "IMG=<image-ref> required"; exit 1; }
+	@$(TRIVY) image --scanners vuln --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 "$(IMG)"
 
 smoke-secrets:
 	@err=0; \

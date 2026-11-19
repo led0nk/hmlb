@@ -4,7 +4,6 @@ set -uo pipefail
 cd "$(git rev-parse --show-toplevel)"
 
 BASE="${TRIVY_BASE:-main}"
-TRIVY="$PWD/.tools/trivy"
 
 if ! git rev-parse --verify "$BASE" >/dev/null 2>&1; then
 	git fetch --depth=1 origin "$BASE" >/dev/null 2>&1 || true
@@ -24,19 +23,9 @@ imgs=$(git diff "$BASE" --unified=0 -- \
 	| grep -vE '(\{\{|\$\(|^[[:space:]]*$)' || true)
 
 if [ -z "$imgs" ]; then
-	echo "no container image bumps vs $BASE"
+	echo "no container image bumps vs $BASE" >&2
 	exit 0
 fi
 
-echo "scanning bumped container images vs $BASE:"
+imgs=$(echo "$imgs" | sort -u)
 echo "$imgs"
-
-rc=0
-while IFS= read -r img; do
-	echo "== trivy $img"
-	"$TRIVY" image --scanners vuln --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 --quiet "$img" || rc=1
-done <<EOF
-$imgs
-EOF
-
-exit "$rc"
