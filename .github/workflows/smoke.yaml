@@ -8,7 +8,7 @@ on:
 jobs:
   smoke:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -16,5 +16,17 @@ jobs:
         with:
           go-version: stable
 
-      - name: Render + validate + secret tripwire
+      - name: Install tools (versions pinned in Makefile)
+        run: make install-tools
+
+      - name: YAML lint
+        run: make lint
+
+      - name: Scan bumped container images
+        if: github.event_name == 'pull_request'
+        env:
+          TRIVY_BASE: ${{ github.event.pull_request.base.sha }}
+        run: make scan-images
+
+      - name: Render + schema + secret tripwire
         run: make smoke
