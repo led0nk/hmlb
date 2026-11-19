@@ -248,10 +248,10 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: prom-collector-podmonitor-servicemonitor-lister
+  name: otel-collector-podmonitor-servicemonitor-lister
 subjects:
   - kind: ServiceAccount
-    name: prom-collector
+    name: otel-collector
     namespace: observability
 roleRef:
   kind: ClusterRole
@@ -310,7 +310,7 @@ metadata:
   name: otel-cluster-metrics
 subjects:
   - kind: ServiceAccount
-    name: prom-collector
+    name: otel-collector
     namespace: observability
 roleRef:
   kind: ClusterRole
@@ -320,7 +320,7 @@ roleRef:
 apiVersion: opentelemetry.io/v1beta1
 kind: OpenTelemetryCollector
 metadata:
-  name: prom
+  name: otel
   namespace: observability
 spec:
   networkPolicy:
@@ -329,7 +329,7 @@ spec:
   mode: statefulset
   targetAllocator:
     enabled: true
-    serviceAccount: prom-collector
+    serviceAccount: otel-collector
     prometheusCR:
       enabled: true
       podMonitorSelector: {}
@@ -476,19 +476,6 @@ spec:
                 name: backend
                 port:
                   number: 3000
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: otel-lgtm-tailscale
-  namespace: observability
-spec:
-  ingressClassName: tailscale
-  defaultBackend:
-    service:
-      name: backend
-      port:
-        number: 3000
 ---
 apiVersion: v1
 kind: ConfigMap
