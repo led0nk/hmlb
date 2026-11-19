@@ -418,6 +418,10 @@ spec:
               mountPath: /otel-lgtm/grafana-dashboard-power.json
               subPath: grafana-dashboard-power.json
 
+            - name: dashboard-files
+              mountPath: /otel-lgtm/grafana-dashboard-overview.json
+              subPath: grafana-dashboard-overview.json
+
             # otel-lgtm v0.33.x writes ALL state to /data; binaries live in /otel-lgtm
             - name: lgtm-storage
               mountPath: /data
