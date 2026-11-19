@@ -269,6 +269,8 @@ rules:
       - pods
       - namespaces
       - nodes
+      - resourcequotas
+      - replicationcontrollers
     verbs:
       - get
       - list
@@ -279,6 +281,7 @@ rules:
       - replicasets
       - statefulsets
       - daemonsets
+      - deployments
     verbs:
       - get
       - list
