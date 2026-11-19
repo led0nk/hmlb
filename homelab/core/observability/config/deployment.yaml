@@ -17,16 +17,26 @@ metadata:
 spec:
   networkPolicy:
     enabled: false
+  # containerd writes pod logs 0640 root:root; filelog needs root on talos
+  securityContext:
+    runAsUser: 0
   serviceAccount: otel-hostfs-daemonset
   mode: daemonset
   volumeMounts:
     - mountPath: /hostfs
       name: hostfs
       readOnly: true
+    - mountPath: /var/log/pods
+      name: pod-logs
+      readOnly: true
   volumes:
     - name: hostfs
       hostPath:
         path: /
+        type: Directory
+    - name: pod-logs
+      hostPath:
+        path: /var/log/pods
         type: Directory
   env:
     - name: K8S_NODE_NAME
@@ -93,6 +103,17 @@ spec:
             enabled: true
           k8s.pod.memory_request_utilization:
             enabled: true
+      filelog:
+        include:
+          - /var/log/pods/*/*/*.log
+        exclude:
+          - /var/log/pods/*/otc-container/*.log
+        start_at: end
+        include_file_path: true
+        include_file_name: false
+        operators:
+          - type: container
+            id: container-parser
 
     processors:
       resourcedetection/system:
@@ -129,6 +150,10 @@ spec:
         metrics:
           receivers: [hostmetrics, kubeletstats]
           processors: [resourcedetection/system, resource, transform, batch]
+          exporters: [otlp]
+        logs:
+          receivers: [filelog]
+          processors: [batch]
           exporters: [otlp]
 ---
 apiVersion: v1
@@ -385,6 +410,10 @@ spec:
             - name: dashboard-files
               mountPath: /otel-lgtm/grafana-dashboard-jvm-metrics.json
               subPath: grafana-homelab-opentelemetry.json
+
+            - name: dashboard-files
+              mountPath: /otel-lgtm/grafana-dashboard-power.json
+              subPath: grafana-dashboard-power.json
 
             # otel-lgtm v0.33.x writes ALL state to /data; binaries live in /otel-lgtm
             - name: lgtm-storage
