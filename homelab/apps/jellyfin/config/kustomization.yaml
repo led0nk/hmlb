@@ -14,3 +14,4 @@ resources:
   - prowlarr.yaml
   - umlautadaptarr.yaml
   - backup.yaml
+  - backup-credentials.yaml
