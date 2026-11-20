@@ -8,3 +8,4 @@ resources:
   - redis.yaml
   - backup.yaml
   - paperless-secret.yaml
+  - backup-credentials.yaml

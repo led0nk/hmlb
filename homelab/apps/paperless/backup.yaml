@@ -16,6 +16,8 @@ spec:
             - sleep
             - infinity
           env:
+            - name: PGHOST
+              value: postgres
             - name: PGPASSWORD
               valueFrom:
                 secretKeyRef:
@@ -28,6 +30,19 @@ metadata:
   name: paperless
   namespace: paperless
 spec:
+  backend:
+    repoPasswordSecretRef:
+      name: backup-credentials
+      key: RESTIC_PASSWORD
+    s3:
+      endpoint: https://7e3a30e1db0d93b8ad84824b2ce25298.eu.r2.cloudflarestorage.com
+      bucket: hmlb-paperless
+      accessKeyIDSecretRef:
+        name: backup-credentials
+        key: ACCESS_KEY_ID
+      secretAccessKeySecretRef:
+        name: backup-credentials
+        key: SECRET_ACCESS_KEY
   backup:
     schedule: "0 4 * * *" # NOTE: after the vaultwarden 03:30 run
     failedJobsHistoryLimit: 2
