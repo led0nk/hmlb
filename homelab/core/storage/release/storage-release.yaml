@@ -51,6 +51,8 @@ spec:
         mayastor:
           enabled: true
     mayastor:
+      tolerations:
+        - operator: Exists
       csi:
         node:
           # currently necessary because the init container checks for nvmeof
