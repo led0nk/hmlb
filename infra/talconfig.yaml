@@ -2,7 +2,7 @@
 clusterName: homelab
 talosVersion: v1.13.12
 kubernetesVersion: v1.36.3
-endpoint: https://192.168.178.210:6443
+endpoint: https://100.102.171.89:6443
 allowSchedulingOnMasters: true
 additionalApiServerCertSans:
   - homelab
@@ -63,10 +63,10 @@ worker:
         - TS_AUTHKEY=${tsAuth}
 
 nodes:
-  - hostname: master1
+  - hostname: worker2
     ipAddress: 192.168.178.210
     installDisk: /dev/nvme0n1
-    controlPlane: true
+    controlPlane: false
   - hostname: worker1
     ipAddress: 192.168.178.216
     installDisk: /dev/nvme0n1
@@ -74,7 +74,7 @@ nodes:
   - hostname: storage1
     ipAddress: 192.168.178.215
     installDisk: /dev/nvme0n1
-    controlPlane: false
+    controlPlane: true
     patches:
       - |-
         machine:
@@ -83,9 +83,7 @@ nodes:
     nodeLabels:
       openebs.io/engine: mayastor
       role: "storage-node"
-      node-role.kubernetes.io/worker: ""
     taints:
-      #      role: storage-node:NoSchedule
       - key: "role"
         value: "storage-node"
-        effect: "PreferNoSchedule"
+        effect: "NoSchedule"
