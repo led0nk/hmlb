@@ -61,6 +61,11 @@ spec:
             enabled: false
       etcd:
         replicaCount: 3
+        # bitnami etcd is an external subchart: the mayastor-global tolerations
+        # do NOT reach it (openebs docs), so taint-tolerations must be explicitly
+        # set here or etcd replicas get stranded by the storage1 taint.
+        tolerations:
+          - operator: Exists
         nodeSelector:
           kubernetes.io/arch: "amd64"
       eventing:

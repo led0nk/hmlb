@@ -67,6 +67,8 @@ nodes:
     ipAddress: 192.168.178.210
     installDisk: /dev/nvme0n1
     controlPlane: false
+    nodeLabels:
+      node-role.kubernetes.io/worker: ""
   - hostname: worker1
     ipAddress: 192.168.178.216
     installDisk: /dev/nvme0n1
@@ -80,10 +82,10 @@ nodes:
         machine:
           sysctls:
             vm.nr_hugepages: "1024"
+      - |-
+        machine:
+          nodeTaints:
+            role: "storage-node:NoSchedule"
     nodeLabels:
       openebs.io/engine: mayastor
       role: "storage-node"
-    taints:
-      - key: "role"
-        value: "storage-node"
-        effect: "NoSchedule"
