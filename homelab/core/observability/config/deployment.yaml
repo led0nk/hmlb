@@ -157,6 +157,65 @@ spec:
           exporters: [otlp]
 ---
 apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: loki-config
+  namespace: observability
+data:
+  loki-config.yaml: |
+    auth_enabled: false
+
+    server:
+      http_listen_port: 3100
+
+    common:
+      instance_addr: 127.0.0.1
+      path_prefix: /data/loki
+      storage:
+        filesystem:
+          chunks_directory: /data/loki/chunks
+          rules_directory: /data/loki/rules
+      replication_factor: 1
+      ring:
+        kvstore:
+          store: inmemory
+
+    schema_config:
+      configs:
+        - from: 2020-10-24
+          store: tsdb
+          object_store: filesystem
+          schema: v13
+          index:
+            prefix: index_
+            period: 24h
+
+    ruler:
+      alertmanager_url: http://127.0.0.1:9093
+
+    pattern_ingester:
+      lifecycler:
+        min_ready_duration: 1s
+
+    ingester:
+      lifecycler:
+        min_ready_duration: 1s
+
+    frontend:
+      scheduler_dns_lookup_period: 1s
+      address: 127.0.0.1
+
+    query_scheduler:
+      use_scheduler_ring: false
+
+    limits_config:
+      retention_period: 744h
+
+    compactor:
+      retention_enabled: true
+      delete_request_store: filesystem
+---
+apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: otel-hostfs-daemonset
@@ -397,6 +456,9 @@ spec:
           env:
             - name: ENABLE_LOGS_OTELCOL
               value: "true"
+            # NOTE: 40Gi < the 50Gi PVC - health series need multi-year retention
+            - name: PROMETHEUS_EXTRA_ARGS
+              value: "--storage.tsdb.retention.time=2y --storage.tsdb.retention.size=40Gi"
             - name: LGTM_APP_CONFIG_FILE
               value: /etc/lgtm/lgtm-config.yaml
           ports:
@@ -409,6 +471,10 @@ spec:
             - name: lgtm-config
               mountPath: /etc/lgtm
               readOnly: true
+
+            - name: loki-config
+              mountPath: /otel-lgtm/loki-config.yaml
+              subPath: loki-config.yaml
 
             - name: dashboard-files
               mountPath: /otel-lgtm/grafana-dashboard-jvm-metrics.json
@@ -430,6 +496,10 @@ spec:
         - name: lgtm-config
           configMap:
             name: otel-lgtm-config
+
+        - name: loki-config
+          configMap:
+            name: loki-config
 
         - name: lgtm-storage
           persistentVolumeClaim:
