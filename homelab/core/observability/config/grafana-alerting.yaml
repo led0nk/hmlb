@@ -155,7 +155,7 @@ data:
             title: k8up metrics gone
             condition: C
             for: 30m
-            noDataState: Alerting
+            noDataState: OK
             execErrState: OK
             labels:
               severity: critical
@@ -164,14 +164,14 @@ data:
             data:
               - refId: A
                 relativeTimeRange:
-                  from: 3600
+                  from: 1800
                   to: 0
                 datasourceUid: prometheus
                 model:
                   datasource:
                     type: prometheus
                     uid: prometheus
-                  expr: 'absent_over_time(k8up_jobs_total[30m])'
+                  expr: 'absent_over_time(k8up_jobs_total[20m])'
                   instant: false
                   queryType: range
                   refId: A
