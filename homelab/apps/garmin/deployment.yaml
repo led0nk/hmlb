@@ -35,6 +35,8 @@ spec:
           image: ghcr.io/barnes-c/garmin_exporter:2.0.1
           args:
             - --token-file=/data/garmin_token.json
+          stdin: true
+          stdinOnce: false
           env:
             - name: GARMIN_USERNAME
               valueFrom:
@@ -96,3 +98,39 @@ spec:
     - port: metrics
       path: /metrics
       interval: 1h # NOTE: cache.ttl is 1h, longevity data not workouts
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: garmin-token-debug
+  namespace: garmin
+  labels:
+    app.kubernetes.io/name: garmin-token-debug
+spec:
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 65534
+    runAsGroup: 65534
+    fsGroup: 65534
+    seccompProfile:
+      type: RuntimeDefault
+  containers:
+    - name: debug
+      image: busybox:stable
+      command: ["sleep", "infinity"]
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
+      resources:
+        limits:
+          cpu: 20m
+          memory: 16Mi
+      volumeMounts:
+        - name: token
+          mountPath: /data
+  volumes:
+    - name: token
+      persistentVolumeClaim:
+        claimName: garmin-exporter-token
