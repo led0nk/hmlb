@@ -89,6 +89,8 @@ kind: PodMonitor
 metadata:
   name: garmin-exporter
   namespace: garmin
+  labels:
+    release: prometheus
 spec:
   selector:
     matchLabels:
