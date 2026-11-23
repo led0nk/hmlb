@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: grafana-smtp
+    namespace: observability
+type: Opaque
+stringData:
+    GF_SMTP_HOST: ENC[AES256_GCM,data:MDfmrerOYpqZapcgUEYr7/o3,iv:kaGsOE6aBk3Uot+SeyfTMSSyILtNiwda4Lu3LO7i59k=,tag:VSjPDtjHfwYdFEXKjmdHTQ==,type:str]
+    GF_SMTP_USER: ENC[AES256_GCM,data:9dVN11wQWkcR2v5cG8ub70+A9FJ7Ww==,iv:45RGrh5EBVou1d+0cY/dXFen4/Xqbu4bCNMltkAjusg=,tag:C8iTXrxUql31zyvzmigo2A==,type:str]
+    GF_SMTP_PASSWORD: ENC[AES256_GCM,data:Kgejl1YNsfNXZfxXjNdp2FNxHw==,iv:Le0+1inGpXtNlCUSBoow3LOi+yDIOJUDCM0BJIT+3ew=,tag:yPbzjnqzNhkMBezLv3XRqw==,type:str]
+    GF_SMTP_FROM_ADDRESS: ENC[AES256_GCM,data:N04izXwDuuOkSG9zafEHvVnAArHD+g==,iv:wybHJTqpW2z2270edXg2KSFGQj7sEXMq5s++JamexEg=,tag:xVhkrouxlZAgWJHCMLmoRg==,type:str]
+sops:
+    age:
+        - recipient: age1jmtzxhr8gr37jt4uw9h49v6m5wtyxv56lev5rvju0knuvfk57e5sfwdm77
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSAxb3pSU3orSDFjdWlrRkx0
+            aVpudHNsV3pBd0hWUDVOelYrSTM2MEdGREcwCnBMc2dXbS9xNC9LTWpxNG9QRjNn
+            d2lrdjVOcGlnS0xQSk8zVDFZdVE2bWsKLS0tIEcrT2htb0RLR3JHNndxSHl5Zng4
+            RVA5cmdpR1RCWGV3TUsxVHFNZjVqajgK4iMDjhMeBt2UCyJjqyHY7u8BwhopW5uH
+            7wybMDc+ir+tS2ntfWoLv5wqyszmQGXhdZYu4cVOKbwowwFYv5QjYw==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2026-11-23T13:02:50Z"
+    mac: ENC[AES256_GCM,data:4C/rbXd6DpFvhLmXpc+o56d0fjCWH39WiYAvqRPR9IrrPUliUjI0GWvfLQzDkRrvlRQv7wSZGv0FDpte/nzKPDMTkC/ZtUIBLc2Y4HqkZ4n5uNYE2ynqmK55ZLCdorqXb+hV6kWfe4K4DgsEzfM3qwgcjxWFIKYZrcuvRwI2kmo=,iv:Un+eUXKZEK2esJ0qh/kypkhoIP/lDhEV4lA8IkdsyWw=,tag:GhKqrDmz37QqmMk27WuSBg==,type:str]
+    encrypted_regex: ^(data|stringData)$
+    version: 3.10.2

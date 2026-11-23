@@ -1,0 +1,432 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-alerting
+  namespace: observability
+data:
+  rules.yaml: |+
+    apiVersion: 1
+    groups:
+      - orgId: 1
+        name: homelab-k8up
+        interval: 1m
+        rules:
+          - uid: k8up-backup-failed
+            title: k8up backup failed
+            condition: C
+            for: 5m
+            noDataState: NoData
+            execErrState: Error
+            labels:
+              severity: critical
+            annotations:
+              summary: "k8up backup job failed in namespace {{ $labels.namespace }}"
+            data:
+              - refId: A
+                relativeTimeRange:
+                  from: 86400
+                  to: 0
+                datasourceUid: prometheus
+                model:
+                  datasource:
+                    type: prometheus
+                    uid: prometheus
+                  expr: 'max by (namespace) (increase(k8up_jobs_failed_counter{jobType="backup"}[24h]))'
+                  instant: false
+                  queryType: range
+                  refId: A
+              - refId: B
+                relativeTimeRange:
+                  from: 0
+                  to: 0
+                datasourceUid: __expr__
+                model:
+                  conditions:
+                    - evaluator:
+                        params: [0, 0]
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: [A]
+                      reducer:
+                        params: []
+                        type: lastNotNull
+                  datasource:
+                    type: __expr__
+                    uid: __expr__
+                  expression: A
+                  reducer: lastNotNull
+                  type: reduce
+              - refId: C
+                relativeTimeRange:
+                  from: 0
+                  to: 0
+                datasourceUid: __expr__
+                model:
+                  conditions:
+                    - evaluator:
+                        params: [0]
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: [C]
+                      reducer:
+                        params: []
+                        type: lastNotNull
+                  datasource:
+                    type: __expr__
+                    uid: __expr__
+                  expression: B
+                  type: threshold
+          - uid: k8up-prune-check-failed
+            title: k8up prune/check failed
+            condition: C
+            for: 5m
+            noDataState: NoData
+            execErrState: Error
+            labels:
+              severity: warning
+            annotations:
+              summary: "k8up {{ $labels.job_type }} job failed in namespace {{ $labels.namespace }}"
+            data:
+              - refId: A
+                relativeTimeRange:
+                  from: 86400
+                  to: 0
+                datasourceUid: prometheus
+                model:
+                  datasource:
+                    type: prometheus
+                    uid: prometheus
+                  expr: 'max by (namespace) (increase(k8up_jobs_failed_counter{jobType!="backup"}[24h]))'
+                  instant: false
+                  queryType: range
+                  refId: A
+              - refId: B
+                relativeTimeRange:
+                  from: 0
+                  to: 0
+                datasourceUid: __expr__
+                model:
+                  conditions:
+                    - evaluator:
+                        params: [0, 0]
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: [A]
+                      reducer:
+                        params: []
+                        type: lastNotNull
+                  datasource:
+                    type: __expr__
+                    uid: __expr__
+                  expression: A
+                  reducer: lastNotNull
+                  type: reduce
+              - refId: C
+                relativeTimeRange:
+                  from: 0
+                  to: 0
+                datasourceUid: __expr__
+                model:
+                  conditions:
+                    - evaluator:
+                        params: [0]
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: [C]
+                      reducer:
+                        params: []
+                        type: lastNotNull
+                  datasource:
+                    type: __expr__
+                    uid: __expr__
+                  expression: B
+                  type: threshold
+          - uid: k8up-metrics-silent
+            title: k8up metrics gone
+            condition: C
+            for: 30m
+            noDataState: Alerting
+            execErrState: Error
+            labels:
+              severity: critical
+            annotations:
+              summary: "k8up operator metrics absent - backups may not be running at all"
+            data:
+              - refId: A
+                relativeTimeRange:
+                  from: 3600
+                  to: 0
+                datasourceUid: prometheus
+                model:
+                  datasource:
+                    type: prometheus
+                    uid: prometheus
+                  expr: 'absent(k8up_jobs_total)'
+                  instant: false
+                  queryType: range
+                  refId: A
+              - refId: B
+                relativeTimeRange:
+                  from: 0
+                  to: 0
+                datasourceUid: __expr__
+                model:
+                  conditions:
+                    - evaluator:
+                        params: [0, 0]
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: [A]
+                      reducer:
+                        params: []
+                        type: lastNotNull
+                  datasource:
+                    type: __expr__
+                    uid: __expr__
+                  expression: A
+                  reducer: lastNotNull
+                  type: reduce
+              - refId: C
+                relativeTimeRange:
+                  from: 0
+                  to: 0
+                datasourceUid: __expr__
+                model:
+                  conditions:
+                    - evaluator:
+                        params: [0]
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: [C]
+                      reducer:
+                        params: []
+                        type: lastNotNull
+                  datasource:
+                    type: __expr__
+                    uid: __expr__
+                  expression: B
+                  type: threshold
+      - orgId: 1
+        name: homelab-storage
+        interval: 1m
+        rules:
+          - uid: pool-usage-warning
+            title: mayastor pool usage over 80 percent
+            condition: C
+            for: 10m
+            noDataState: NoData
+            execErrState: Error
+            labels:
+              severity: warning
+            annotations:
+              summary: "mayastor pool {{ $labels.name }} usage over 80 percent"
+            data:
+              - refId: A
+                relativeTimeRange:
+                  from: 600
+                  to: 0
+                datasourceUid: prometheus
+                model:
+                  datasource:
+                    type: prometheus
+                    uid: prometheus
+                  expr: '100 * max by (name) (diskpool_used_size_bytes{name!~"storage-media"}) / max by (name) (diskpool_total_size_bytes{name!~"storage-media"})'
+                  instant: false
+                  queryType: range
+                  refId: A
+              - refId: B
+                relativeTimeRange:
+                  from: 0
+                  to: 0
+                datasourceUid: __expr__
+                model:
+                  conditions:
+                    - evaluator:
+                        params: [0, 0]
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: [A]
+                      reducer:
+                        params: []
+                        type: lastNotNull
+                  datasource:
+                    type: __expr__
+                    uid: __expr__
+                  expression: A
+                  reducer: lastNotNull
+                  type: reduce
+              - refId: C
+                relativeTimeRange:
+                  from: 0
+                  to: 0
+                datasourceUid: __expr__
+                model:
+                  conditions:
+                    - evaluator:
+                        params: [80]
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: [C]
+                      reducer:
+                        params: []
+                        type: lastNotNull
+                  datasource:
+                    type: __expr__
+                    uid: __expr__
+                  expression: B
+                  type: threshold
+          - uid: pool-usage-critical
+            title: mayastor pool usage over 95 percent
+            condition: C
+            for: 10m
+            noDataState: NoData
+            execErrState: Error
+            labels:
+              severity: critical
+            annotations:
+              summary: "mayastor pool {{ $labels.name }} usage over 95 percent - volumes will fail to grow"
+            data:
+              - refId: A
+                relativeTimeRange:
+                  from: 600
+                  to: 0
+                datasourceUid: prometheus
+                model:
+                  datasource:
+                    type: prometheus
+                    uid: prometheus
+                  expr: '100 * max by (name) (diskpool_used_size_bytes{name!~"storage-media"}) / max by (name) (diskpool_total_size_bytes{name!~"storage-media"})'
+                  instant: false
+                  queryType: range
+                  refId: A
+              - refId: B
+                relativeTimeRange:
+                  from: 0
+                  to: 0
+                datasourceUid: __expr__
+                model:
+                  conditions:
+                    - evaluator:
+                        params: [0, 0]
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: [A]
+                      reducer:
+                        params: []
+                        type: lastNotNull
+                  datasource:
+                    type: __expr__
+                    uid: __expr__
+                  expression: A
+                  reducer: lastNotNull
+                  type: reduce
+              - refId: C
+                relativeTimeRange:
+                  from: 0
+                  to: 0
+                datasourceUid: __expr__
+                model:
+                  conditions:
+                    - evaluator:
+                        params: [95]
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: [C]
+                      reducer:
+                        params: []
+                        type: lastNotNull
+                  datasource:
+                    type: __expr__
+                    uid: __expr__
+                  expression: B
+                  type: threshold
+          - uid: node-fs-almost-full
+            title: node filesystem almost full
+            condition: C
+            for: 15m
+            noDataState: NoData
+            execErrState: Error
+            labels:
+              severity: critical
+            annotations:
+              summary: "node {{ $labels.k8s_node_name }} root filesystem over 90 percent used"
+            data:
+              - refId: A
+                relativeTimeRange:
+                  from: 900
+                  to: 0
+                datasourceUid: prometheus
+                model:
+                  datasource:
+                    type: prometheus
+                    uid: prometheus
+                  expr: '100 * (1 - max by (k8s_node_name) (node_filesystem_avail_bytes{device=~"/dev/dm-.*"}) / max by (k8s_node_name) (node_filesystem_size_bytes{device=~"/dev/dm-.*"}))'
+                  instant: false
+                  queryType: range
+                  refId: A
+              - refId: B
+                relativeTimeRange:
+                  from: 0
+                  to: 0
+                datasourceUid: __expr__
+                model:
+                  conditions:
+                    - evaluator:
+                        params: [0, 0]
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: [A]
+                      reducer:
+                        params: []
+                        type: lastNotNull
+                  datasource:
+                    type: __expr__
+                    uid: __expr__
+                  expression: A
+                  reducer: lastNotNull
+                  type: reduce
+              - refId: C
+                relativeTimeRange:
+                  from: 0
+                  to: 0
+                datasourceUid: __expr__
+                model:
+                  conditions:
+                    - evaluator:
+                        params: [90]
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: [C]
+                      reducer:
+                        params: []
+                        type: lastNotNull
+                  datasource:
+                    type: __expr__
+                    uid: __expr__
+                  expression: B
+                  type: threshold

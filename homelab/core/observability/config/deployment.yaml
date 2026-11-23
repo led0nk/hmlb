@@ -460,6 +460,11 @@ spec:
               value: "true"
             - name: LGTM_APP_CONFIG_FILE
               value: /etc/lgtm/lgtm-config.yaml
+            - name: GF_SMTP_ENABLED
+              value: "true"
+          envFrom:
+            - secretRef:
+                name: grafana-smtp
           ports:
             - containerPort: 3000
             - containerPort: 3100
@@ -495,6 +500,18 @@ spec:
               mountPath: /otel-lgtm/grafana/conf/provisioning/datasources/homelab-default.yaml
               subPath: datasources-default.yaml
 
+            - name: grafana-alerting
+              mountPath: /otel-lgtm/grafana/conf/provisioning/alerting/homelab-rules.yaml
+              subPath: rules.yaml
+
+            - name: grafana-contactpoints
+              mountPath: /otel-lgtm/grafana/conf/provisioning/alerting/homelab-contactpoints.yaml
+              subPath: contactpoints.yaml
+
+            - name: grafana-contactpoints
+              mountPath: /otel-lgtm/grafana/conf/provisioning/alerting/homelab-policy.yaml
+              subPath: policy.yaml
+
             - name: dashboard-files
               mountPath: /var/lib/grafana/dashboards
               readOnly: true
@@ -523,6 +540,14 @@ spec:
         - name: grafana-provisioning
           configMap:
             name: grafana-provisioning
+
+        - name: grafana-alerting
+          configMap:
+            name: grafana-alerting
+
+        - name: grafana-contactpoints
+          configMap:
+            name: grafana-contactpoints
 
 ---
 apiVersion: v1
