@@ -1,0 +1,19 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: k8up-operator
+  namespace: observability
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: k8up
+  namespaceSelector:
+    matchNames:
+      - k8up
+  podMetricsEndpoints:
+    - port: http
+      path: /metrics
+      interval: 1m

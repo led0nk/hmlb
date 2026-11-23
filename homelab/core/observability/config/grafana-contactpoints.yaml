@@ -1,0 +1,27 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-contactpoints
+  namespace: observability
+data:
+  contactpoints.yaml: |+
+    apiVersion: 1
+    contactPoints:
+      - orgId: 1
+        name: homelab-alerts
+        type: email
+        settings:
+          addresses: janik@kndlive.de
+          singleEmail: true
+  policy.yaml: |+
+    apiVersion: 1
+    policies:
+      - orgId: 1
+        receiver:
+          grafana_managed_receiver_names:
+            - homelab-alerts
+        group_by: [grafana_folder, alertname]
+        group_wait: 1m
+        group_interval: 5m
+        repeat_interval: 4h

@@ -2551,7 +2551,7 @@ data:
             },
             "orientation": "auto",
             "showValue": "never",
-            "stacking": "none",
+            "stacking": "normal",
             "xTickLabelRotation": 0,
             "xField": "Time",
             "timezone": "browser"

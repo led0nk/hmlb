@@ -5,5 +5,9 @@ resources:
   - deployment.yaml
   - grafana-dashboards.yaml
   - grafana-provisioning.yaml
+  - grafana-alerting.yaml
+  - grafana-contactpoints.yaml
   - node-exporter.yaml
   - smartctl-exporter.yaml
+  - k8up-podmonitor.yaml
+  - grafana-smtp.sops.yaml
