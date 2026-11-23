@@ -10,6 +10,7 @@ data:
     groups:
       - orgId: 1
         name: homelab-k8up
+        folder: Homelab Alerts
         interval: 1m
         rules:
           - uid: k8up-backup-failed
@@ -57,7 +58,7 @@ data:
                     type: __expr__
                     uid: __expr__
                   expression: A
-                  reducer: lastNotNull
+                  reducer: last
                   type: reduce
               - refId: C
                 relativeTimeRange:
@@ -126,7 +127,7 @@ data:
                     type: __expr__
                     uid: __expr__
                   expression: A
-                  reducer: lastNotNull
+                  reducer: last
                   type: reduce
               - refId: C
                 relativeTimeRange:
@@ -195,7 +196,7 @@ data:
                     type: __expr__
                     uid: __expr__
                   expression: A
-                  reducer: lastNotNull
+                  reducer: last
                   type: reduce
               - refId: C
                 relativeTimeRange:
@@ -221,6 +222,7 @@ data:
                   type: threshold
       - orgId: 1
         name: homelab-storage
+        folder: Homelab Alerts
         interval: 1m
         rules:
           - uid: pool-usage-warning
@@ -268,7 +270,7 @@ data:
                     type: __expr__
                     uid: __expr__
                   expression: A
-                  reducer: lastNotNull
+                  reducer: last
                   type: reduce
               - refId: C
                 relativeTimeRange:
@@ -337,7 +339,7 @@ data:
                     type: __expr__
                     uid: __expr__
                   expression: A
-                  reducer: lastNotNull
+                  reducer: last
                   type: reduce
               - refId: C
                 relativeTimeRange:
@@ -406,7 +408,7 @@ data:
                     type: __expr__
                     uid: __expr__
                   expression: A
-                  reducer: lastNotNull
+                  reducer: last
                   type: reduce
               - refId: C
                 relativeTimeRange:

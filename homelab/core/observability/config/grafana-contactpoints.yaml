@@ -18,9 +18,7 @@ data:
     apiVersion: 1
     policies:
       - orgId: 1
-        receiver:
-          grafana_managed_receiver_names:
-            - homelab-alerts
+        receiver: homelab-alerts
         group_by: [grafana_folder, alertname]
         group_wait: 1m
         group_interval: 5m
