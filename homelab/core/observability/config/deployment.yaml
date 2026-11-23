@@ -491,6 +491,10 @@ spec:
               mountPath: /otel-lgtm/grafana/conf/provisioning/dashboards/homelab-provider.yaml
               subPath: dashboards-provider.yaml
 
+            - name: grafana-provisioning
+              mountPath: /otel-lgtm/grafana/conf/provisioning/datasources/homelab-default.yaml
+              subPath: datasources-default.yaml
+
             - name: dashboard-files
               mountPath: /var/lib/grafana/dashboards
               readOnly: true

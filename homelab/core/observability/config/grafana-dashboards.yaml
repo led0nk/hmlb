@@ -3201,6 +3201,10 @@ data:
               "value": "storage1"
             },
             "definition": "label_values(smartctl_device_smart_status, k8s_node_name)",
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
             "name": "node",
             "query": {
               "query": "label_values(smartctl_device_smart_status{k8s_node_name!=\"\"}, k8s_node_name)",

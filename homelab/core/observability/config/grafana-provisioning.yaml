@@ -13,3 +13,11 @@ data:
         type: file
         options:
           path: /var/lib/grafana/dashboards
+
+  datasources-default.yaml: |
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        uid: prometheus
+        isDefault: true
