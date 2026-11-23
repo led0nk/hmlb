@@ -4,5 +4,6 @@ kind: Kustomization
 resources:
   - deployment.yaml
   - grafana-dashboards.yaml
+  - grafana-provisioning.yaml
   - node-exporter.yaml
   - smartctl-exporter.yaml

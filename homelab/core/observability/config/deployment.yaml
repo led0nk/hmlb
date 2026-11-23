@@ -487,6 +487,14 @@ spec:
               mountPath: /otel-lgtm/grafana-dashboard-overview.json
               subPath: grafana-dashboard-overview.json
 
+            - name: grafana-provisioning
+              mountPath: /etc/grafana/provisioning/dashboards/homelab-provider.yaml
+              subPath: dashboards-provider.yaml
+
+            - name: dashboard-files
+              mountPath: /var/lib/grafana/dashboards
+              readOnly: true
+
             # otel-lgtm v0.33.x writes ALL state to /data; binaries live in /otel-lgtm
             - name: lgtm-storage
               mountPath: /data
@@ -507,6 +515,10 @@ spec:
         - name: dashboard-files
           configMap:
             name: grafana-dashboards
+
+        - name: grafana-provisioning
+          configMap:
+            name: grafana-provisioning
 
 ---
 apiVersion: v1
