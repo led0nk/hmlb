@@ -145,3 +145,5 @@ data:
   PAPERLESS_ALLOWED_HOSTS: "*"
   PAPERLESS_TIME_ZONE: "Europe/Berlin"
   PAPERLESS_OCR_LANGUAGE: "deu+eng"
+  PAPERLESS_FILENAME_FORMAT: "{created_year}/{correspondent}/{title}"
+  PAPERLESS_FILENAME_FORMAT_REMOVE_NONE: "true"
