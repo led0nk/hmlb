@@ -17,6 +17,11 @@ spec:
     spec:
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
+      tolerations:
+        - key: role
+          operator: Equal
+          value: storage-node
+          effect: NoSchedule
       containers:
         - name: smartctl-exporter
           image: quay.io/prometheuscommunity/smartctl-exporter:v0.15.0
@@ -30,11 +35,6 @@ spec:
           ports:
             - name: metrics
               containerPort: 9633
-          tolerations:
-            - key: role
-              operator: Equal
-              value: storage-node
-              effect: NoSchedule
           readinessProbe:
             httpGet:
               path: /metrics
