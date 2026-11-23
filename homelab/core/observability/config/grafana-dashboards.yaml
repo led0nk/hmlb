@@ -2298,7 +2298,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "sum(rate(node_rapel_package_joules_total[5m]))",
+              "expr": "sum(rate(node_rapl_package_joules_total[5m]))",
               "refId": "A"
             }
           ],
@@ -2335,7 +2335,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "sum by (k8s_node_name) (rate(node_rapel_package_joules_total[5m]))",
+              "expr": "sum by (k8s_node_name) (rate(node_rapl_package_joules_total[5m]))",
               "refId": "A"
             }
           ],
@@ -2371,7 +2371,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "sum(increase(node_rapel_package_joules_total[24h])) / 3600000",
+              "expr": "sum(increase(node_rapl_package_joules_total[24h])) / 3600000",
               "refId": "A"
             }
           ],
@@ -2407,7 +2407,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "sum(increase(node_rapel_package_joules_total[24h])) / 3600000 * $tariff",
+              "expr": "sum(increase(node_rapl_package_joules_total[24h])) / 3600000 * $tariff",
               "refId": "A"
             }
           ],
@@ -2455,7 +2455,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "sum by (k8s_node_name) (rate(node_rapel_package_joules_total[5m]))",
+              "expr": "sum by (k8s_node_name) (rate(node_rapl_package_joules_total[5m]))",
               "refId": "A"
             }
           ],
@@ -2504,7 +2504,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "sum by (k8s_node_name) (increase(node_rapel_package_joules_total[7d])) / 3600000",
+              "expr": "sum by (k8s_node_name) (increase(node_rapl_package_joules_total[7d])) / 3600000",
               "refId": "A"
             }
           ],
@@ -2548,7 +2548,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "sum(increase(node_rapel_package_joules_total[$__interval])) / 3600000",
+              "expr": "sum(increase(node_rapl_package_joules_total[$__interval])) / 3600000",
               "refId": "A"
             }
           ],

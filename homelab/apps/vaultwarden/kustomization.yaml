@@ -5,3 +5,4 @@ resources:
   - deployment.yaml
   - vaultwarden-secret.yaml
   - backup.yaml
+  - backup-credentials.yaml

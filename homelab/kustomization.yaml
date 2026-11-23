@@ -9,4 +9,5 @@ resources:
   - apps/jellyfin
   - apps/vaultwarden
   - apps/paperless
+  - apps/garmin
   - core
