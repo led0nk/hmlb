@@ -1,0 +1,60 @@
+---
+apiVersion: k8up.io/v1
+kind: PreBackupPod
+metadata:
+  name: pg-dump
+  namespace: paperless
+spec:
+  backupCommand: /bin/sh -c "pg_dump -U paperless paperless"
+  fileExtension: .sql
+  pod:
+    spec:
+      containers:
+        - name: pg-dump
+          image: docker.io/library/postgres:17@sha256:b60e90042aa6b8dbecd58e224b3e36114dbf8ad754465264c2476ad58a86e45c
+          command:
+            - sleep
+            - infinity
+          env:
+            - name: PGHOST
+              value: postgres
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: paperless-secrets
+                  key: postgres-password
+---
+apiVersion: k8up.io/v1
+kind: Schedule
+metadata:
+  name: paperless
+  namespace: paperless
+spec:
+  backend:
+    repoPasswordSecretRef:
+      name: backup-credentials
+      key: RESTIC_PASSWORD
+    s3:
+      endpoint: https://7e3a30e1db0d93b8ad84824b2ce25298.eu.r2.cloudflarestorage.com
+      bucket: hmlb-paperless
+      accessKeyIDSecretRef:
+        name: backup-credentials
+        key: ACCESS_KEY_ID
+      secretAccessKeySecretRef:
+        name: backup-credentials
+        key: SECRET_ACCESS_KEY
+  backup:
+    schedule: "0 4 * * *" # NOTE: after the vaultwarden 03:30 run
+    failedJobsHistoryLimit: 2
+    successfulJobsHistoryLimit: 3
+    labelSelectors:
+      - matchLabels:
+          k8up.io/backup: "true"
+  check:
+    schedule: "0 6 1 * *" # NOTE: metadata only, --read-data would burn R2 class B operations
+  prune:
+    schedule: "30 5 * * 0" # NOTE: last in the Sunday chain, after jellyfin 04:00 and vaultwarden 04:30
+    retention:
+      keepDaily: 7
+      keepWeekly: 4
+      keepMonthly: 3

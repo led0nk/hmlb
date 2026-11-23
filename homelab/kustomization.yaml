@@ -8,5 +8,6 @@ resources:
   - apps/homeassistant
   - apps/jellyfin
   - apps/vaultwarden
+  - apps/paperless
   - apps/garmin
   - core
