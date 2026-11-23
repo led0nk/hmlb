@@ -15,8 +15,8 @@ spec:
   parentRefs:
     - name: services
       namespace: infra
-      sectionName: main
-  hostnames: ["paperless.kndlive.com"]
+      sectionName: kndlive-de
+  hostnames: ["paperless.kndlive.de"]
   rules:
     - backendRefs:
         - group: ""
@@ -45,7 +45,7 @@ spec:
     spec:
       containers:
         - name: paperless
-          image: ghcr.io/paperless-ngx/paperless-ngx:v3.5.1
+          image: ghcr.io/paperless-ngx/paperless-ngx:3.5.1
           ports:
             - containerPort: 8000
           envFrom:
@@ -141,6 +141,6 @@ data:
   PAPERLESS_DBNAME: paperless
   PAPERLESS_DBUSER: paperless
   PAPERLESS_REDIS: "redis://redis:6379"
-  PAPERLESS_URL: "https://paperless.kndlive.com"
+  PAPERLESS_URL: "https://paperless.kndlive.de"
   PAPERLESS_TIME_ZONE: "Europe/Berlin"
   PAPERLESS_OCR_LANGUAGE: "deu+eng"
