@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-provisioning
+  namespace: observability
+data:
+  # grafana ingests every file from /var/lib/grafana/dashboards on pod start
+  dashboards-provider.yaml: |
+    apiVersion: 1
+    providers:
+      - name: homelab
+        type: file
+        options:
+          path: /var/lib/grafana/dashboards
