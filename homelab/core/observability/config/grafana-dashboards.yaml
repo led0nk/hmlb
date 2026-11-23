@@ -2613,7 +2613,7 @@ data:
       "weekStart": ""
     }
   grafana-dashboard-overview.json: |+
-    {"annotations":{"list":[{"builtIn":1,"datasource":{"type":"grafana","uid":"-- Grafana --"},"enable":true,"hide":true,"type":"dashboard"}]},"editable":true,"graphTooltip":1,"id":3613467199504384,"links":[],"panels":[{"datasource":{"type":"prometheus","uid":"prometheus"},"description":"target 3 - drops to orange while storage1 is down","fieldConfig":{"defaults":{"color":{"mode":"thresholds"},"decimals":0,"thresholds":{"mode":"absolute","steps":[{"color":"transparent","value":null},{"color":"red","value":0},{"color":"orange","value":2},{"color":"green","value":3}]},"unit":"none"},"overrides":[]},"gridPos":{"h":4,"w":5,"x":0,"y":0},"id":1,"options":{"colorMode":"value","graphMode":"area","orientation":"auto","reduceOptions":{"calcs":["lastNotNull"]},"textMode":"auto","wideLayout":true},"targets":[{"datasource":{"type":"prometheus","uid":"prometheus"},"expr":"count(k8s_node_cpu_usage)","legendFormat":" ","refId":"A"}],"title":"Nodes reporting","type":"stat"},{"datasource":{"type":"prometheus","uid":"prometheus"},"description":null,"fieldConfig":{"defaults":{"color":{"mode":"thresholds"},"decimals":0,"thresholds":{"mode":"absolute","steps":[{"color":"transparent","value":null},{"color":"green","value":0}]},"unit":"none"},"overrides":[]},"gridPos":{"h":4,"w":5,"x":5,"y":0},"id":2,"options":{"colorMode":"value","graphMode":"area","orientation":"auto","reduceOptions":{"calcs":["lastNotNull"]},"textMode":"auto","wideLayout":true},"targets":[{"datasource":{"type":"prometheus","uid":"prometheus"},"expr":"count(k8s_pod_phase)","legendFormat":" ","refId":"A"}],"title":"Pods total","type":"stat"},{"datasource":{"type":"prometheus","uid":"prometheus"},"description":"pending / failed / succeeded incl. finished jobs","fieldConfig":{"defaults":{"color":{"mode":"thresholds"},"decimals":0,"thresholds":{"mode":"absolute","steps":[{"color":"transparent","value":null},{"color":"green","value":0},{"color":"orange","value":1},{"color":"red","value":5}]},"unit":"none"},"overrides":[]},"gridPos":{"h":4,"w":5,"x":10,"y":0},"id":3,"options":{"colorMode":"value","graphMode":"area","orientation":"auto","reduceOptions":{"calcs":["lastNotNull"]},"textMode":"auto","wideLayout":true},"targets":[{"datasource":{"type":"prometheus","uid":"prometheus"},"expr":"count(k8s_pod_phase != 2)","legendFormat":" ","refId":"A"}],"title":"Pods not running","type":"stat"},{"datasource":{"type":"prometheus","uid":"prometheus"},"description":null,"fieldConfig":{"defaults":{"color":{"mode":"thresholds"},"decimals":0,"thresholds":{"mode":"absolute","steps":[{"color":"transparent","value":null},{"color":"green","value":0},{"color":"orange","value":1},{"color":"red","value":3}]},"unit":"none"},"overrides":[]},"gridPos":{"h":4,"w":5,"x":15,"y":0},"id":4,"options":{"colorMode":"value","graphMode":"area","orientation":"auto","reduceOptions":{"calcs":["lastNotNull"]},"textMode":"auto","wideLayout":true},"targets":[{"datasource":{"type":"prometheus","uid":"prometheus"},"expr":"count(k8s_deployment_available != k8s_deployment_desired)","legendFormat":" ","refId":"A"}],"title":"Deployments degraded","type":"stat"},{"datasource":{"type":"prometheus","uid":"prometheus"},"description":null,"fieldConfig":{"defaults":{"color":{"mode":"thresholds"},"decimals":0,"thresholds":{"mode":"absolute","steps":[{"color":"transparent","value":null},{"color":"green","value":0}]},"unit":"none"},"overrides":[]},"gridPos":{"h":4,"w":5,"x":20,"y":0},"id":5,"options":{"colorMode":"value","graphMode":"area","orientation":"auto","reduceOptions":{"calcs":["lastNotNull"]},"textMode":"auto","wideLayout":true},"targets":[{"datasource":{"type":"prometheus","uid":"prometheus"},"expr":"sum(k8s_container_restarts)","legendFormat":" ","refId":"A"}],"title":"Container restarts (total)","type":"stat"},{"datasource":{"type":"prometheus","uid":"prometheus"},"description":null,"fieldConfig":{"defaults":{"custom":{"axisPlacement":"auto","axisSoftMax":100,"drawStyle":"line","fillOpacity":8,"legendDisplayMode":"list","legendPlacement":"bottom","lineWidth":1,"showPoints":"never"},"thresholds":{"mode":"absolute","steps":[{"color":"transparent","value":null}]},"unit":"percent"}},"gridPos":{"h":7,"w":8,"x":0,"y":4},"id":6,"options":{"legend":{"calcs":["lastNotNull"],"displayMode":"list","placement":"bottom"},"tooltip":{"mode":"multi","sort":"desc"}},"targets":[{"datasource":{"type":"prometheus","uid":"prometheus"},"expr":"100 * (1 - avg by (host_name)(system_cpu_utilization_ratio{host_name!~\"master1\", state=\"idle\"}))","legendFormat":"{{host_name}}","refId":"A"}],"title":"CPU busy %","type":"timeseries"},{"datasource":{"type":"prometheus","uid":"prometheus"},"description":null,"fieldConfig":{"defaults":{"custom":{"axisPlacement":"auto","axisSoftMax":100,"drawStyle":"line","fillOpacity":8,"legendDisplayMode":"list","legendPlacement":"bottom","lineWidth":1,"showPoints":"never"},"thresholds":{"mode":"absolute","steps":[{"color":"transparent","value":null}]},"unit":"percent"}},"gridPos":{"h":7,"w":8,"x":8,"y":4},"id":7,"options":{"legend":{"calcs":["lastNotNull"],"displayMode":"list","placement":"bottom"},"tooltip":{"mode":"multi","sort":"desc"}},"targets":[{"datasource":{"type":"prometheus","uid":"prometheus"},"expr":"100 * (1 - max by (k8s_node_name)(node_memory_MemAvailable_bytes{k8s_node_name!~\"master1\"}) / max by (k8s_node_name)(node_memory_MemTotal_bytes{k8s_node_name!~\"master1\"}))","legendFormat":"{{k8s_node_name}}","refId":"A"}],"title":"Memory used %","type":"timeseries"},{"datasource":{"type":"prometheus","uid":"prometheus"},"description":null,"fieldConfig":{"defaults":{"custom":{"axisPlacement":"auto","drawStyle":"line","fillOpacity":8,"legendDisplayMode":"list","legendPlacement":"bottom","lineWidth":1,"showPoints":"never"},"thresholds":{"mode":"absolute","steps":[{"color":"transparent","value":null}]},"unit":"gbytes"}},"gridPos":{"h":7,"w":8,"x":16,"y":4},"id":8,"options":{"legend":{"calcs":["lastNotNull"],"displayMode":"list","placement":"bottom"},"tooltip":{"mode":"multi","sort":"desc"}},"targets":[{"datasource":{"type":"prometheus","uid":"prometheus"},"expr":"max by (k8s_node_name)(node_memory_MemAvailable_bytes{k8s_node_name!~\"master1\"})","legendFormat":"{{k8s_node_name}}","refId":"A"}],"title":"RAM free","type":"timeseries"},{"datasource":{"type":"prometheus","uid":"prometheus"},"description":null,"fieldConfig":{"defaults":{"custom":{"axisPlacement":"auto","drawStyle":"line","fillOpacity":8,"legendDisplayMode":"list","legendPlacement":"bottom","lineWidth":1,"showPoints":"never"},"thresholds":{"mode":"absolute","steps":[{"color":"transparent","value":null}]},"unit":"gbytes"}},"gridPos":{"h":7,"w":8,"x":0,"y":11},"id":9,"options":{"legend":{"calcs":["lastNotNull"],"displayMode":"list","placement":"bottom"},"tooltip":{"mode":"multi","sort":"desc"}},"targets":[{"datasource":{"type":"prometheus","uid":"prometheus"},"expr":"max by (k8s_node_name)(node_filesystem_avail_bytes{fstype=~\"ext4|xfs\", k8s_node_name!~\"master1\"})","legendFormat":"{{k8s_node_name}}","refId":"A"}],"title":"Disk free","type":"timeseries"},{"datasource":{"type":"prometheus","uid":"prometheus"},"description":"mayastor pools fast/media/crucial - series live with the storage node","fieldConfig":{"defaults":{"custom":{"axisPlacement":"auto","drawStyle":"line","fillOpacity":8,"legendDisplayMode":"list","legendPlacement":"bottom","lineWidth":1,"showPoints":"never"},"thresholds":{"mode":"absolute","steps":[{"color":"transparent","value":null}]},"unit":"gbytes"}},"gridPos":{"h":7,"w":8,"x":8,"y":11},"id":10,"options":{"legend":{"calcs":["lastNotNull"],"displayMode":"list","placement":"bottom"},"tooltip":{"mode":"multi","sort":"desc"}},"targets":[{"datasource":{"type":"prometheus","uid":"prometheus"},"expr":"(diskpool_total_size_bytes - diskpool_used_size_bytes)","legendFormat":"{{id}}","refId":"A"}],"title":"Pool free (populates after storage1 is back)","type":"timeseries"},{"datasource":{"type":"prometheus","uid":"prometheus"},"description":null,"fieldConfig":{"defaults":{"custom":{"axisPlacement":"auto","axisSoftMax":100,"drawStyle":"line","fillOpacity":8,"legendDisplayMode":"list","legendPlacement":"bottom","lineWidth":1,"showPoints":"never"},"thresholds":{"mode":"absolute","steps":[{"color":"transparent","value":null}]},"unit":"percent"}},"gridPos":{"h":7,"w":8,"x":16,"y":11},"id":11,"options":{"legend":{"calcs":["lastNotNull"],"displayMode":"list","placement":"bottom"},"tooltip":{"mode":"multi","sort":"desc"}},"targets":[{"datasource":{"type":"prometheus","uid":"prometheus"},"expr":"100 * diskpool_used_size_bytes / diskpool_total_size_bytes","legendFormat":"{{id}}","refId":"A"}],"title":"Pool used %","type":"timeseries"},{"datasource":{"type":"prometheus","uid":"prometheus"},"description":null,"fieldConfig":{"defaults":{"custom":{"axisPlacement":"auto","drawStyle":"line","fillOpacity":8,"legendDisplayMode":"list","legendPlacement":"bottom","lineWidth":1,"showPoints":"never"},"thresholds":{"mode":"absolute","steps":[{"color":"transparent","value":null}]},"unit":"none"}},"gridPos":{"h":8,"w":8,"x":0,"y":18},"id":12,"options":{"legend":{"calcs":["lastNotNull"],"displayMode":"list","placement":"bottom"},"tooltip":{"mode":"multi","sort":"desc"}},"targets":[{"datasource":{"type":"prometheus","uid":"prometheus"},"expr":"count by (k8s_namespace_name)(k8s_pod_phase != 2)","legendFormat":"{{k8s_namespace_name}}","refId":"A"}],"title":"Pods not running by namespace","type":"timeseries"},{"datasource":{"type":"prometheus","uid":"prometheus"},"description":null,"fieldConfig":{"defaults":{"custom":{"axisPlacement":"auto","drawStyle":"line","fillOpacity":8,"legendDisplayMode":"list","legendPlacement":"bottom","lineWidth":1,"showPoints":"never"},"thresholds":{"mode":"absolute","steps":[{"color":"transparent","value":null}]},"unit":"none"}},"gridPos":{"h":8,"w":8,"x":8,"y":18},"id":13,"options":{"legend":{"calcs":["lastNotNull"],"displayMode":"list","placement":"bottom"},"tooltip":{"mode":"multi","sort":"desc"}},"targets":[{"datasource":{"type":"prometheus","uid":"prometheus"},"expr":"sum by (k8s_namespace_name)(k8s_container_restarts)","legendFormat":"{{k8s_namespace_name}}","refId":"A"}],"title":"Container restarts by namespace","type":"timeseries"},{"datasource":{"type":"prometheus","uid":"prometheus"},"description":null,"fieldConfig":{"defaults":{"custom":{"axisPlacement":"auto","drawStyle":"line","fillOpacity":8,"legendDisplayMode":"list","legendPlacement":"bottom","lineWidth":1,"showPoints":"never"},"thresholds":{"mode":"absolute","steps":[{"color":"transparent","value":null}]},"unit":"none"}},"gridPos":{"h":8,"w":8,"x":16,"y":18},"id":14,"options":{"legend":{"calcs":["lastNotNull"],"displayMode":"list","placement":"bottom"},"tooltip":{"mode":"multi","sort":"desc"}},"targets":[{"datasource":{"type":"prometheus","uid":"prometheus"},"expr":"sum by (k8s_namespace_name)(increase(k8s_container_restarts[1h]))","legendFormat":"{{k8s_namespace_name}}","refId":"A"}],"title":"New restarts last hour","type":"timeseries"},{"id":15,"type":"table","title":"Degraded deployments","description":"available != desired, live list","gridPos":{"h":8,"w":12,"x":0,"y":26},"datasource":{"type":"prometheus","uid":"prometheus"},"fieldConfig":{"defaults":{"custom":{"filterable":false,"inspect":false}},"overrides":[]},"options":{"cellHeight":"sm","showHeader":true},"targets":[{"datasource":{"type":"prometheus","uid":"prometheus"},"expr":"k8s_deployment_available != k8s_deployment_desired","instant":true,"legendFormat":" ","refId":"A"}],"transformations":[{"id":"labelsToFields","options":{}},{"id":"organize","options":{"excludeByName":{"Time":true,"__name__":true},"renameByName":{"k8s_deployment_name":"Deployment","k8s_namespace_name":"Namespace","Value":"Available","k8s_deployment_available":"Available"}}}]},{"id":16,"type":"table","title":"Pods not running","description":"pending / failed / succeeded, live list","gridPos":{"h":8,"w":12,"x":12,"y":26},"datasource":{"type":"prometheus","uid":"prometheus"},"fieldConfig":{"defaults":{"custom":{"filterable":false,"inspect":false},"mappings":[{"type":"value","options":{"1":{"text":"Pending","index":0},"3":{"text":"Failed","index":1},"4":{"text":"Succeeded","index":2}}}]},"overrides":[]},"options":{"cellHeight":"sm","showHeader":true},"targets":[{"datasource":{"type":"prometheus","uid":"prometheus"},"expr":"k8s_pod_phase != 2","instant":true,"legendFormat":" ","refId":"A"}],"transformations":[{"id":"labelsToFields","options":{}},{"id":"organize","options":{"excludeByName":{"Time":true,"__name__":true,"k8s_node_name":true},"renameByName":{"k8s_pod_name":"Pod","k8s_namespace_name":"Namespace","Value":"Phase","k8s_pod_phase":"Phase"}}}]}],"refresh":"1m","schemaVersion":39,"tags":["homelab","overview"],"templating":{"list":[]},"time":{"from":"now-24h","to":"now"},"timepicker":{},"timezone":"browser","title":"Homelab - Cluster Overview","uid":"homelab-overview","version":1,"weekStart":""}
+    {"annotations":{"list":[{"builtIn":1,"datasource":{"type":"grafana","uid":"-- Grafana --"},"enable":true,"hide":true,"type":"dashboard"}]},"editable":true,"graphTooltip":1,"id":3613467199504384,"links":[],"panels":[{"datasource":{"type":"prometheus","uid":"prometheus"},"description":"target 3 - drops to orange while storage1 is down","fieldConfig":{"defaults":{"color":{"mode":"thresholds"},"decimals":0,"thresholds":{"mode":"absolute","steps":[{"color":"transparent","value":null},{"color":"red","value":0},{"color":"orange","value":2},{"color":"green","value":3}]},"unit":"none"},"overrides":[]},"gridPos":{"h":4,"w":5,"x":0,"y":0},"id":1,"options":{"colorMode":"value","graphMode":"area","orientation":"auto","reduceOptions":{"calcs":["lastNotNull"]},"textMode":"auto","wideLayout":true},"targets":[{"datasource":{"type":"prometheus","uid":"prometheus"},"expr":"count(k8s_node_cpu_usage)","legendFormat":" ","refId":"A"}],"title":"Nodes reporting","type":"stat"},{"datasource":{"type":"prometheus","uid":"prometheus"},"description":null,"fieldConfig":{"defaults":{"color":{"mode":"thresholds"},"decimals":0,"thresholds":{"mode":"absolute","steps":[{"color":"transparent","value":null},{"color":"green","value":0}]},"unit":"none"},"overrides":[]},"gridPos":{"h":4,"w":5,"x":5,"y":0},"id":2,"options":{"colorMode":"value","graphMode":"area","orientation":"auto","reduceOptions":{"calcs":["lastNotNull"]},"textMode":"auto","wideLayout":true},"targets":[{"datasource":{"type":"prometheus","uid":"prometheus"},"expr":"count(k8s_pod_phase)","legendFormat":" ","refId":"A"}],"title":"Pods total","type":"stat"},{"datasource":{"type":"prometheus","uid":"prometheus"},"description":"pending / failed / succeeded incl. finished jobs","fieldConfig":{"defaults":{"color":{"mode":"thresholds"},"decimals":0,"thresholds":{"mode":"absolute","steps":[{"color":"transparent","value":null},{"color":"green","value":0},{"color":"orange","value":1},{"color":"red","value":5}]},"unit":"none"},"overrides":[]},"gridPos":{"h":4,"w":5,"x":10,"y":0},"id":3,"options":{"colorMode":"value","graphMode":"area","orientation":"auto","reduceOptions":{"calcs":["lastNotNull"]},"textMode":"auto","wideLayout":true},"targets":[{"datasource":{"type":"prometheus","uid":"prometheus"},"expr":"count(k8s_pod_phase != 2)","legendFormat":" ","refId":"A"}],"title":"Pods not running","type":"stat"},{"datasource":{"type":"prometheus","uid":"prometheus"},"description":null,"fieldConfig":{"defaults":{"color":{"mode":"thresholds"},"decimals":0,"thresholds":{"mode":"absolute","steps":[{"color":"transparent","value":null},{"color":"green","value":0},{"color":"orange","value":1},{"color":"red","value":3}]},"unit":"none"},"overrides":[]},"gridPos":{"h":4,"w":5,"x":15,"y":0},"id":4,"options":{"colorMode":"value","graphMode":"area","orientation":"auto","reduceOptions":{"calcs":["lastNotNull"]},"textMode":"auto","wideLayout":true},"targets":[{"datasource":{"type":"prometheus","uid":"prometheus"},"expr":"count(k8s_deployment_available != k8s_deployment_desired)","legendFormat":" ","refId":"A"}],"title":"Deployments degraded","type":"stat"},{"datasource":{"type":"prometheus","uid":"prometheus"},"description":null,"fieldConfig":{"defaults":{"color":{"mode":"thresholds"},"decimals":0,"thresholds":{"mode":"absolute","steps":[{"color":"transparent","value":null},{"color":"green","value":0}]},"unit":"none"},"overrides":[]},"gridPos":{"h":4,"w":5,"x":20,"y":0},"id":5,"options":{"colorMode":"value","graphMode":"area","orientation":"auto","reduceOptions":{"calcs":["lastNotNull"]},"textMode":"auto","wideLayout":true},"targets":[{"datasource":{"type":"prometheus","uid":"prometheus"},"expr":"sum(k8s_container_restarts)","legendFormat":" ","refId":"A"}],"title":"Container restarts (total)","type":"stat"},{"datasource":{"type":"prometheus","uid":"prometheus"},"description":null,"fieldConfig":{"defaults":{"custom":{"axisPlacement":"auto","axisSoftMax":100,"drawStyle":"line","fillOpacity":8,"legendDisplayMode":"list","legendPlacement":"bottom","lineWidth":1,"showPoints":"never"},"thresholds":{"mode":"absolute","steps":[{"color":"transparent","value":null}]},"unit":"percent"}},"gridPos":{"h":7,"w":8,"x":0,"y":4},"id":6,"options":{"legend":{"calcs":["lastNotNull"],"displayMode":"list","placement":"bottom"},"tooltip":{"mode":"multi","sort":"desc"}},"targets":[{"datasource":{"type":"prometheus","uid":"prometheus"},"expr":"100 * (1 - avg by (host_name)(system_cpu_utilization_ratio{host_name!~\"master1\", state=\"idle\"}))","legendFormat":"{{host_name}}","refId":"A"}],"title":"CPU busy %","type":"timeseries"},{"datasource":{"type":"prometheus","uid":"prometheus"},"description":null,"fieldConfig":{"defaults":{"custom":{"axisPlacement":"auto","axisSoftMax":100,"drawStyle":"line","fillOpacity":8,"legendDisplayMode":"list","legendPlacement":"bottom","lineWidth":1,"showPoints":"never"},"thresholds":{"mode":"absolute","steps":[{"color":"transparent","value":null}]},"unit":"percent"}},"gridPos":{"h":7,"w":8,"x":8,"y":4},"id":7,"options":{"legend":{"calcs":["lastNotNull"],"displayMode":"list","placement":"bottom"},"tooltip":{"mode":"multi","sort":"desc"}},"targets":[{"datasource":{"type":"prometheus","uid":"prometheus"},"expr":"100 * (1 - max by (k8s_node_name)(node_memory_MemAvailable_bytes{k8s_node_name!~\"master1\"}) / max by (k8s_node_name)(node_memory_MemTotal_bytes{k8s_node_name!~\"master1\"}))","legendFormat":"{{k8s_node_name}}","refId":"A"}],"title":"Memory used %","type":"timeseries"},{"datasource":{"type":"prometheus","uid":"prometheus"},"description":null,"fieldConfig":{"defaults":{"custom":{"axisPlacement":"auto","drawStyle":"line","fillOpacity":8,"legendDisplayMode":"list","legendPlacement":"bottom","lineWidth":1,"showPoints":"never"},"thresholds":{"mode":"absolute","steps":[{"color":"transparent","value":null}]},"unit":"gbytes"}},"gridPos":{"h":7,"w":8,"x":16,"y":4},"id":8,"options":{"legend":{"calcs":["lastNotNull"],"displayMode":"list","placement":"bottom"},"tooltip":{"mode":"multi","sort":"desc"}},"targets":[{"datasource":{"type":"prometheus","uid":"prometheus"},"expr":"max by (k8s_node_name)(node_memory_MemAvailable_bytes{k8s_node_name!~\"master1\"})","legendFormat":"{{k8s_node_name}}","refId":"A"}],"title":"RAM free","type":"timeseries"},{"datasource":{"type":"prometheus","uid":"prometheus"},"description":null,"fieldConfig":{"defaults":{"custom":{"axisPlacement":"auto","drawStyle":"line","fillOpacity":8,"legendDisplayMode":"list","legendPlacement":"bottom","lineWidth":1,"showPoints":"never"},"thresholds":{"mode":"absolute","steps":[{"color":"transparent","value":null}]},"unit":"gbytes"}},"gridPos":{"h":7,"w":8,"x":0,"y":11},"id":9,"options":{"legend":{"calcs":["lastNotNull"],"displayMode":"list","placement":"bottom"},"tooltip":{"mode":"multi","sort":"desc"}},"targets":[{"datasource":{"type":"prometheus","uid":"prometheus"},"expr":"max by (k8s_node_name)(node_filesystem_avail_bytes{fstype=~\"ext4|xfs\", k8s_node_name!~\"master1\"})","legendFormat":"{{k8s_node_name}}","refId":"A"}],"title":"Disk free","type":"timeseries"},{"datasource":{"type":"prometheus","uid":"prometheus"},"description":"mayastor pools fast/media/crucial - series live with the storage node","fieldConfig":{"defaults":{"custom":{"axisPlacement":"auto","drawStyle":"line","fillOpacity":8,"legendDisplayMode":"list","legendPlacement":"bottom","lineWidth":1,"showPoints":"never"},"thresholds":{"mode":"absolute","steps":[{"color":"transparent","value":null}]},"unit":"gbytes"}},"gridPos":{"h":7,"w":8,"x":8,"y":11},"id":10,"options":{"legend":{"calcs":["lastNotNull"],"displayMode":"list","placement":"bottom"},"tooltip":{"mode":"multi","sort":"desc"}},"targets":[{"datasource":{"type":"prometheus","uid":"prometheus"},"expr":"(diskpool_total_size_bytes - diskpool_used_size_bytes)","legendFormat":"{{id}}","refId":"A"}],"title":"Pool free (populates after storage1 is back)","type":"timeseries"},{"datasource":{"type":"prometheus","uid":"prometheus"},"description":null,"fieldConfig":{"defaults":{"custom":{"axisPlacement":"auto","axisSoftMax":100,"drawStyle":"line","fillOpacity":8,"legendDisplayMode":"list","legendPlacement":"bottom","lineWidth":1,"showPoints":"never"},"thresholds":{"mode":"absolute","steps":[{"color":"transparent","value":null}]},"unit":"percent"}},"gridPos":{"h":7,"w":8,"x":16,"y":11},"id":11,"options":{"legend":{"calcs":["lastNotNull"],"displayMode":"list","placement":"bottom"},"tooltip":{"mode":"multi","sort":"desc"}},"targets":[{"datasource":{"type":"prometheus","uid":"prometheus"},"expr":"100 * diskpool_used_size_bytes / diskpool_total_size_bytes","legendFormat":"{{id}}","refId":"A"}],"title":"Pool used %","type":"timeseries"},{"datasource":{"type":"prometheus","uid":"prometheus"},"description":null,"fieldConfig":{"defaults":{"custom":{"axisPlacement":"auto","drawStyle":"line","fillOpacity":8,"legendDisplayMode":"list","legendPlacement":"bottom","lineWidth":1,"showPoints":"never"},"thresholds":{"mode":"absolute","steps":[{"color":"transparent","value":null}]},"unit":"none"}},"gridPos":{"h":8,"w":8,"x":0,"y":18},"id":12,"options":{"legend":{"calcs":["lastNotNull"],"displayMode":"list","placement":"bottom"},"tooltip":{"mode":"multi","sort":"desc"}},"targets":[{"datasource":{"type":"prometheus","uid":"prometheus"},"expr":"count by (k8s_namespace_name)(k8s_pod_phase != 2)","legendFormat":"{{k8s_namespace_name}}","refId":"A"}],"title":"Pods not running by namespace","type":"timeseries"},{"datasource":{"type":"prometheus","uid":"prometheus"},"description":null,"fieldConfig":{"defaults":{"custom":{"axisPlacement":"auto","drawStyle":"line","fillOpacity":8,"legendDisplayMode":"list","legendPlacement":"bottom","lineWidth":1,"showPoints":"never"},"thresholds":{"mode":"absolute","steps":[{"color":"transparent","value":null}]},"unit":"none"}},"gridPos":{"h":8,"w":8,"x":8,"y":18},"id":13,"options":{"legend":{"calcs":["lastNotNull"],"displayMode":"list","placement":"bottom"},"tooltip":{"mode":"multi","sort":"desc"}},"targets":[{"datasource":{"type":"prometheus","uid":"prometheus"},"expr":"sum by (k8s_namespace_name)(k8s_container_restarts)","legendFormat":"{{k8s_namespace_name}}","refId":"A"}],"title":"Container restarts by namespace","type":"timeseries"},{"datasource":{"type":"prometheus","uid":"prometheus"},"description":null,"fieldConfig":{"defaults":{"custom":{"axisPlacement":"auto","drawStyle":"line","fillOpacity":8,"legendDisplayMode":"list","legendPlacement":"bottom","lineWidth":1,"showPoints":"never"},"thresholds":{"mode":"absolute","steps":[{"color":"transparent","value":null}]},"unit":"none"}},"gridPos":{"h":8,"w":8,"x":16,"y":18},"id":14,"options":{"legend":{"calcs":["lastNotNull"],"displayMode":"list","placement":"bottom"},"tooltip":{"mode":"multi","sort":"desc"}},"targets":[{"datasource":{"type":"prometheus","uid":"prometheus"},"expr":"sum by (k8s_namespace_name)(increase(k8s_container_restarts[1h]))","legendFormat":"{{k8s_namespace_name}}","refId":"A"}],"title":"New restarts last hour","type":"timeseries"},{"id":15,"type":"table","title":"Degraded deployments","description":"available != desired, live list","gridPos":{"h":8,"w":12,"x":0,"y":26},"datasource":{"type":"prometheus","uid":"prometheus"},"fieldConfig":{"defaults":{"custom":{"filterable":false,"inspect":false}},"overrides":[]},"options":{"cellHeight":"sm","showHeader":true},"targets":[{"datasource":{"type":"prometheus","uid":"prometheus"},"expr":"k8s_deployment_available != k8s_deployment_desired","legendFormat":" ","refId":"A"}],"transformations":[{"id":"labelsToFields","options":{}},{"id":"groupBy","options":{"fields":{"k8s_namespace_name":{"operation":"groupby"},"k8s_deployment_name":{"operation":"groupby"},"Value":{"aggregations":["lastNotNull"],"operation":"aggregate"},"k8s_deployment_available":{"aggregations":["lastNotNull"],"operation":"aggregate"}}}},{"id":"organize","options":{"excludeByName":{"Time":true,"__name__":true},"renameByName":{"k8s_deployment_name":"Deployment","k8s_namespace_name":"Namespace","Value (lastNotNull)":"Available","k8s_deployment_available (lastNotNull)":"Available"}}}]},{"id":16,"type":"table","title":"Pods not running","description":"pending / failed / succeeded, live list","gridPos":{"h":8,"w":12,"x":12,"y":26},"datasource":{"type":"prometheus","uid":"prometheus"},"fieldConfig":{"defaults":{"custom":{"filterable":false,"inspect":false},"mappings":[{"type":"value","options":{"1":{"text":"Pending","index":0},"3":{"text":"Failed","index":1},"4":{"text":"Succeeded","index":2}}}]},"overrides":[]},"options":{"cellHeight":"sm","showHeader":true},"targets":[{"datasource":{"type":"prometheus","uid":"prometheus"},"expr":"k8s_pod_phase != 2","legendFormat":" ","refId":"A"}],"transformations":[{"id":"labelsToFields","options":{}},{"id":"groupBy","options":{"fields":{"k8s_namespace_name":{"operation":"groupby"},"k8s_pod_name":{"operation":"groupby"},"Value":{"aggregations":["lastNotNull"],"operation":"aggregate"},"k8s_pod_phase":{"aggregations":["lastNotNull"],"operation":"aggregate"}}}},{"id":"organize","options":{"excludeByName":{"Time":true,"__name__":true,"k8s_node_name":true},"mappings":[],"indexByName":{},"renameByName":{"k8s_pod_name":"Pod","k8s_namespace_name":"Namespace","Value (lastNotNull)":"Phase","k8s_pod_phase (lastNotNull)":"Phase"}}}]}],"refresh":"1m","schemaVersion":39,"tags":["homelab","overview"],"templating":{"list":[]},"time":{"from":"now-24h","to":"now"},"timepicker":{},"timezone":"browser","title":"Homelab - Cluster Overview","uid":"homelab-overview","version":1,"weekStart":""}
   grafana-dashboard-disk-health.json: |+
     {
       "annotations": {
@@ -2632,8 +2632,6 @@ data:
           "fieldConfig": {
             "defaults": {
               "colorMode": "background",
-              "graphMode": "none",
-              "textMode": "auto",
               "mappings": [
                 {
                   "type": "value",
@@ -2661,9 +2659,9 @@ data:
                     "value": 1
                   }
                 ]
-              }
-            },
-            "overrides": []
+              },
+              "overrides": []
+            }
           },
           "gridPos": {
             "h": 8,
@@ -2692,7 +2690,6 @@ data:
                 "uid": "prometheus"
               },
               "expr": "min(smartctl_device_smart_status{k8s_node_name=~\"$node\"})",
-              "instant": true,
               "legendFormat": " ",
               "refId": "A"
             }
@@ -2708,9 +2705,7 @@ data:
           "fieldConfig": {
             "defaults": {
               "decimals": 0,
-              "max": 30,
               "min": 0,
-              "unit": "celsius",
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
@@ -2727,7 +2722,8 @@ data:
                     "value": 60
                   }
                 ]
-              }
+              },
+              "unit": "celsius"
             },
             "overrides": []
           },
@@ -2792,9 +2788,9 @@ data:
                     "value": 90
                   }
                 ]
-              }
-            },
-            "overrides": []
+              },
+              "overrides": []
+            }
           },
           "gridPos": {
             "h": 8,
@@ -2831,7 +2827,6 @@ data:
                 "uid": "prometheus"
               },
               "expr": "max by (device)(smartctl_device_percentage_used_total{k8s_node_name=~\"$node\"})",
-              "instant": true,
               "legendFormat": "{{device}}",
               "refId": "A"
             }
@@ -2840,6 +2835,15 @@ data:
           "type": "bargauge"
         },
         {
+          "id": 4,
+          "type": "table",
+          "title": "Disks",
+          "gridPos": {
+            "h": 9,
+            "w": 24,
+            "x": 0,
+            "y": 8
+          },
           "datasource": {
             "type": "prometheus",
             "uid": "prometheus"
@@ -2847,54 +2851,70 @@ data:
           "fieldConfig": {
             "defaults": {
               "custom": {
-                "align": "auto",
-                "cellOptions": {
-                  "type": "auto"
-                },
                 "filterable": false,
                 "inspect": false
               },
-              "mappings": [
-                {
-                  "type": "value",
-                  "options": {
-                    "1": {
-                      "text": "PASS",
-                      "index": 0
-                    },
-                    "0": {
-                      "text": "FAIL",
-                      "index": 1
-                    }
-                  }
-                }
-              ],
+              "mappings": [],
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "red",
+                    "color": "text",
                     "value": null
-                  },
-                  {
-                    "color": "green",
-                    "value": 1
                   }
                 ]
               },
-              "unit": "s"
+              "overrides": []
             },
             "overrides": [
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "smartctl_device_percentage_used_total"
+                  "options": "Health"
                 },
                 "properties": [
                   {
-                    "id": "displayName",
-                    "value": "Wear"
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "type": "value",
+                        "options": {
+                          "1": {
+                            "text": "PASS",
+                            "index": 0
+                          },
+                          "0": {
+                            "text": "FAIL",
+                            "index": 1
+                          }
+                        }
+                      }
+                    ]
                   },
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "red",
+                          "value": null
+                        },
+                        {
+                          "color": "green",
+                          "value": 1
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Wear"
+                },
+                "properties": [
                   {
                     "id": "unit",
                     "value": "percent"
@@ -2924,53 +2944,53 @@ data:
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "smartctl_device_temperature"
+                  "options": "Temp"
                 },
                 "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Temp"
-                  },
                   {
                     "id": "unit",
                     "value": "celsius"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "smartctl_device_power_on_seconds_total"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Power on"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "smartctl_device_power_cycle_count_total"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Cycles"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "smartctl_device_critical_warning_total"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Crit warn"
                   },
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "green",
+                          "value": null
+                        },
+                        {
+                          "color": "orange",
+                          "value": 45
+                        },
+                        {
+                          "color": "red",
+                          "value": 60
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Power on"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "s"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Crit warn"
+                },
+                "properties": [
                   {
                     "id": "thresholds",
                     "value": {
@@ -2992,13 +3012,9 @@ data:
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "smartctl_device_media_errors_total"
+                  "options": "Media err"
                 },
                 "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Media err"
-                  },
                   {
                     "id": "thresholds",
                     "value": {
@@ -3014,30 +3030,11 @@ data:
                         }
                       ]
                     }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "smartctl_device_error_log_count"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Err log"
                   }
                 ]
               }
             ]
           },
-          "gridPos": {
-            "h": 9,
-            "w": 24,
-            "x": 0,
-            "y": 8
-          },
-          "id": 4,
           "options": {
             "cellHeight": "sm",
             "footer": {
@@ -3059,8 +3056,7 @@ data:
                 "uid": "prometheus"
               },
               "expr": "max by (device, model_name, serial_number)(smartctl_device{k8s_node_name=~\"$node\"})",
-              "instant": true,
-              "legendFormat": "{{device}}",
+              "legendFormat": " ",
               "refId": "A"
             },
             {
@@ -3068,9 +3064,8 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "max by (device)(smartctl_device_smart_status{k8s_node_name=~\"$node\"})",
-              "instant": true,
-              "legendFormat": " ",
+              "expr": "label_replace(max by (device)(smartctl_device_smart_status{k8s_node_name=~\"$node\"}), \"__name__\", \"Health\", \"device\", \".*\")",
+              "legendFormat": "Health",
               "refId": "B"
             },
             {
@@ -3078,9 +3073,8 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "max by (device)(smartctl_device_percentage_used_total{k8s_node_name=~\"$node\"})",
-              "instant": true,
-              "legendFormat": " ",
+              "expr": "label_replace(max by (device)(smartctl_device_percentage_used_total{k8s_node_name=~\"$node\"}), \"__name__\", \"Wear\", \"device\", \".*\")",
+              "legendFormat": "Wear",
               "refId": "C"
             },
             {
@@ -3088,9 +3082,8 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "max by (device)(smartctl_device_temperature{k8s_node_name=~\"$node\", temperature_type=\"current\"})",
-              "instant": true,
-              "legendFormat": " ",
+              "expr": "label_replace(max by (device)(smartctl_device_temperature{k8s_node_name=~\"$node\", temperature_type=\"current\"}), \"__name__\", \"Temp\", \"device\", \".*\")",
+              "legendFormat": "Temp",
               "refId": "D"
             },
             {
@@ -3098,9 +3091,8 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "max by (device)(smartctl_device_power_on_seconds_total{k8s_node_name=~\"$node\"})",
-              "instant": true,
-              "legendFormat": " ",
+              "expr": "label_replace(max by (device)(smartctl_device_power_on_seconds_total{k8s_node_name=~\"$node\"}), \"__name__\", \"Power on\", \"device\", \".*\")",
+              "legendFormat": "Power on",
               "refId": "E"
             },
             {
@@ -3108,9 +3100,8 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "max by (device)(smartctl_device_power_cycle_count_total{k8s_node_name=~\"$node\"})",
-              "instant": true,
-              "legendFormat": " ",
+              "expr": "label_replace(max by (device)(smartctl_device_power_cycle_count_total{k8s_node_name=~\"$node\"}), \"__name__\", \"Cycles\", \"device\", \".*\")",
+              "legendFormat": "Cycles",
               "refId": "F"
             },
             {
@@ -3118,9 +3109,8 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "max by (device)(smartctl_device_critical_warning_total{k8s_node_name=~\"$node\"})",
-              "instant": true,
-              "legendFormat": " ",
+              "expr": "label_replace(max by (device)(smartctl_device_critical_warning_total{k8s_node_name=~\"$node\"}), \"__name__\", \"Crit warn\", \"device\", \".*\")",
+              "legendFormat": "Crit warn",
               "refId": "G"
             },
             {
@@ -3128,9 +3118,8 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "max by (device)(smartctl_device_media_errors_total{k8s_node_name=~\"$node\"})",
-              "instant": true,
-              "legendFormat": " ",
+              "expr": "label_replace(max by (device)(smartctl_device_media_errors_total{k8s_node_name=~\"$node\"}), \"__name__\", \"Media err\", \"device\", \".*\")",
+              "legendFormat": "Media err",
               "refId": "H"
             },
             {
@@ -3138,13 +3127,11 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "max by (device)(smartctl_device_error_log_count{k8s_node_name=~\"$node\"})",
-              "instant": true,
-              "legendFormat": " ",
+              "expr": "label_replace(max by (device)(smartctl_device_error_log_count{k8s_node_name=~\"$node\"}), \"__name__\", \"Err log\", \"device\", \".*\")",
+              "legendFormat": "Err log",
               "refId": "I"
             }
           ],
-          "title": "Disks",
           "transformations": [
             {
               "id": "labelsToFields",
@@ -3153,6 +3140,76 @@ data:
             {
               "id": "merge",
               "options": {}
+            },
+            {
+              "id": "groupBy",
+              "options": {
+                "fields": {
+                  "device": {
+                    "operation": "groupby"
+                  },
+                  "model_name": {
+                    "aggregations": [
+                      "lastNotNull"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "serial_number": {
+                    "aggregations": [
+                      "lastNotNull"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "Health": {
+                    "aggregations": [
+                      "lastNotNull"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "Wear": {
+                    "aggregations": [
+                      "lastNotNull"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "Temp": {
+                    "aggregations": [
+                      "lastNotNull"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "Power on": {
+                    "aggregations": [
+                      "lastNotNull"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "Cycles": {
+                    "aggregations": [
+                      "lastNotNull"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "Crit warn": {
+                    "aggregations": [
+                      "lastNotNull"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "Media err": {
+                    "aggregations": [
+                      "lastNotNull"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "Err log": {
+                    "aggregations": [
+                      "lastNotNull"
+                    ],
+                    "operation": "aggregate"
+                  }
+                }
+              }
             },
             {
               "id": "organize",
@@ -3164,6 +3221,7 @@ data:
                   "job": true,
                   "service_instance_id": true,
                   "service_name": true,
+                  "pod": true,
                   "k8s_pod_name": true,
                   "k8s_daemonset_name": true,
                   "k8s_namespace_name": true,
@@ -3171,22 +3229,29 @@ data:
                   "k8s_container_name": true,
                   "container": true,
                   "endpoint": true,
-                  "namespace": true,
-                  "pod": true
+                  "namespace": true
                 },
                 "renameByName": {
                   "device": "Device",
-                  "model_name": "Model",
-                  "serial_number": "Serial"
+                  "device (group by)": "Device",
+                  "model_name (lastNotNull)": "Model",
+                  "serial_number (lastNotNull)": "Serial",
+                  "Health (lastNotNull)": "Health",
+                  "Wear (lastNotNull)": "Wear",
+                  "Temp (lastNotNull)": "Temp",
+                  "Power on (lastNotNull)": "Power on",
+                  "Cycles (lastNotNull)": "Cycles",
+                  "Crit warn (lastNotNull)": "Crit warn",
+                  "Media err (lastNotNull)": "Media err",
+                  "Err log (lastNotNull)": "Err log"
                 }
               }
             }
-          ],
-          "type": "table"
+          ]
         }
       ],
       "refresh": "1m",
-      "schemaVersion": 39,
+      "schemaVersion": 40,
       "tags": [
         "homelab",
         "disk",
@@ -3200,14 +3265,14 @@ data:
               "text": "storage1",
               "value": "storage1"
             },
-            "definition": "label_values(smartctl_device_smart_status, k8s_node_name)",
             "datasource": {
               "type": "prometheus",
               "uid": "prometheus"
             },
+            "definition": "label_values(smartctl_device_smart_status, k8s_node_name)",
             "name": "node",
             "query": {
-              "query": "label_values(smartctl_device_smart_status{k8s_node_name!=\"\"}, k8s_node_name)",
+              "query": "label_values(smartctl_device_smart_status, k8s_node_name)",
               "refId": "PrometheusVariableQueryEditor-VariableQuery",
               "qryType": 1
             },
@@ -3223,7 +3288,7 @@ data:
       },
       "timepicker": {},
       "timezone": "browser",
-      "title": "Homelab \u2014 Disk Health",
+      "title": "Homelab — Disk Health",
       "uid": "homelab-disk-health",
       "version": 1,
       "weekStart": ""
