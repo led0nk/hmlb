@@ -29,7 +29,12 @@ spec:
                 - ALL
           ports:
             - name: metrics
-              containerPort: 9840
+              containerPort: 9633
+          tolerations:
+            - key: role
+              operator: Equal
+              value: storage-node
+              effect: NoSchedule
           readinessProbe:
             httpGet:
               path: /metrics
