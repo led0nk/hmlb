@@ -38,3 +38,7 @@ spec:
     kind: GitRepository
     name: homelab-repo
     namespace: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
