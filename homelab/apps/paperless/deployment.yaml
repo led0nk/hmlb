@@ -142,5 +142,6 @@ data:
   PAPERLESS_DBUSER: paperless
   PAPERLESS_REDIS: "redis://redis:6379"
   PAPERLESS_URL: "https://paperless.kndlive.de"
+  PAPERLESS_ALLOWED_HOSTS: "*"
   PAPERLESS_TIME_ZONE: "Europe/Berlin"
   PAPERLESS_OCR_LANGUAGE: "deu+eng"
