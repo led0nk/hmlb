@@ -22,6 +22,7 @@ spec:
         - group: ""
           kind: Service
           name: paperless-server
+          port: 8000
 ---
 apiVersion: apps/v1
 kind: Deployment
