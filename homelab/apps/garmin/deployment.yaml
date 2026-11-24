@@ -99,7 +99,7 @@ spec:
   podMetricsEndpoints:
     - port: metrics
       path: /metrics
-      interval: 1h # NOTE: cache.ttl is 1h, longevity data not workouts
+      interval: 5m # NOTE: cache.ttl is 1h - exporter only refreshes hourly, scrape rate is for dashboard continuity
 ---
 apiVersion: v1
 kind: Pod

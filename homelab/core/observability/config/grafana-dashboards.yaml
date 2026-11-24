@@ -3351,10 +3351,9 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "max(garmin_wellness_total_steps{otel_scope_name=\"github.com/barnes-c/garmin_exporter\"})",
+              "expr": "max(last_over_time(garmin_wellness_total_steps{k8s_namespace_name=\"garmin\"}[15m]))",
               "legendFormat": " ",
-              "refId": "A",
-              "instant": true
+              "refId": "A"
             }
           ],
           "title": "Steps today",
@@ -3408,10 +3407,9 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "100 * max(garmin_wellness_total_steps{otel_scope_name=\"github.com/barnes-c/garmin_exporter\"}, garmin_wellness_step_goal{otel_scope_name=\"github.com/barnes-c/garmin_exporter\"}) / on() group_left max(garmin_wellness_step_goal{otel_scope_name=\"github.com/barnes-c/garmin_exporter\"})",
+              "expr": "100 * max(last_over_time(garmin_wellness_total_steps{k8s_namespace_name=\"garmin\"}[15m]), last_over_time(garmin_wellness_step_goal{k8s_namespace_name=\"garmin\"}[15m])) / on() group_left max(last_over_time(garmin_wellness_step_goal{k8s_namespace_name=\"garmin\"}[15m]))",
               "legendFormat": " ",
-              "refId": "A",
-              "instant": true
+              "refId": "A"
             }
           ],
           "title": "Steps goal / today",
@@ -3465,10 +3463,9 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "max(garmin_sleep_score{component=\"overall\",otel_scope_name=\"github.com/barnes-c/garmin_exporter\"})",
+              "expr": "max(last_over_time(garmin_sleep_score{component=\"overall\",k8s_namespace_name=\"garmin\"}[15m]))",
               "legendFormat": " ",
-              "refId": "A",
-              "instant": true
+              "refId": "A"
             }
           ],
           "title": "Sleep score (overall)",
@@ -3522,10 +3519,9 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "max(garmin_wellness_body_battery_latest{otel_scope_name=\"github.com/barnes-c/garmin_exporter\"})",
+              "expr": "max(last_over_time(garmin_wellness_body_battery_latest{k8s_namespace_name=\"garmin\"}[15m]))",
               "legendFormat": " ",
-              "refId": "A",
-              "instant": true
+              "refId": "A"
             }
           ],
           "title": "Body battery",
@@ -3579,10 +3575,9 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "max(garmin_heart_rate_seven_day_avg_resting_bpm{otel_scope_name=\"github.com/barnes-c/garmin_exporter\"})",
+              "expr": "max(last_over_time(garmin_heart_rate_seven_day_avg_resting_bpm{k8s_namespace_name=\"garmin\"}[15m]))",
               "legendFormat": " ",
-              "refId": "A",
-              "instant": true
+              "refId": "A"
             }
           ],
           "title": "Resting HR",
@@ -3638,10 +3633,9 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "max(garmin_body_weight_grams{otel_scope_name=\"github.com/barnes-c/garmin_exporter\"}) / 1000",
+              "expr": "max(last_over_time(garmin_body_weight_grams{k8s_namespace_name=\"garmin\"}[15m])) / 1000",
               "legendFormat": " ",
-              "refId": "A",
-              "instant": true
+              "refId": "A"
             }
           ],
           "title": "Weight",
@@ -3693,7 +3687,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "garmin_sleep_deep_seconds{otel_scope_name=\"github.com/barnes-c/garmin_exporter\"} / 3600",
+              "expr": "last_over_time(garmin_sleep_deep_seconds{k8s_namespace_name=\"garmin\"}[15m]) / 3600",
               "legendFormat": "deep",
               "refId": "A"
             },
@@ -3702,7 +3696,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "garmin_sleep_light_seconds{otel_scope_name=\"github.com/barnes-c/garmin_exporter\"} / 3600",
+              "expr": "last_over_time(garmin_sleep_light_seconds{k8s_namespace_name=\"garmin\"}[15m]) / 3600",
               "legendFormat": "light",
               "refId": "A"
             },
@@ -3711,7 +3705,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "garmin_sleep_rem_seconds{otel_scope_name=\"github.com/barnes-c/garmin_exporter\"} / 3600",
+              "expr": "last_over_time(garmin_sleep_rem_seconds{k8s_namespace_name=\"garmin\"}[15m]) / 3600",
               "legendFormat": "rem",
               "refId": "A"
             },
@@ -3720,7 +3714,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "garmin_sleep_awake_seconds{otel_scope_name=\"github.com/barnes-c/garmin_exporter\"} / 3600",
+              "expr": "last_over_time(garmin_sleep_awake_seconds{k8s_namespace_name=\"garmin\"}[15m]) / 3600",
               "legendFormat": "awake",
               "refId": "A"
             }
@@ -3774,7 +3768,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "garmin_sleep_hrv_last_night_ms{otel_scope_name=\"github.com/barnes-c/garmin_exporter\"}",
+              "expr": "last_over_time(garmin_sleep_hrv_last_night_ms{k8s_namespace_name=\"garmin\"}[15m])",
               "legendFormat": "last night",
               "refId": "A"
             },
@@ -3783,7 +3777,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "garmin_sleep_hrv_weekly_avg_ms{otel_scope_name=\"github.com/barnes-c/garmin_exporter\"}",
+              "expr": "last_over_time(garmin_sleep_hrv_weekly_avg_ms{k8s_namespace_name=\"garmin\"}[15m])",
               "legendFormat": "weekly avg",
               "refId": "A"
             },
@@ -3792,7 +3786,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "garmin_sleep_hrv_baseline_balanced_upper_ms{otel_scope_name=\"github.com/barnes-c/garmin_exporter\"}",
+              "expr": "last_over_time(garmin_sleep_hrv_baseline_balanced_upper_ms{k8s_namespace_name=\"garmin\"}[15m])",
               "legendFormat": "balanced upper",
               "refId": "A"
             }
@@ -3846,7 +3840,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "garmin_heart_rate_resting_bpm{otel_scope_name=\"github.com/barnes-c/garmin_exporter\"}",
+              "expr": "last_over_time(garmin_heart_rate_resting_bpm{k8s_namespace_name=\"garmin\"}[15m])",
               "legendFormat": "resting",
               "refId": "A"
             },
@@ -3855,7 +3849,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "garmin_heart_rate_seven_day_avg_resting_bpm{otel_scope_name=\"github.com/barnes-c/garmin_exporter\"}",
+              "expr": "last_over_time(garmin_heart_rate_seven_day_avg_resting_bpm{k8s_namespace_name=\"garmin\"}[15m])",
               "legendFormat": "7d avg",
               "refId": "A"
             }
@@ -3909,7 +3903,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "garmin_respiration_avg_waking_bpm{otel_scope_name=\"github.com/barnes-c/garmin_exporter\"}",
+              "expr": "last_over_time(garmin_respiration_avg_waking_bpm{k8s_namespace_name=\"garmin\"}[15m])",
               "legendFormat": "avg waking",
               "refId": "A"
             },
@@ -3918,7 +3912,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "garmin_respiration_highest_bpm{otel_scope_name=\"github.com/barnes-c/garmin_exporter\"}",
+              "expr": "last_over_time(garmin_respiration_highest_bpm{k8s_namespace_name=\"garmin\"}[15m])",
               "legendFormat": "highest",
               "refId": "A"
             },
@@ -3927,7 +3921,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "garmin_respiration_lowest_bpm{otel_scope_name=\"github.com/barnes-c/garmin_exporter\"}",
+              "expr": "last_over_time(garmin_respiration_lowest_bpm{k8s_namespace_name=\"garmin\"}[15m])",
               "legendFormat": "lowest",
               "refId": "A"
             }
@@ -3981,7 +3975,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "garmin_wellness_body_battery_latest{otel_scope_name=\"github.com/barnes-c/garmin_exporter\"}",
+              "expr": "last_over_time(garmin_wellness_body_battery_latest{k8s_namespace_name=\"garmin\"}[15m])",
               "legendFormat": "latest",
               "refId": "A"
             }
@@ -4035,7 +4029,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "garmin_spo2_avg_percent{otel_scope_name=\"github.com/barnes-c/garmin_exporter\"}",
+              "expr": "last_over_time(garmin_spo2_avg_percent{k8s_namespace_name=\"garmin\"}[15m])",
               "legendFormat": "avg",
               "refId": "A"
             },
@@ -4044,7 +4038,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "garmin_spo2_lowest_percent{otel_scope_name=\"github.com/barnes-c/garmin_exporter\"}",
+              "expr": "last_over_time(garmin_spo2_lowest_percent{k8s_namespace_name=\"garmin\"}[15m])",
               "legendFormat": "lowest",
               "refId": "A"
             },
@@ -4053,7 +4047,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "garmin_spo2_seven_day_avg_percent{otel_scope_name=\"github.com/barnes-c/garmin_exporter\"}",
+              "expr": "last_over_time(garmin_spo2_seven_day_avg_percent{k8s_namespace_name=\"garmin\"}[15m])",
               "legendFormat": "7d avg",
               "refId": "A"
             }
@@ -4107,7 +4101,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "garmin_wellness_high_stress_duration_seconds{otel_scope_name=\"github.com/barnes-c/garmin_exporter\"} / 3600",
+              "expr": "last_over_time(garmin_wellness_high_stress_duration_seconds{k8s_namespace_name=\"garmin\"}[15m]) / 3600",
               "legendFormat": "high",
               "refId": "A"
             },
@@ -4116,7 +4110,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "garmin_wellness_medium_stress_duration_seconds{otel_scope_name=\"github.com/barnes-c/garmin_exporter\"} / 3600",
+              "expr": "last_over_time(garmin_wellness_medium_stress_duration_seconds{k8s_namespace_name=\"garmin\"}[15m]) / 3600",
               "legendFormat": "medium",
               "refId": "A"
             },
@@ -4125,7 +4119,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "garmin_wellness_low_stress_duration_seconds{otel_scope_name=\"github.com/barnes-c/garmin_exporter\"} / 3600",
+              "expr": "last_over_time(garmin_wellness_low_stress_duration_seconds{k8s_namespace_name=\"garmin\"}[15m]) / 3600",
               "legendFormat": "low",
               "refId": "A"
             },
@@ -4134,7 +4128,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "garmin_wellness_rest_stress_duration_seconds{otel_scope_name=\"github.com/barnes-c/garmin_exporter\"} / 3600",
+              "expr": "last_over_time(garmin_wellness_rest_stress_duration_seconds{k8s_namespace_name=\"garmin\"}[15m]) / 3600",
               "legendFormat": "rest",
               "refId": "A"
             }
@@ -4188,7 +4182,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "garmin_intensity_weekly_vigorous_minutes{otel_scope_name=\"github.com/barnes-c/garmin_exporter\"}",
+              "expr": "last_over_time(garmin_intensity_weekly_vigorous_minutes{k8s_namespace_name=\"garmin\"}[15m])",
               "legendFormat": "vigorous",
               "refId": "A"
             },
@@ -4197,7 +4191,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "garmin_intensity_weekly_moderate_minutes{otel_scope_name=\"github.com/barnes-c/garmin_exporter\"}",
+              "expr": "last_over_time(garmin_intensity_weekly_moderate_minutes{k8s_namespace_name=\"garmin\"}[15m])",
               "legendFormat": "moderate",
               "refId": "A"
             },
@@ -4206,7 +4200,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "garmin_intensity_weekly_goal_minutes{otel_scope_name=\"github.com/barnes-c/garmin_exporter\"}",
+              "expr": "last_over_time(garmin_intensity_weekly_goal_minutes{k8s_namespace_name=\"garmin\"}[15m])",
               "legendFormat": "goal",
               "refId": "A"
             }
