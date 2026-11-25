@@ -10,4 +10,5 @@ resources:
   - apps/vaultwarden
   - apps/paperless
   - apps/garmin
+  - apps/energy
   - core
