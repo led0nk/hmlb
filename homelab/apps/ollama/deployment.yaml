@@ -75,7 +75,7 @@ spec:
             - name: ENABLE_LOGIN_FORM
               value: "1"
             - name: DEFAULT_MODELS
-              value: "glm-5.3-flash"
+              value: "glm-5.3-flash:cloud"
           volumeMounts:
             - name: webui-storage
               mountPath: /app/backend/data
