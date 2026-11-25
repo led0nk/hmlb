@@ -47,9 +47,6 @@ spec:
     spec:
       automountServiceAccountToken: false
       securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
         fsGroup: 1000
         seccompProfile:
           type: RuntimeDefault
@@ -69,18 +66,21 @@ spec:
           value: pull-only
         - name: VAULT_PATH
           value: /vault
-        - name: OBSIDIAN_AUTH_TOKEN_FILE
-          value: /secrets/OBSIDIAN_AUTH_TOKEN
-        - name: VAULT_PASSWORD_FILE
-          value: /secrets/VAULT_PASSWORD
+        - name: OBSIDIAN_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: obsidian-sync-auth
+              key: OBSIDIAN_AUTH_TOKEN
+        - name: VAULT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: obsidian-sync-e2epw
+              key: VAULT_PASSWORD
         volumeMounts:
         - name: config
           mountPath: /data
         - name: vault
           mountPath: /vault
-        - name: secrets
-          mountPath: /secrets
-          readOnly: true
         resources:
           requests:
             cpu: 50m
@@ -90,10 +90,16 @@ spec:
             memory: 256Mi
         securityContext:
           allowPrivilegeEscalation: false
-          readOnlyRootFilesystem: true
+          readOnlyRootFilesystem: false
           capabilities:
             drop:
             - ALL
+            add:
+            - CHOWN
+            - FOWNER
+            - SETUID
+            - SETGID
+            - DAC_OVERRIDE
       volumes:
       - name: config
         persistentVolumeClaim:
