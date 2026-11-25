@@ -17,6 +17,13 @@ spec:
     spec:
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
+      tolerations:
+        - key: role
+          operator: Equal
+          value: storage-node
+          effect: NoSchedule
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
       containers:
         - name: node-exporter
           image: quay.io/prometheus/node-exporter:v1.12.1
