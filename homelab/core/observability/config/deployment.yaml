@@ -15,6 +15,12 @@ metadata:
   name: otel-host-agent
   namespace: observability
 spec:
+  # host agent must also run on storage1 (control-plane taint: role=storage-node)
+  tolerations:
+    - key: role
+      operator: Equal
+      value: storage-node
+      effect: NoSchedule
   networkPolicy:
     enabled: false
   # containerd writes pod logs 0640 root:root; filelog needs root on talos
