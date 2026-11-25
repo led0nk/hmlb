@@ -1,0 +1,106 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: obsidian-sync-config
+  namespace: ollama
+spec:
+  storageClassName: openebs-fast
+  accessModes:
+  - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: obsidian-vault
+  namespace: ollama
+spec:
+  storageClassName: openebs-fast
+  accessModes:
+  - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: obsidian-sync
+  namespace: ollama
+  labels:
+    app.kubernetes.io/name: obsidian-sync
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: obsidian-sync
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: obsidian-sync
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: sync
+        image: ghcr.io/crosbyh/obsidian-headless-sync-docker:0.0.12
+        env:
+        - name: PUID
+          value: '1000'
+        - name: PGID
+          value: '1000'
+        - name: DEVICE_NAME
+          value: hmlb-cluster
+        - name: VAULT_NAME
+          value: brain
+        - name: SYNC_MODE
+          value: pull-only
+        - name: VAULT_PATH
+          value: /vault
+        - name: OBSIDIAN_AUTH_TOKEN_FILE
+          value: /secrets/OBSIDIAN_AUTH_TOKEN
+        - name: VAULT_PASSWORD_FILE
+          value: /secrets/VAULT_PASSWORD
+        volumeMounts:
+        - name: config
+          mountPath: /data
+        - name: vault
+          mountPath: /vault
+        - name: secrets
+          mountPath: /secrets
+          readOnly: true
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: obsidian-sync-config
+      - name: vault
+        persistentVolumeClaim:
+          claimName: obsidian-vault
+      - name: secrets
+        secret:
+          secretName: obsidian-sync-auth
