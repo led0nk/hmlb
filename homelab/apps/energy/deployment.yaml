@@ -1,0 +1,166 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: energy
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: shelly-exporter-script
+  namespace: energy
+data:
+  shelly-exporter.py: |
+    #!/usr/bin/env python3
+    """Shelly Gen3 power exporter: polls Shelly.GetStatus and serves Prometheus metrics."""
+    import json
+    import os
+    import time
+    import urllib.request
+    from http.server import HTTPServer, BaseHTTPRequestHandler
+    from urllib.error import URLError, HTTPError
+
+    SHELLY_URL = os.environ.get("SHELLY_URL", "http://shelly.local/rpc/Shelly.GetStatus")
+
+    class State:
+        values = {}
+        up = 0
+        last_poll = 0
+
+    def poll():
+        req = urllib.request.Request(SHELLY_URL, headers={"Accept": "application/json"})
+        with urllib.request.urlopen(req, timeout=10) as r:
+            data = json.loads(r.read().decode())
+        sw = data.get("switch:0", {})
+        v = {
+            "power_watts": sw.get("power", {}).get("apower", 0.0),
+            "voltage_volts": sw.get("voltage", 0.0),
+            "current_amps": sw.get("current", 0.0),
+            "energy_total_wh": sw.get("aenergy", {}).get("total", 0.0),
+        }
+        temp = (sw.get("temperature") or {}).get("tC")
+        if temp is not None:
+            v["temperature_celsius"] = temp
+        State.values = v
+        State.up = 1
+        State.last_poll = time.time()
+
+    class Handler(BaseHTTPRequestHandler):
+        def do_GET(self):
+            if self.path == "/metrics":
+                lines = ["# TYPE shelly_exporter_up gauge", "shelly_exporter_up %d" % State.up]
+                for name, val in State.values.items():
+                    lines.append("# TYPE shelly_%s gauge" % name)
+                    lines.append("shelly_%s %s" % (name, val))
+                lines.append("# TYPE shelly_exporter_last_poll_timestamp_seconds gauge")
+                lines.append("shelly_exporter_last_poll_timestamp_seconds %d" % State.last_poll)
+                body = ("\n".join(lines) + "\n").encode()
+                self.send_response(200)
+                self.send_header("Content-Type", "text/plain; version=0.0.4")
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+            elif self.path == "/healthz":
+                self.send_response(200)
+                self.send_header("Content-Length", "2")
+                self.end_headers()
+                self.wfile.write(b"ok")
+            else:
+                self.send_response(404)
+                self.end_headers()
+
+        def log_message(self, *a):
+            pass
+
+    def main():
+        while True:
+            try:
+                poll()
+            except Exception as e:
+                print("poll failed:", e, flush=True)
+                State.up = 0
+            time.sleep(30)
+
+    if __name__ == "__main__":
+        import threading
+        threading.Thread(target=main, daemon=True).start()
+        HTTPServer(("0.0.0.0", 9125), Handler).serve_forever()
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shelly-power-exporter
+  namespace: energy
+  labels:
+    app.kubernetes.io/name: shelly-power-exporter
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: shelly-power-exporter
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: shelly-power-exporter
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        fsGroup: 65534
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: exporter
+          image: python:3.12-alpine
+          command: ["python", "/exporter/shelly-exporter.py"]
+          env:
+            - name: SHELLY_URL
+              value: "http://REPLACE_SHELLY_IP/rpc/Shelly.GetStatus"
+          ports:
+            - name: metrics
+              containerPort: 9125
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: metrics
+            periodSeconds: 10
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          resources:
+            requests:
+              cpu: 10m
+              memory: 16Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+          volumeMounts:
+            - name: script
+              mountPath: /exporter
+      volumes:
+        - name: script
+          configMap:
+            name: shelly-exporter-script
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: shelly-power-exporter
+  namespace: energy
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: shelly-power-exporter
+  namespaceSelector: {}
+  podMetricsEndpoints:
+    - port: metrics
+      path: /metrics
+      interval: 30s
