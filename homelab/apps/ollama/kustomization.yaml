@@ -5,3 +5,4 @@ resources:
 - secret.yaml
 - obsidian-sync.yaml
 - obsidian-sync-auth.yaml
+- obsidian-sync-e2epw.yaml

@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: obsidian-sync-e2epw
+    namespace: ollama
+type: Opaque
+stringData:
+    VAULT_PASSWORD: ENC[AES256_GCM,data:GA38M5O0b9unRGb3yMg=,iv:NnufPkt+G21r2knLRb/al+WKOc77y1SzUa/zb9ZMIMM=,tag:NqIXDeBUEpTYy4f3sKWVOg==,type:str]
+sops:
+    age:
+        - recipient: age1jmtzxhr8gr37jt4uw9h49v6m5wtyxv56lev5rvju0knuvfk57e5sfwdm77
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBLa1JXLzlrcEhvZEM2bkZS
+            eVR2Z2JudE9aUXJpblR1cjVmdG1TOW5XdlY4CkliT2QrVUcySld6WHdpYXVQVGZp
+            eTU5b1BBL2V5d21USE1OeUJXVDFibkUKLS0tIHMvaEY2QlVUSnppdHFqSW5VTXU1
+            dVF5aU40cjVTdURvWkJvTlp0KzVDSjAKyqenczxP/8JngjVJR7Gae7Zs04ToP4iT
+            cc3uP8zXYLzXb2yUzg2wCwgTnaR5yJMoY0hZj3hfD3N1IrmDjdMGfA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2026-11-25T12:58:14Z"
+    mac: ENC[AES256_GCM,data:3dbI1n7Esmx2P9oKubwCv43GHSbn5AXdK678F+hvph9T3NMt7j4+Qly4dKktj9b0PYaxLi3nIwEx5nd6virij3JPyIvUKAV37GwlmLyt5GC+wfhC7Bakg+5tGemQ8VSIfvBhiHlsiMKkX/pG10AUqGO8H3W88TwBV3w4Rhw+yUc=,iv:owJo/mAXVJGsXukLFol6w4Pg6mgK95yzHDQAkrQ1rl0=,tag:o6+wK7dDQSVNaCJIC5Gaow==,type:str]
+    encrypted_regex: ^(data|stringData)$
+    version: 3.10.2
